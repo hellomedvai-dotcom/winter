@@ -1,0 +1,226 @@
+/* ==========================================================================
+   MEDVIDHI Interactive Product-Feature Showcase (Consolidated Preview Suite)
+   Strict Monochrome Design System: Pure Black (#000000) and Pure White (#FFFFFF)
+   ========================================================================== */
+
+.medvidhi-showcase-suite {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Showcase Hub Section (#features) - Predominantly Solid White Canvas        */
+/* -------------------------------------------------------------------------- */
+.showcase-hub-section {
+  background-color: #FFFFFF;
+  color: #000000;
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-20) 0 var(--space-20);
+}
+
+.showcase-hub-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.showcase-hub-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+}
+
+/* Master Intro Header */
+.showcase-master-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.showcase-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 6px 18px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-5);
+}
+
+.showcase-status-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #000000;
+}
+
+.badge-text {
+  font-family: var(--font-family-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #000000;
+}
+
+.showcase-headline {
+  font-size: clamp(1.85rem, 3.8vw, 2.75rem);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+  color: #000000;
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.02em;
+}
+
+.showcase-serif-accent {
+  color: #000000;
+  font-family: var(--font-family-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.showcase-lead {
+  font-size: var(--font-size-base);
+  color: #52525B;
+  line-height: var(--line-height-relaxed);
+  max-width: 760px;
+  margin-bottom: var(--space-2);
+}
+
+/* Invisible Anchor Hooks with smooth scroll margin */
+.feature-anchor-target {
+  scroll-margin-top: 100px;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Full-Width Alternating Feature Section System (Preserved for RightDoctorSection)
+   ========================================================================== */
+
+.showcase-feature-section,
+.dark-feature-section {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-20) 0 var(--space-24);
+  scroll-margin-top: 80px;
+}
+
+/* Shared Inner Content Container */
+.feature-section-inner,
+.dark-feature-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* -------------------------------------------------------------------------- */
+/* THEME DARK: Pure Black Background, Pure White Text, Smoked Glass           */
+/* -------------------------------------------------------------------------- */
+.showcase-feature-section.theme-dark,
+.theme-dark.dark-feature-section {
+  background-color: #000000;
+  color: #FFFFFF;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.theme-dark .feature-header,
+.theme-dark .dark-feature-header {
+  margin-bottom: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 760px;
+}
+
+.theme-dark .feature-badge-row,
+.theme-dark .dark-badge-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.theme-dark .dark-mint-pill,
+.theme-dark .dark-mono-pill,
+.theme-dark .feature-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-family-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.theme-dark .pill-icon {
+  color: #FFFFFF;
+}
+
+.theme-dark .dark-anchor-tag,
+.theme-dark .feature-anchor-tag {
+  font-family: var(--font-family-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #A1A1AA;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.theme-dark .dark-feature-headline,
+.theme-dark .feature-headline {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-extrabold);
+  color: #FFFFFF;
+  line-height: var(--line-height-snug);
+  letter-spacing: -0.015em;
+}
+
+@media (min-width: 768px) {
+  .theme-dark .dark-feature-headline,
+  .theme-dark .feature-headline {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+.theme-dark .dark-serif-mint,
+.theme-dark .dark-serif-accent,
+.theme-dark .feature-serif-accent {
+  color: #FFFFFF;
+  font-family: var(--font-family-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.theme-dark .dark-feature-lead,
+.theme-dark .feature-lead {
+  font-size: var(--font-size-sm);
+  color: #A1A1AA;
+  line-height: var(--line-height-relaxed);
+  max-width: 680px;
+}

@@ -1,0 +1,359 @@
+/* ==========================================================================
+   Feature Icon Selector - Polished Monochrome Horizontal Selector
+   Balanced monochrome icon family on predominantly white canvas
+   ========================================================================== */
+
+.feature-icon-selector-container {
+  margin: var(--space-8) auto 0;
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* Softly curved rectangular capsule-like selector frame */
+.feature-icon-selector-frame {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding: 14px 16px 16px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle Topline Header */
+.feature-selector-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.selector-brand-heading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.selector-pulse-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #000000;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  animation: selectorDotPulse 2.4s infinite ease-in-out;
+}
+
+@keyframes selectorDotPulse {
+  0%, 100% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+.selector-brand-label {
+  font-family: var(--font-family-mono);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.selector-meta-hint {
+  font-size: 0.68rem;
+  color: #71717A;
+}
+
+/* ==========================================================================
+   Horizontal Responsive Grid
+   ========================================================================== */
+
+.feature-icons-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  align-items: stretch;
+}
+
+@media (min-width: 580px) {
+  .feature-icons-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+}
+
+@media (min-width: 980px) {
+  .feature-icons-grid {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+  }
+}
+
+/* ==========================================================================
+   Monochrome Icon Button Tile
+   ========================================================================== */
+
+.feature-icon-tile {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 12px 6px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  transition: 
+    transform var(--motion-duration-fast) var(--motion-ease-out),
+    background-color var(--motion-duration-fast) ease,
+    border-color var(--motion-duration-fast) ease,
+    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
+    color var(--motion-duration-fast) ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  outline: none;
+  text-decoration: none;
+  min-height: 108px;
+}
+
+.feature-icon-tile:hover {
+  background: #F4F4F5;
+  border-color: rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px -2px rgba(0, 0, 0, 0.08);
+}
+
+.feature-icon-tile:active {
+  transform: translateY(0);
+}
+
+.feature-icon-tile:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+.feature-icon-tile.is-active-tile:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 3px;
+  box-shadow: 
+    0 10px 24px -4px rgba(0, 0, 0, 0.4),
+    0 0 0 2px #FFFFFF;
+}
+
+/* ACTIVE STATE: High-contrast pure black tile matching floating panel below */
+.feature-icon-tile.is-active-tile {
+  background: #000000;
+  color: #FFFFFF;
+  border-color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 
+    0 10px 24px -4px rgba(0, 0, 0, 0.35),
+    0 0 0 1px #000000;
+}
+
+/* ==========================================================================
+   Icon Glass Capsule Wrapper
+   ========================================================================== */
+
+.icon-glass-capsule {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #09090B;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--motion-duration-fast) ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.feature-icon-tile:hover .icon-glass-capsule {
+  transform: scale(1.05);
+}
+
+.feature-icon-tile.is-active-tile .icon-glass-capsule {
+  background: #18181B;
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 0 12px rgba(255, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: scale(1.04);
+}
+
+/* ==========================================================================
+   Label & Navigation Metadata
+   ========================================================================== */
+
+.feature-tile-text-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+}
+
+.feature-tile-name {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #18181B;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.2s ease;
+}
+
+.feature-icon-tile.is-active-tile .feature-tile-name {
+  color: #FFFFFF;
+  font-weight: 800;
+}
+
+.feature-tile-index {
+  font-family: var(--font-family-mono);
+  font-size: 0.58rem;
+  color: #71717A;
+  letter-spacing: 0.05em;
+  margin-top: 1px;
+  transition: color 0.2s ease;
+}
+
+.feature-icon-tile.is-active-tile .feature-tile-index {
+  color: #A1A1AA;
+}
+
+/* ==========================================================================
+   Right Doctor Distinguished Treatment
+   ========================================================================== */
+
+.feature-icon-tile.is-distinguished {
+  border-color: rgba(0, 0, 0, 0.16);
+}
+
+.feature-icon-tile.is-distinguished.is-active-tile {
+  border-color: #000000;
+}
+
+.distinguished-badge-pill {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #000000;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.feature-icon-tile.is-active-tile .distinguished-badge-pill {
+  background-color: #FFFFFF;
+  box-shadow: 0 0 6px #FFFFFF;
+}
+
+/* ==========================================================================
+   Restrained Micro-Animations (Pure Monochrome CSS)
+   ========================================================================== */
+
+/* 1. Body Map Radar Pulse */
+.body-pin-radar {
+  animation: radarPulse 3s infinite ease-out;
+  transform-origin: 20px 18px;
+}
+
+@keyframes radarPulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.25); opacity: 0.2; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+/* 2. Voice Restrained Listening Waveform */
+.feature-icon-tile:hover .wave-bar,
+.wave-bar {
+  transform-origin: center;
+  animation: waveBarPulse 2s infinite ease-in-out;
+}
+
+.wave-1 { animation-delay: 0s; }
+.wave-2 { animation-delay: 0.3s; }
+.wave-3 { animation-delay: 0.6s; }
+.wave-4 { animation-delay: 0.9s; }
+
+@keyframes waveBarPulse {
+  0%, 100% { transform: scaleY(0.7); opacity: 0.5; }
+  50% { transform: scaleY(1.3); opacity: 1; }
+}
+
+/* 3. Doctor Brief Scanning Beam */
+.doc-scan-beam {
+  animation: docBeamScan 3.2s infinite ease-in-out;
+}
+
+@keyframes docBeamScan {
+  0%, 100% { transform: translateY(-4px); opacity: 0.2; }
+  50% { transform: translateY(7px); opacity: 0.9; }
+}
+
+/* 4. Health Memory Core Pulse */
+.memory-core-pulse {
+  animation: memoryNucleusPulse 2.8s infinite ease-in-out;
+  transform-origin: 20px 20px;
+}
+
+@keyframes memoryNucleusPulse {
+  0%, 100% { transform: scale(0.92); opacity: 0.75; }
+  50% { transform: scale(1.18); opacity: 1; }
+}
+
+/* ==========================================================================
+   Accessibility & Mobile Responsiveness
+   ========================================================================== */
+
+@media (max-width: 579px) {
+  .feature-icon-selector-frame {
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .feature-icon-tile {
+    min-height: 94px;
+    padding: 10px 6px 8px;
+    border-radius: 12px;
+  }
+
+  .feature-icon-tile.is-distinguished {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    min-height: 52px;
+    padding: 8px 14px;
+    gap: 12px;
+    justify-content: flex-start;
+  }
+
+  .feature-icon-tile.is-distinguished .feature-tile-text-col {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .icon-glass-capsule {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+
+  .feature-tile-name {
+    font-size: 0.68rem;
+  }
+}

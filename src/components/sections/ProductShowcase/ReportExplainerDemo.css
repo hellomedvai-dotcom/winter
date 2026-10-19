@@ -1,0 +1,441 @@
+/* Medical & Report Explainer Showcase Styles - Strict Monochrome System */
+
+.report-explainer-showcase-section {
+  position: relative;
+}
+
+.explainer-lang-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+}
+
+.explainer-lang-label {
+  font-family: var(--font-family-mono);
+  font-size: 0.72rem;
+  color: var(--color-gray-400);
+  text-transform: uppercase;
+}
+
+.explainer-lang-options {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.explainer-lang-btn {
+  background: none;
+  border: none;
+  color: var(--color-gray-400);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.explainer-lang-btn:hover {
+  color: #FFFFFF;
+}
+
+.explainer-lang-btn.is-active {
+  color: #000000;
+  background: #FFFFFF;
+  font-weight: var(--font-weight-bold);
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+}
+
+/* Studio Card */
+.explainer-studio-card {
+  background: linear-gradient(180deg, #101010 0%, #050505 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0 24px 64px -16px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+}
+
+/* Sample Report Tabs */
+.report-sample-tabs {
+  display: grid;
+  grid-template-columns: 1fr;
+  background: #000000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 768px) {
+  .report-sample-tabs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.report-tab-btn {
+  background: none;
+  border: none;
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  text-align: left;
+  border-bottom: 2px solid transparent;
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .report-tab-btn:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+.report-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.report-tab-btn.is-selected {
+  background: rgba(255, 255, 255, 0.09);
+  border-bottom-color: #FFFFFF;
+}
+
+.tab-indicator {
+  display: none;
+}
+
+.tab-title {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-400);
+  transition: color var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.report-tab-btn.is-selected .tab-title {
+  color: #FFFFFF;
+}
+
+.tab-category {
+  font-family: var(--font-family-mono);
+  font-size: 0.65rem;
+  color: var(--color-gray-400);
+}
+
+.report-tab-btn.is-selected .tab-category {
+  color: #FFFFFF;
+}
+
+/* Raw Excerpt Viewport */
+.raw-excerpt-container {
+  padding: var(--space-6);
+  background: #000000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.excerpt-header-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.excerpt-label-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.excerpt-title {
+  font-family: var(--font-family-mono);
+  font-size: 0.72rem;
+  font-weight: var(--font-weight-bold);
+  color: #FFFFFF;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.excerpt-source-tag {
+  font-family: var(--font-family-mono);
+  font-size: 0.65rem;
+  color: var(--color-gray-400);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.excerpt-text-box {
+  background: #0C0C0C;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  overflow-x: auto;
+}
+
+.excerpt-code-snippet {
+  font-family: var(--font-family-mono);
+  font-size: 0.72rem;
+  color: #FFFFFF;
+  line-height: var(--line-height-relaxed);
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+/* 3 Pillars Grid */
+.explainer-three-pillars-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: var(--space-6);
+  gap: var(--space-5);
+}
+
+@media (min-width: 960px) {
+  .explainer-three-pillars-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.pillar-card {
+  background: rgba(18, 18, 18, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  transition: all var(--motion-duration-fast) var(--motion-ease-out);
+}
+
+.pillar-card:hover {
+  background: rgba(28, 28, 28, 0.95);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+}
+
+.pillar-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.pillar-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.meaning-icon {
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.uncertainty-icon {
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.discussion-icon {
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.pillar-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pillar-tag {
+  font-family: var(--font-family-mono);
+  font-size: 0.65rem;
+  color: var(--color-gray-400);
+  text-transform: uppercase;
+}
+
+.pillar-headline {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: #FFFFFF;
+}
+
+.pillar-body-text {
+  font-size: 0.78rem;
+  color: var(--color-gray-300);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Footer Notice */
+.explainer-studio-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  background: #000000;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================================================
+   Medical & Report Explainer - Solid White (Theme Light) Paper Document
+   ========================================================================== */
+
+.theme-light.report-explainer-showcase-section,
+.report-explainer-showcase-section.theme-light {
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+.report-explainer-showcase-section.theme-light .explainer-lang-bar {
+  background: #F4F4F5;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.report-explainer-showcase-section.theme-light .explainer-lang-label {
+  color: #71717A;
+}
+
+.report-explainer-showcase-section.theme-light .explainer-lang-btn {
+  color: #52525B;
+}
+
+.report-explainer-showcase-section.theme-light .explainer-lang-btn:hover {
+  color: #000000;
+}
+
+.report-explainer-showcase-section.theme-light .explainer-lang-btn.is-active {
+  color: #FFFFFF;
+  background: #000000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.report-explainer-showcase-section.theme-light .explainer-studio-card {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.08);
+}
+
+.report-explainer-showcase-section.theme-light .report-sample-tabs {
+  background: #FAFAFA;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.report-explainer-showcase-section.theme-light .report-tab-btn {
+  color: #52525B;
+}
+
+@media (min-width: 768px) {
+  .report-explainer-showcase-section.theme-light .report-tab-btn:not(:last-child) {
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+  }
+}
+
+.report-explainer-showcase-section.theme-light .report-tab-btn:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.report-explainer-showcase-section.theme-light .report-tab-btn.is-active {
+  background: #FFFFFF;
+  border-bottom: 2px solid #000000;
+  color: #000000;
+}
+
+.report-explainer-showcase-section.theme-light .tab-patient-id {
+  color: #71717A;
+}
+
+.report-explainer-showcase-section.theme-light .tab-title {
+  color: #000000;
+  font-weight: 700;
+}
+
+.report-explainer-showcase-section.theme-light .report-sheet-pane {
+  background: #FAFAFA;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  color: #000000;
+}
+
+.report-explainer-showcase-section.theme-light .sheet-topbar {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.report-explainer-showcase-section.theme-light .sheet-title {
+  color: #000000;
+  font-weight: 700;
+}
+
+.report-explainer-showcase-section.theme-light .sheet-meta {
+  color: #71717A;
+}
+
+.report-explainer-showcase-section.theme-light .report-data-table th {
+  color: #000000;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  font-weight: 700;
+}
+
+.report-explainer-showcase-section.theme-light .report-data-table td {
+  color: #18181B;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.report-explainer-showcase-section.theme-light .highlight-row {
+  background: rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+}
+
+.report-explainer-showcase-section.theme-light .explainer-breakdown-pane {
+  background: #FFFFFF;
+  color: #000000;
+}
+
+.report-explainer-showcase-section.theme-light .breakdown-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.report-explainer-showcase-section.theme-light .breakdown-title {
+  color: #000000;
+  font-weight: 700;
+}
+
+.report-explainer-showcase-section.theme-light .pillar-tag {
+  color: #71717A;
+}
+
+.report-explainer-showcase-section.theme-light .pillar-headline {
+  color: #000000;
+  font-weight: 700;
+}
+
+.report-explainer-showcase-section.theme-light .pillar-body-text {
+  color: #27272A;
+}
+
+.report-explainer-showcase-section.theme-light .meaning-icon,
+.report-explainer-showcase-section.theme-light .uncertainty-icon,
+.report-explainer-showcase-section.theme-light .discussion-icon {
+  background: #000000;
+  color: #FFFFFF;
+  border: 1px solid #000000;
+}
+
+.report-explainer-showcase-section.theme-light .explainer-studio-footer {
+  background: #FAFAFA;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: #52525B;
+}
+
+.report-explainer-showcase-section.theme-light .explainer-studio-footer strong {
+  color: #000000;
+}

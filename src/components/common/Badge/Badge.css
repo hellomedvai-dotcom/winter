@@ -1,0 +1,56 @@
+.medvidhi-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-full);
+  font-family: var(--font-family-mono);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  width: fit-content;
+  text-transform: uppercase;
+}
+
+.badge-sm {
+  padding: 0.35rem 0.85rem;
+  font-size: 0.75rem;
+}
+
+.badge-md {
+  padding: 0.45rem 1.1rem;
+  font-size: 0.8125rem;
+}
+
+/* High-Contrast Light Surface Eyebrow Badge (Pure Black text on white/neutral surface) */
+.badge-neutral {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+}
+
+/* Solid Black Badge (Pure White text on black badge) */
+.badge-mint,
+.badge-dark {
+  background-color: #000000;
+  color: #FFFFFF;
+  border: 1px solid #000000;
+}
+
+/* Outline Variant */
+.badge-outline {
+  background-color: transparent;
+  color: #000000;
+  border: 1px solid #000000;
+}
+
+/* Inverted / On-Dark Variant (Pure White text on black surface) */
+.badge-inverted {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.badge-icon {
+  display: inline-flex;
+  align-items: center;
+}

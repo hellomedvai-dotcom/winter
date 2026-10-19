@@ -1,0 +1,91 @@
+.medvidhi-foundation-section {
+  padding: var(--space-16) 0 var(--space-20);
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .medvidhi-foundation-section {
+    padding: var(--space-20) 0 var(--space-24);
+  }
+}
+
+.foundation-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--space-12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.foundation-heading {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+}
+
+@media (min-width: 768px) {
+  .foundation-heading {
+    font-size: var(--font-size-4xl);
+  }
+}
+
+.foundation-description {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+.foundation-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-16);
+}
+
+@media (min-width: 640px) {
+  .foundation-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .foundation-metrics-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.metric-card {
+  text-align: center;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.metric-value {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-mint-400);
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+
+.metric-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.metric-detail {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-normal);
+}
+
+.foundation-waitlist-wrap {
+  margin-top: var(--space-8);
+}

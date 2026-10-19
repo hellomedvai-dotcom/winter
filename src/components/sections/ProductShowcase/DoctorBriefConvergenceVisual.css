@@ -1,0 +1,195 @@
+/* ==========================================================================
+   MEDVIDHI Doctor Brief Convergence Visual Styles
+   Strict Monochrome Design System: Pure Black (#000000), Pure White (#FFFFFF), Neutral Grayscale
+   Precise vector connection lines without overlaps or orphan paths
+   ========================================================================== */
+
+.doctor-brief-convergence-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.convergence-vector-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 1. Incoming lines animation                                                */
+/* -------------------------------------------------------------------------- */
+.incoming-lines-group {
+  opacity: 0.45;
+  transition: opacity 0.4s ease;
+}
+
+.incoming-lines-group.is-visible {
+  opacity: 1;
+}
+
+.incoming-trace-path {
+  transition: stroke 0.25s ease, stroke-width 0.25s ease;
+}
+
+.is-highlighted-line .incoming-trace-path {
+  stroke: #FFFFFF !important;
+  stroke-width: 2.5px !important;
+  stroke-dasharray: none !important;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.45));
+}
+
+/* -------------------------------------------------------------------------- */
+/* 2. Central Circle & Authentic MEDVIDHI Logo                                */
+/* -------------------------------------------------------------------------- */
+.central-circle-node {
+  opacity: 0.3;
+  transform-origin: 80px 240px;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.central-circle-node.is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.mv-circle-outer {
+  transition: stroke-width 0.3s ease, stroke 0.3s ease;
+}
+
+.central-circle-node.is-synthesizing .mv-circle-outer {
+  stroke-width: 2.6px;
+  stroke: #FFFFFF;
+}
+
+.mv-halo-ring {
+  animation: haloPulse 2s ease-in-out infinite;
+}
+
+@keyframes haloPulse {
+  0%, 100% {
+    stroke-opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    stroke-opacity: 0.9;
+    transform: scale(1.03);
+  }
+}
+
+.svg-medvidhi-logo-image {
+  pointer-events: none;
+  opacity: 0.88;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.central-circle-node.is-synthesizing .svg-medvidhi-logo-image {
+  opacity: 1;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
+}
+
+/* -------------------------------------------------------------------------- */
+/* 3. Outgoing lines                                                          */
+/* -------------------------------------------------------------------------- */
+.outgoing-lines-group {
+  opacity: 0.35;
+  transition: opacity 0.4s ease;
+}
+
+.outgoing-lines-group.is-extended {
+  opacity: 1;
+}
+
+.outgoing-trace-path {
+  transition: stroke 0.25s ease, stroke-width 0.25s ease;
+}
+
+.is-highlighted-out .outgoing-trace-path {
+  stroke: #FFFFFF !important;
+  stroke-width: 2.5px !important;
+  stroke-dasharray: none !important;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.45));
+}
+
+.traveling-pulse-dot {
+  filter: drop-shadow(0 0 3px #FFFFFF);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Labels Block beneath the central node                                      */
+/* -------------------------------------------------------------------------- */
+.synthesis-labels-block {
+  position: absolute;
+  bottom: 18px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
+  z-index: 3;
+}
+
+.synthesis-badge-label {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.synthesis-sub-label {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.54rem;
+  color: #A1A1AA;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 959px) {
+  .doctor-brief-convergence-wrapper {
+    min-height: 130px;
+    margin: var(--space-3) 0;
+  }
+
+  .convergence-vector-svg {
+    position: relative;
+    height: 130px;
+    width: 100%;
+  }
+
+  .synthesis-labels-block {
+    position: relative;
+    bottom: auto;
+    margin-top: 6px;
+  }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .incoming-lines-group,
+  .central-circle-node,
+  .outgoing-lines-group {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .traveling-pulse-dot {
+    display: none !important;
+  }
+
+  .mv-halo-ring {
+    animation: none !important;
+  }
+}

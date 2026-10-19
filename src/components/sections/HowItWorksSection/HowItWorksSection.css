@@ -1,0 +1,731 @@
+/* ==========================================================================
+   MEDVIDHI How It Works - Directional Fan Interface
+   Strict Monochrome Design: Pure Black (#000000), Pure White (#FFFFFF), Neutral Grayscale
+   Left Anchor: Pure-black semicircle hub with refined serif "How it works"
+   Right Fan: Seven connected white stage panels radiating outward
+   SVG Mathematical Rays connecting hub to panels
+   Drag/Swipe, Direct Clicking, Keyboard Navigation
+   ========================================================================== */
+
+.medvidhi-how-it-works {
+  background-color: #FFFFFF;
+  padding: clamp(70px, 9vh, 120px) 0 clamp(80px, 10vh, 130px);
+  position: relative;
+  width: 100%;
+  outline: none;
+  overflow: hidden;
+  user-select: none;
+}
+
+.how-fan-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Main Directional Fan Composition Container                                 */
+/* -------------------------------------------------------------------------- */
+.fan-stage-composition {
+  position: relative;
+  min-height: 720px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.fan-stage-composition.is-dragging {
+  cursor: grabbing;
+}
+
+/* -------------------------------------------------------------------------- */
+/* LEFT ANCHOR: Pure Black Semicircle Hub                                     */
+/* -------------------------------------------------------------------------- */
+.fan-semicircle-hub {
+  position: absolute;
+  top: 50%;
+  left: -120px;
+  transform: translateY(-50%);
+  width: 480px;
+  height: 680px;
+  background-color: #000000;
+  border-radius: 0 340px 340px 0; /* Pure geometric semicircle on the right */
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 60px 40px 140px; /* Offset for left clipping */
+  overflow: hidden;
+  border-right: 1.5px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Subtle architectural curved rim highlight */
+.hub-curved-rim {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  border-radius: 0 340px 340px 0;
+  border-right: 2px solid rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+}
+
+.hub-content-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 2;
+  max-width: 300px;
+}
+
+.hub-badge {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  margin-bottom: 1.25rem;
+}
+
+/* Refined non-bold editorial serif typography */
+.hub-editorial-heading {
+  font-family: var(--font-family-serif, "Newsreader", "Playfair Display", Georgia, serif);
+  font-size: clamp(2.8rem, 4.2vw, 3.8rem);
+  font-weight: 350;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: #FFFFFF;
+  margin: 0 0 1rem 0;
+}
+
+.hub-editorial-subtitle {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #A1A1AA;
+  margin: 0 0 2rem 0;
+}
+
+/* Active Stage Dial on Semicircle Hub */
+.hub-stage-dial {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.dial-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.dial-counter {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.dial-total {
+  font-size: 0.85rem;
+  color: #71717A;
+  font-weight: 400;
+}
+
+.dial-phase-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #E4E4E7;
+  letter-spacing: 0.02em;
+}
+
+/* 7 Scrubber Ticks */
+.dial-scrubber {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.dial-tick {
+  flex: 1;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.22s ease;
+}
+
+.dial-tick:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.dial-tick.is-active {
+  background: #FFFFFF;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+/* Dial Navigation Controls */
+.dial-nav-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.dial-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dial-nav-btn:hover {
+  background: #FFFFFF;
+  color: #000000;
+}
+
+.dial-hint-text {
+  font-size: 0.72rem;
+  font-family: var(--font-family-mono, monospace);
+  color: #71717A;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* -------------------------------------------------------------------------- */
+/* DIRECTIONAL SVG CONNECTOR RAYS LAYER                                       */
+/* -------------------------------------------------------------------------- */
+.fan-connector-svg-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.fan-ray-group {
+  pointer-events: auto;
+}
+
+.fan-ray-group .ray-path {
+  transition: stroke 0.25s ease, stroke-width 0.25s ease;
+}
+
+.fan-ray-group.is-active-ray .ray-path {
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2));
+}
+
+.fan-ray-group .ray-hub-node,
+.fan-ray-group .ray-panel-node {
+  transition: fill 0.25s ease, r 0.25s ease;
+}
+
+/* -------------------------------------------------------------------------- */
+/* SEVEN CONNECTED STAGE PANELS COLUMN                                        */
+/* Radial Fan Arrangement with Broad Right-Facing Arc                         */
+/* -------------------------------------------------------------------------- */
+.fan-panels-column {
+  margin-left: 360px; /* Offset past semicircle hub */
+  width: calc(100% - 360px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 6;
+  padding: 20px 0 20px 30px;
+}
+
+/* Stage Panel Item */
+.fan-stage-panel-item {
+  background: #FFFFFF;
+  border: 1px solid #E4E4E7;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Radial curvature offsets: top and bottom panels pull inwards to mimic the fan arc */
+.stage-pos-0 { margin-left: 50px; }
+.stage-pos-1 { margin-left: 25px; }
+.stage-pos-2 { margin-left: 8px; }
+.stage-pos-3 { margin-left: 0px; } /* Center apex */
+.stage-pos-4 { margin-left: 8px; }
+.stage-pos-5 { margin-left: 25px; }
+.stage-pos-6 { margin-left: 50px; }
+
+/* Inactive Compact State */
+.fan-stage-panel-item.is-compact-item {
+  padding: 10px 18px;
+  opacity: 0.72;
+  max-width: 420px;
+}
+
+.fan-stage-panel-item.is-compact-item:hover {
+  opacity: 1;
+  border-color: #000000;
+  transform: translateX(4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Active Focal State: Expanded Prominent White Card */
+.fan-stage-panel-item.is-active-focal {
+  padding: 20px 24px;
+  border: 1.5px solid #000000;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+  opacity: 1;
+  max-width: 640px;
+  transform: translateX(8px);
+  cursor: default;
+}
+
+/* Panel Header Strip */
+.panel-header-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.panel-index-pill {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #000000;
+  background: #F4F4F5;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+}
+
+.is-active-focal .panel-index-pill {
+  background: #000000;
+  color: #FFFFFF;
+  border-color: #000000;
+}
+
+.panel-title-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #000000;
+  letter-spacing: -0.01em;
+}
+
+.panel-icon-wrap {
+  margin-left: auto;
+  color: #71717A;
+  display: flex;
+  align-items: center;
+}
+
+.is-active-focal .panel-icon-wrap {
+  color: #000000;
+}
+
+/* Panel Expanded Body */
+.panel-expanded-body {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #F4F4F5;
+  animation: panelFadeSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes panelFadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.panel-description-text {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: #27272A;
+  margin: 0 0 1rem 0;
+  font-weight: 400;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Stage 01 Input: Refined Interactive Source Chips Preview                   */
+/* -------------------------------------------------------------------------- */
+.input-sources-interactive-block {
+  margin: 1.25rem 0 1rem 0;
+  padding: 16px;
+  background: #FAFAFA;
+  border: 1px solid #E4E4E7;
+  border-radius: 12px;
+}
+
+.sources-label-tag {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #71717A;
+  letter-spacing: 0.06em;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.sources-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.source-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: #FFFFFF;
+  border: 1px solid #D4D4D8;
+  color: #3F3F46;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.18s ease;
+}
+
+.source-chip-btn:hover {
+  border-color: #000000;
+  color: #000000;
+}
+
+.source-chip-btn.is-active-source {
+  background: #000000;
+  border-color: #000000;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+}
+
+.source-chip-icon {
+  display: flex;
+  align-items: center;
+}
+
+/* Mini-visual Preview for the selected input source */
+.source-preview-card {
+  padding: 10px 14px;
+  background: #FFFFFF;
+  border: 1px solid #E4E4E7;
+  border-radius: 8px;
+  border-left: 3px solid #000000;
+}
+
+.source-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.preview-indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #000000;
+}
+
+.preview-source-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.preview-source-detail {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #52525B;
+  margin: 0;
+}
+
+/* Panel Footer Meta */
+.panel-footer-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed #E4E4E7;
+}
+
+.panel-hint-pill {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.72rem;
+  color: #71717A;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.panel-next-inline-btn {
+  background: none;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #000000;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.18s ease;
+}
+
+.panel-next-inline-btn:hover {
+  transform: translateX(3px);
+  text-decoration: underline;
+}
+
+.panel-complete-tag {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #18181B;
+}
+
+/* Mobile View Container is hidden on Desktop */
+.fan-mobile-view-container {
+  display: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Responsive Layout: Tablet and Mobile (< 960px)                             */
+/* -------------------------------------------------------------------------- */
+@media (max-width: 959px) {
+  /* Hide Desktop Fan Layout */
+  .fan-stage-composition {
+    display: none;
+  }
+
+  /* Show Mobile Companion View */
+  .fan-mobile-view-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  /* Mobile Dark Header Hub Card */
+  .mobile-hub-card {
+    background: #000000;
+    color: #FFFFFF;
+    border-radius: 20px;
+    padding: 28px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+  }
+
+  .mobile-hub-badge {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    margin-bottom: 12px;
+  }
+
+  .mobile-hub-heading {
+    font-family: var(--font-family-serif, "Newsreader", "Playfair Display", Georgia, serif);
+    font-size: 2.6rem;
+    font-weight: 350;
+    line-height: 1.1;
+    color: #FFFFFF;
+    margin: 0 0 8px 0;
+  }
+
+  .mobile-hub-sub {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: #A1A1AA;
+    margin: 0;
+  }
+
+  /* Mobile Horizontal Stage Selector Strip */
+  .mobile-stages-selector-strip {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 6px 2px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .mobile-stages-selector-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-stage-tab {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    background: #FFFFFF;
+    border: 1.5px solid #E4E4E7;
+    color: #000000;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    scroll-snap-align: start;
+    white-space: nowrap;
+    transition: all 0.18s ease;
+  }
+
+  .mobile-stage-tab.is-active-tab {
+    background: #000000;
+    border-color: #000000;
+    color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+  }
+
+  .mobile-tab-num {
+    font-family: var(--font-family-mono, monospace);
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  /* Mobile Active Stage Card */
+  .mobile-active-stage-card {
+    background: #FFFFFF;
+    border: 1.5px solid #000000;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .mobile-card-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .mobile-card-index {
+    font-family: var(--font-family-mono, monospace);
+    font-size: 0.8rem;
+    font-weight: 800;
+    background: #000000;
+    color: #FFFFFF;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+
+  .mobile-card-phase {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #000000;
+    margin: 0;
+  }
+
+  .mobile-card-icon {
+    margin-left: auto;
+    color: #000000;
+  }
+
+  .mobile-card-desc {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: #27272A;
+    margin: 0 0 16px 0;
+  }
+
+  .mobile-sources-wrap {
+    margin-bottom: 16px;
+    padding: 12px;
+    background: #F4F4F5;
+    border-radius: 10px;
+  }
+
+  .mobile-sources-tag {
+    font-family: var(--font-family-mono, monospace);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #71717A;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .mobile-source-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .mobile-source-pill {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    background: #FFFFFF;
+    border: 1px solid #D4D4D8;
+    border-radius: 6px;
+    color: #18181B;
+  }
+
+  .mobile-card-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid #F4F4F5;
+  }
+
+  .mobile-nav-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #F4F4F5;
+    border: 1px solid #E4E4E7;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #000000;
+    cursor: pointer;
+  }
+
+  .mobile-nav-count {
+    font-family: var(--font-family-mono, monospace);
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: #71717A;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Accessibility: Reduced Motion Support                                      */
+/* -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .fan-stage-panel-item,
+  .panel-expanded-body,
+  .dial-tick,
+  .ray-path,
+  .source-chip-btn {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,78 @@
+/* ==========================================================================
+   Health Context Bridge Section
+   Meaningful editorial transition directly following Hero before Problems narrative.
+   Predominantly Solid White Canvas, Refined Typography, Generous Whitespace.
+   ========================================================================== */
+
+.medvidhi-context-bridge {
+  position: relative;
+  background-color: #FFFFFF;
+  color: #000000;
+  padding: var(--space-16) 0 var(--space-20);
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .medvidhi-context-bridge {
+    padding: var(--space-20) 0 var(--space-24);
+  }
+}
+
+.context-bridge-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 1040px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Editorial Header                                                           */
+/* -------------------------------------------------------------------------- */
+.bridge-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.bridge-headline {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+  color: #000000;
+  letter-spacing: -0.025em;
+  margin: var(--space-4) 0 var(--space-4);
+}
+
+.bridge-serif-accent {
+  font-family: var(--font-family-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: #000000;
+}
+
+.bridge-supporting-copy {
+  font-size: clamp(1rem, 1.8vw, 1.125rem);
+  line-height: var(--line-height-relaxed);
+  color: #52525B;
+  max-width: 740px;
+  margin: 0 auto;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Video Placement Zone with Generous Whitespace                              */
+/* -------------------------------------------------------------------------- */
+.bridge-video-zone {
+  width: 100%;
+  margin-top: var(--space-8);
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .bridge-video-zone {
+    margin-top: var(--space-10);
+  }
+}

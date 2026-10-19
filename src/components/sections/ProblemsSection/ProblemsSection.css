@@ -1,0 +1,584 @@
+/* ==========================================================================
+   MEDVIDHI Problems We Solve - Overlapping Black-and-White Forms
+   Strict Monochrome Design System: Pure Black (#000000), Pure White (#FFFFFF), Neutral Grayscale
+   Spacious Composition, High-Contrast Typography, Progressive Narrative
+   ========================================================================== */
+
+.medvidhi-problems {
+  background-color: var(--color-bg-base);
+  padding: clamp(72px, 10vh, 120px) 0 clamp(80px, 11vh, 130px);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.problems-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1160px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Header                                                                     */
+/* -------------------------------------------------------------------------- */
+.problems-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 780px;
+  margin-bottom: var(--space-8);
+}
+
+.problems-eyebrow-badge {
+  color: #000000 !important;
+  font-family: var(--font-family-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-4);
+  text-transform: uppercase;
+}
+
+.problems-headline {
+  font-size: clamp(1.85rem, 3.8vw, 2.75rem);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+  color: #000000;
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.02em;
+}
+
+.problems-serif-accent {
+  color: #000000;
+  font-family: var(--font-family-serif);
+  font-style: italic;
+  font-weight: 500;
+  padding: 0 4px;
+}
+
+.problems-emphasis {
+  color: #000000;
+  text-decoration: underline;
+  text-decoration-color: #000000;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+}
+
+.problems-intro-text {
+  font-size: clamp(0.95rem, 1.2vw, 1.0625rem);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  max-width: 680px;
+  margin-bottom: var(--space-4);
+}
+
+/* ==========================================================================
+   Overlapping Circles Composition Arena
+   ========================================================================== */
+.overlapping-circles-arena {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin: var(--space-6) 0 var(--space-10);
+  gap: var(--space-6);
+}
+
+@media (min-width: 980px) {
+  .overlapping-circles-arena {
+    flex-direction: row;
+    justify-content: center;
+    gap: 0;
+    min-height: 600px;
+  }
+}
+
+/* Individual Circle Node */
+.circle-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+/* Desktop Circular Dimensions */
+@media (min-width: 980px) {
+  .circle-node {
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 979px) {
+  .circle-node {
+    width: 100%;
+    max-width: 520px;
+    border-radius: 36px;
+    min-height: auto;
+  }
+}
+
+.circle-inner-content {
+  width: 100%;
+  max-width: 440px;
+  padding: var(--space-8) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+}
+
+@media (max-width: 480px) {
+  .circle-inner-content {
+    padding: var(--space-6) var(--space-4);
+    gap: var(--space-3);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* CIRCLE 1: THE LARGE BLACK CIRCLE (The Core Problem)                        */
+/* -------------------------------------------------------------------------- */
+.circle-problem-black {
+  background: #000000;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 28px 64px -12px rgba(0, 0, 0, 0.45);
+  z-index: 1;
+}
+
+@media (min-width: 980px) {
+  .circle-problem-black {
+    transform: translateX(36px);
+  }
+}
+
+.eyebrow-dark {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
+.title-white {
+  color: #FFFFFF;
+}
+
+.lead-gray {
+  color: #A1A1AA;
+}
+
+/* Header inside Circle */
+.circle-header-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.circle-eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-family-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.circle-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-extrabold);
+  margin: 0;
+  letter-spacing: -0.015em;
+}
+
+@media (min-width: 768px) {
+  .circle-title {
+    font-size: 1.45rem;
+  }
+}
+
+.circle-lead {
+  font-size: 0.78rem;
+  line-height: var(--line-height-normal);
+  max-width: 360px;
+  margin: 0;
+}
+
+/* Progressive Problem Focus Card inside Black Circle */
+.problem-focus-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  width: 100%;
+  text-align: left;
+  min-height: 148px;
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.problem-card-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.problem-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.problem-step-indicator {
+  font-family: var(--font-family-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #A1A1AA;
+  letter-spacing: 0.06em;
+}
+
+.problem-stage-name {
+  font-family: var(--font-family-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+}
+
+.problem-meaningful-phrase {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.35;
+  margin: 2px 0 4px;
+}
+
+.problem-detail-text {
+  font-size: 0.78rem;
+  color: #D4D4D8;
+  line-height: 1.45;
+  margin: 0 0 6px;
+}
+
+.problem-impact-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: #A1A1AA;
+}
+
+.impact-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  flex-shrink: 0;
+}
+
+/* 5-Step Stepper Controls */
+.problem-nav-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.problem-tabs-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.problem-tab-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #A1A1AA;
+  font-family: var(--font-family-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 180ms ease;
+  padding: 0;
+}
+
+.problem-tab-dot:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+}
+
+.problem-tab-dot.is-active {
+  background: #FFFFFF;
+  color: #000000;
+  border-color: #FFFFFF;
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.problem-nav-arrows {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.problem-arrow-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 180ms ease;
+  padding: 0;
+}
+
+.problem-arrow-btn:hover {
+  background: #FFFFFF;
+  color: #000000;
+  border-color: #FFFFFF;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Overlap Bridge Pill (The Shift)                                            */
+/* -------------------------------------------------------------------------- */
+.circles-overlap-bridge {
+  position: static;
+  display: flex;
+  justify-content: center;
+  z-index: 3;
+}
+
+@media (min-width: 980px) {
+  .circles-overlap-bridge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.bridge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #000000;
+  color: #FFFFFF;
+  border: 1.5px solid #FFFFFF;
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  font-family: var(--font-family-mono);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+}
+
+.bridge-arrow {
+  color: #FFFFFF;
+}
+
+/* -------------------------------------------------------------------------- */
+/* CIRCLE 2: THE LARGE WHITE CIRCLE (The Solution Transition)                 */
+/* -------------------------------------------------------------------------- */
+.circle-solution-white {
+  background: #FFFFFF;
+  color: #000000;
+  border: 1.5px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 28px 64px -12px rgba(0, 0, 0, 0.08);
+  z-index: 2;
+}
+
+@media (min-width: 980px) {
+  .circle-solution-white {
+    transform: translateX(-36px);
+  }
+}
+
+.eyebrow-light {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  color: #000000;
+}
+
+.title-black {
+  color: #000000;
+}
+
+.lead-dark {
+  color: #52525B;
+}
+
+/* 4 Key Solution Pillars inside White Circle */
+.solution-pillars-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+}
+
+@media (min-width: 520px) {
+  .solution-pillars-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.solution-pillar-item {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  transition: all 180ms ease;
+}
+
+.solution-pillar-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.pillar-icon-box {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #000000;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.pillar-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.pillar-title {
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 0;
+}
+
+.pillar-desc {
+  font-size: 0.66rem;
+  color: #52525B;
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* Transition Call to Action */
+.solution-cta-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-top: 2px;
+}
+
+.solution-transition-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #000000;
+  color: #FFFFFF;
+  border: 1px solid #000000;
+  border-radius: var(--radius-full);
+  padding: 7px 18px;
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 180ms ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.solution-transition-btn:hover {
+  background: #FFFFFF;
+  color: #000000;
+  border-color: #000000;
+  transform: translateY(-1px);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Narrative Resolution Card below the Circles                               */
+/* -------------------------------------------------------------------------- */
+.narrative-summary-card {
+  max-width: 820px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6) var(--space-8);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.summary-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-family-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #71717A;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.summary-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #000000;
+}
+
+.summary-statement {
+  font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+  color: #18181B;
+  line-height: var(--line-height-relaxed);
+  margin: 0;
+  max-width: 720px;
+}

@@ -1,0 +1,163 @@
+/**
+ * MEDVIDHI Design Tokens
+ * 
+ * Strict Monochrome Design System:
+ * - Design Colours: ONLY Pure Black (#000000) and Pure White (#FFFFFF).
+ * - Neutral Grayscale & Transparencies: Permitted for subtle borders, glass effects, shadows, blur, and depth.
+ * - Zero chromatic color accents (no mint, green, teal, blue, cyan, purple, orange, red, pink, yellow, beige).
+ * - Zero tinted backgrounds; choose pure white or pure black.
+ * - Zero colored glows or colored gradients.
+ */
+
+:root {
+  /* Core Monochrome Primitives */
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+
+  /* Neutral Grayscale Scale */
+  --color-gray-50: #FAFAFA;
+  --color-gray-100: #F4F4F5;
+  --color-gray-200: #E4E4E7;
+  --color-gray-300: #D4D4D8;
+  --color-gray-400: #A1A1AA;
+  --color-gray-500: #71717A;
+  --color-gray-600: #52525B;
+  --color-gray-700: #3F3F46;
+  --color-gray-800: #27272A;
+  --color-gray-900: #18181B;
+  --color-gray-950: #09090B;
+
+  /* Monochrome Surface Tokens (Strict Pure Black & White) */
+  --color-bg-base: #FFFFFF;
+  --color-bg-subtle: #F4F4F5;
+  --color-bg-surface-1: #FFFFFF;
+  --color-bg-surface-2: #F4F4F5;
+  --color-bg-surface-3: #E4E4E7;
+
+  /* Dark Canvas Tokens (Selected Full-Black Product & Conversion Sections) */
+  --color-charcoal-base: #000000;
+  --color-charcoal-surface-1: #0A0A0A;
+  --color-charcoal-surface-2: #141414;
+  --color-charcoal-surface-3: #1F1F1F;
+  --color-charcoal-muted: #2E2E2E;
+
+  /* Neutral Borders & Dividers */
+  --color-border-subtle: rgba(0, 0, 0, 0.08);
+  --color-border-default: rgba(0, 0, 0, 0.14);
+  --color-border-active: #000000;
+  --color-border-dark: rgba(255, 255, 255, 0.14);
+  --color-border-dark-subtle: rgba(255, 255, 255, 0.08);
+
+  /* High-Contrast Monochromatic Text Hierarchy */
+  --color-text-primary: #000000;
+  --color-text-secondary: #52525B;
+  --color-text-muted: #71717A;
+  --color-text-tertiary: #A1A1AA;
+  --color-text-on-dark: #FFFFFF;
+  --color-text-on-dark-muted: #A1A1AA;
+  --color-text-brand: #000000;
+
+  /* Deprecated Tint Aliases mapped to Neutral Monochrome */
+  --color-mint-50: #F4F4F5;
+  --color-mint-100: #E4E4E7;
+  --color-mint-200: #D4D4D8;
+  --color-mint-300: #D4D4D8;
+  --color-mint-400: #A1A1AA;
+  --color-mint-500: #FFFFFF;
+  --color-mint-600: #FFFFFF;
+  --color-mint-700: #000000;
+  --color-mint-800: #000000;
+  --color-mint-900: #000000;
+  --color-mint-950: #000000;
+
+  --color-mint-alpha-5: rgba(255, 255, 255, 0.04);
+  --color-mint-alpha-10: rgba(255, 255, 255, 0.08);
+  --color-mint-alpha-15: rgba(255, 255, 255, 0.12);
+  --color-mint-alpha-20: rgba(255, 255, 255, 0.16);
+  --color-mint-alpha-25: rgba(255, 255, 255, 0.20);
+  --color-mint-alpha-30: rgba(255, 255, 255, 0.25);
+  --color-mint-alpha-40: rgba(255, 255, 255, 0.35);
+  --color-mint-glow: rgba(255, 255, 255, 0.12);
+
+  /* Monochrome Depth & Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.10), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-glow-subtle: 0 0 16px rgba(0, 0, 0, 0.25);
+  --shadow-glow-mint: 0 0 20px rgba(255, 255, 255, 0.15);
+
+  /* Typography */
+  --font-family-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-display: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+  --font-family-serif: 'Cormorant Garamond', 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-family-wordmark: 'Cormorant Garamond', 'Instrument Serif', Georgia, serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+  --font-size-5xl: 3rem;      /* 48px */
+  --font-size-6xl: 3.75rem;   /* 60px */
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  --line-height-tight: 1.15;
+  --line-height-snug: 1.3;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.65;
+
+  /* Spacing Scale */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+  --space-20: 5rem;    /* 80px */
+  --space-24: 6rem;    /* 96px */
+
+  /* Border Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+  --radius-full: 9999px;
+
+  /* Floating Glass Capsule Tokens (Monochrome Glass) */
+  --glass-capsule-bg: rgba(255, 255, 255, 0.92);
+  --glass-capsule-border: rgba(0, 0, 0, 0.12);
+  --glass-capsule-blur: blur(24px) saturate(140%);
+  --glass-capsule-shadow-compact: 0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+  --glass-capsule-shadow-expanded: 0 16px 44px -8px rgba(0, 0, 0, 0.16), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --glass-capsule-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 1);
+
+  /* Fluid Motion Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 350ms ease;
+  --motion-duration-fast: 180ms;
+  --motion-duration-normal: 280ms;
+  --motion-duration-slow: 400ms;
+  --motion-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Max Widths */
+  --max-width-content: 1200px;
+  --max-width-narrow: 840px;
+  --max-width-wide: 1400px;
+}

@@ -1,0 +1,318 @@
+/**
+ * Floating Capsule Navigation Styles
+ * 
+ * Strict Monochrome Navigation System
+ * Pure black/white glass aesthetic, zero colored accents.
+ */
+
+.floating-nav-anchor {
+  position: fixed;
+  top: var(--space-5);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1000;
+  padding: 0 var(--space-4);
+  pointer-events: none; /* Allows clicks through empty screen margins */
+}
+
+.floating-capsule-nav {
+  pointer-events: auto;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--glass-capsule-bg);
+  backdrop-filter: var(--glass-capsule-blur);
+  -webkit-backdrop-filter: var(--glass-capsule-blur);
+  border: 1px solid var(--glass-capsule-border);
+  box-shadow: var(--glass-capsule-shadow-compact), var(--glass-capsule-inner-highlight);
+  border-radius: var(--radius-full);
+  padding: 6px 18px;
+  height: 52px;
+  max-width: calc(100vw - 32px);
+  overflow: hidden;
+  transition: 
+    width 300ms var(--motion-ease-out),
+    max-width 300ms var(--motion-ease-out),
+    background-color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 300ms var(--motion-ease-out);
+  will-change: width, box-shadow;
+}
+
+/* Primary Brand & Compact Trigger Row */
+.capsule-primary-row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.capsule-brand-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Compact status affordance */
+.capsule-compact-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: var(--space-2);
+  opacity: 1;
+  max-width: 80px;
+  transition: opacity 200ms ease, max-width 250ms ease;
+}
+
+.compact-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #000000;
+}
+
+.compact-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* Hide compact label on expand */
+.floating-capsule-nav.is-expanded .capsule-compact-indicator {
+  opacity: 0;
+  max-width: 0;
+  padding-left: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Mobile Toggle Hamburger */
+.capsule-mobile-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.hamburger-bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-charcoal-base);
+  border-radius: 2px;
+  transition: transform 200ms ease, opacity 200ms ease;
+}
+
+.hamburger-bar.top.open {
+  transform: translateY(3px) rotate(45deg);
+}
+
+.hamburger-bar.bottom.open {
+  transform: translateY(-3px) rotate(-45deg);
+}
+
+/* Expandable Content Container */
+.capsule-nav-content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: 
+    max-width 300ms var(--motion-ease-out),
+    opacity 220ms ease;
+}
+
+.floating-capsule-nav.is-expanded .capsule-nav-content {
+  max-width: 480px;
+  opacity: 1;
+  pointer-events: auto;
+  overflow: visible;
+}
+
+/* Vertical Hairline Divider */
+.capsule-divider {
+  width: 1px;
+  height: 18px;
+  background-color: var(--color-border-default);
+  margin-left: var(--space-1);
+}
+
+/* Navigation Links List */
+.capsule-links-list {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.capsule-link-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.capsule-nav-btn,
+.capsule-nav-link {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+
+.capsule-nav-btn:hover,
+.capsule-nav-link:hover {
+  color: #000000;
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.capsule-nav-btn:focus-visible,
+.capsule-nav-link:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+/* Action: Join Pill Button (Pure Black) */
+.capsule-actions {
+  display: inline-flex;
+  align-items: center;
+}
+
+.capsule-join-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  background-color: #000000;
+  color: #FFFFFF;
+  border: 1px solid #000000;
+  padding: 7px 18px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.capsule-join-btn:hover {
+  background-color: #FFFFFF;
+  color: #000000;
+  border-color: #000000;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.capsule-join-btn:active {
+  transform: translateY(0);
+}
+
+.capsule-join-btn:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+/* Expanded State Hover Shadows */
+.floating-capsule-nav.is-expanded {
+  border-color: rgba(0, 0, 0, 0.16);
+  box-shadow: var(--glass-capsule-shadow-expanded), var(--glass-capsule-inner-highlight);
+}
+
+/* Mobile Navigation (< 768px) */
+@media (max-width: 767px) {
+  .floating-capsule-nav {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: var(--radius-xl);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .capsule-primary-row {
+    width: 100%;
+    justify-content: space-between;
+    height: 38px;
+  }
+
+  .capsule-compact-indicator {
+    display: none;
+  }
+
+  .capsule-mobile-toggle {
+    display: flex;
+  }
+
+  .capsule-nav-content {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+    max-width: none;
+    opacity: 0;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border-subtle);
+    margin-top: var(--space-2);
+  }
+
+  .floating-capsule-nav.is-mobile-open .capsule-nav-content {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .capsule-divider {
+    display: none;
+  }
+
+  .capsule-links-list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+
+  .capsule-nav-btn,
+  .capsule-nav-link {
+    width: 100%;
+    text-align: left;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-subtle);
+  }
+
+  .capsule-actions {
+    width: 100%;
+    padding-top: var(--space-2);
+  }
+
+  .capsule-join-btn {
+    width: 100%;
+    height: 42px;
+  }
+}

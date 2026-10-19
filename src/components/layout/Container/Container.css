@@ -1,0 +1,33 @@
+.medvidhi-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .medvidhi-container {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .medvidhi-container {
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
+  }
+}
+
+.container-narrow {
+  max-width: var(--max-width-narrow);
+}
+
+.container-default {
+  max-width: var(--max-width-content);
+}
+
+.container-wide {
+  max-width: var(--max-width-wide);
+}

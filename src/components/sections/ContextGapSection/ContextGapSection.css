@@ -1,0 +1,315 @@
+.medvidhi-context-gap {
+  background-color: var(--color-bg-base);
+  padding: var(--space-20) 0 var(--space-24);
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+@media (min-width: 768px) {
+  .medvidhi-context-gap {
+    padding: var(--space-24) 0 var(--space-28);
+  }
+}
+
+.context-gap-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1040px;
+}
+
+/* Header */
+.gap-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 820px;
+  margin-bottom: var(--space-16);
+}
+
+.gap-headline {
+  font-size: clamp(1.85rem, 3.8vw, 2.75rem);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-5);
+  letter-spacing: -0.02em;
+}
+
+.gap-serif-accent {
+  color: #000000;
+  font-weight: 400;
+  padding: 0 4px;
+}
+
+.gap-lead-text {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  max-width: 720px;
+}
+
+@media (min-width: 768px) {
+  .gap-lead-text {
+    font-size: var(--font-size-lg);
+  }
+}
+
+/* ==========================================================================
+   Visual Contrast Grid: Isolated vs. Connected (Dark Panel Interruption)
+   ========================================================================== */
+
+.gap-contrast-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  width: 100%;
+}
+
+@media (min-width: 860px) {
+  .gap-contrast-grid {
+    grid-template-columns: 1fr 1.15fr; /* Subtle asymmetrical weight on connected view */
+    align-items: stretch;
+  }
+}
+
+.contrast-card {
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Card 1: Isolated (Light / Subdued) */
+.card-isolated {
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border-default);
+}
+
+.card-top-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--space-4);
+}
+
+.isolated-tag-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #000000;
+}
+
+.tag-label {
+  font-family: var(--font-family-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #000000;
+}
+
+.card-connected .tag-label,
+.dark-tag .tag-label {
+  color: #FFFFFF;
+}
+
+.card-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+  line-height: var(--line-height-snug);
+}
+
+.card-summary {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+  margin-bottom: var(--space-6);
+}
+
+/* Isolated Dialogue Box Illustration */
+.isolated-preview-box {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.dialogue-bubble {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bubble-role {
+  font-family: var(--font-family-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.user-bubble {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+  align-self: flex-start;
+  max-width: 90%;
+}
+
+.bot-bubble {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--color-text-secondary);
+  align-self: flex-end;
+  max-width: 95%;
+}
+
+.isolated-loss-notice {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-2);
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-xs);
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+.notice-cross {
+  font-weight: bold;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+/* Card 2: Connected Context (Focused Black Panel Interruption) */
+.card-connected {
+  background-color: var(--color-charcoal-base);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 
+    0 20px 48px -8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.dark-tag .connected-tag-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+}
+
+.text-white {
+  color: #FFFFFF;
+}
+
+.text-muted-dark {
+  color: var(--color-text-on-dark-muted);
+}
+
+/* Connected Context Synthesis Box Illustration */
+.connected-preview-box {
+  background-color: rgba(18, 18, 18, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.synthesis-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.synthesis-badge {
+  font-family: var(--font-family-mono);
+  font-size: 0.7rem;
+  color: #A1A1AA;
+}
+
+.synthesis-status {
+  font-size: 0.65rem;
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+}
+
+.synthesis-layers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.synthesis-layer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-on-dark-muted);
+  padding: 6px 10px;
+  background-color: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-xs);
+}
+
+.synthesis-layer.highlight-layer {
+  background-color: #FFFFFF;
+  color: #000000;
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Points List */
+.points-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: auto;
+  list-style: none;
+  padding: 0;
+}
+
+.point-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+
+.isolated-point {
+  color: var(--color-text-secondary);
+}
+
+.connected-point {
+  color: var(--color-text-on-dark);
+}
+
+.point-bullet {
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.bullet-muted {
+  color: var(--color-text-muted);
+}
+
+.bullet-white {
+  color: #FFFFFF;
+}

@@ -1,0 +1,251 @@
+.feature-integration-section {
+  background-color: var(--color-bg-base);
+  padding: var(--space-20) 0 var(--space-24);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.slots-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1040px;
+}
+
+.slots-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 760px;
+  margin-bottom: var(--space-12);
+}
+
+.slots-headline {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .slots-headline {
+    font-size: var(--font-size-4xl);
+  }
+}
+
+.slots-headline .editorial-serif {
+  color: var(--color-mint-800);
+}
+
+.slots-lead {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  max-width: 660px;
+}
+
+/* Slots Grid: 6 Primary Features */
+.slots-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  width: 100%;
+  margin-bottom: var(--space-8);
+}
+
+@media (min-width: 640px) {
+  .slots-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .slots-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.feature-slot-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: 0 4px 16px rgba(10, 13, 13, 0.02);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+  scroll-margin-top: 100px;
+}
+
+.feature-slot-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-mint-alpha-30);
+  box-shadow: 0 8px 24px rgba(10, 13, 13, 0.05);
+}
+
+.slot-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.slot-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-mint-alpha-10);
+  border: 1px solid var(--color-mint-alpha-20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slot-id-tag {
+  font-family: var(--font-family-mono);
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  background-color: var(--color-bg-subtle);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.slot-reserved-pill {
+  font-family: var(--font-family-mono);
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  color: var(--color-mint-800);
+  background-color: var(--color-mint-alpha-15);
+  border: 1px solid var(--color-mint-alpha-30);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.slot-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.slot-tagline {
+  font-size: var(--font-size-xs);
+  color: var(--color-mint-700);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-3);
+}
+
+.slot-status {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-normal);
+  margin-top: auto;
+}
+
+.slot-reserved {
+  background: linear-gradient(135deg, #FFFFFF 0%, var(--color-bg-subtle) 100%);
+  border-color: var(--color-mint-alpha-30);
+}
+
+.slot-notice {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-mint-alpha-5);
+  border-radius: var(--radius-sm);
+  margin-top: auto;
+}
+
+/* Dedicated Right Doctor Slot */
+.right-doctor-slot-card {
+  width: 100%;
+  background: linear-gradient(135deg, #FFFFFF 0%, var(--color-bg-subtle) 100%);
+  border: 1px solid var(--color-mint-alpha-30);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: 0 8px 30px rgba(10, 13, 13, 0.04);
+  scroll-margin-top: 100px;
+}
+
+.right-doctor-slot-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .right-doctor-slot-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.doctor-slot-left {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
+}
+
+.doctor-slot-icon-box {
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-mint-500);
+  box-shadow: 0 4px 16px var(--color-mint-alpha-30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.doctor-slot-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 620px;
+}
+
+.doctor-badge-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.doctor-slot-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-snug);
+}
+
+.doctor-slot-desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+.doctor-slot-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family-mono);
+  color: var(--color-mint-800);
+  background-color: var(--color-mint-alpha-15);
+  border: 1px solid var(--color-mint-alpha-30);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+}
+
+.status-dot-mint {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-mint-600);
+  box-shadow: 0 0 6px var(--color-mint-600);
+}
