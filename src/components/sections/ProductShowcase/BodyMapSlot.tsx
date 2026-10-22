@@ -1,20 +1,115 @@
 import React, { useState } from 'react';
-import { Shield, Sparkles, Crosshair, Layers } from 'lucide-react';
-import { BODY_MAP_CONTENT } from '@/config/showcaseContent';
+import {
+  Crosshair,
+  Shield,
+  FileText,
+  RotateCcw,
+} from 'lucide-react';
+import {
+  BodyRegionDefinition,
+  HandSubregionDefinition,
+  BodyView,
+  RecordedRegionIssue,
+} from '@/types/bodymap';
+import { ALL_BODY_REGIONS, HAND_SUBREGIONS } from '@/config/bodyRegions';
+import { healthMemoryAdapter } from '@/services/healthMemoryAdapter';
+import { AnatomicalFigure } from './bodymap/AnatomicalFigure';
+import { ContextualSymptomPanel } from './bodymap/ContextualSymptomPanel';
+import { DoctorSummaryModal } from './bodymap/DoctorSummaryModal';
 import './BodyMapSlot.css';
 
 export const BodyMapSlot: React.FC = () => {
-  const [selectedRegionId, setSelectedRegionId] = useState<string>('elbow');
+  // Body View: Front vs Back
+  const [bodyView, setBodyView] = useState<BodyView>('front');
 
-  const selectedRegion = BODY_MAP_CONTENT.sampleRegions.find(
-    (r) => r.id === selectedRegionId
-  ) || BODY_MAP_CONTENT.sampleRegions[0];
+  // Selection state (null by default in State A)
+  const [selectedRegion, setSelectedRegion] = useState<BodyRegionDefinition | null>(null);
+  const [hoveredRegion, setHoveredRegion] = useState<BodyRegionDefinition | null>(null);
+
+  // Hand subregion state (for finger-level precision)
+  const [selectedSubregion, setSelectedSubregion] = useState<HandSubregionDefinition | null>(null);
+
+  // Recorded Session Issues
+  const [recordedIssues, setRecordedIssues] = useState<RecordedRegionIssue[]>(() =>
+    healthMemoryAdapter.getAllRecords()
+  );
+
+  // Doctor Brief Modal
+  const [isDoctorModalOpen, setIsDoctorModalOpen] = useState<boolean>(false);
+
+  // Active Draft Symptom State for Live Overlays
+  const [draftCondition, setDraftCondition] = useState<{
+    primaryIssue: string;
+    swellingExtent?: string;
+    skinColor?: string;
+    warmth?: boolean;
+  }>({
+    primaryIssue: 'pain',
+  });
+
+  // Handler for region selection
+  const handleSelectRegion = (region: BodyRegionDefinition) => {
+    setSelectedRegion(region);
+
+    // If region belongs specifically to a different view, switch view cleanly
+    if (region.view === 'back' && bodyView !== 'back') {
+      setBodyView('back');
+    } else if (region.view === 'front' && bodyView !== 'front') {
+      setBodyView('front');
+    }
+
+    // Reset subregion if moving away from hands
+    if (region.parentArea !== 'hands' && !region.id.includes('hand') && !region.id.includes('finger')) {
+      setSelectedSubregion(null);
+    }
+  };
+
+  // View switch handler (Front <-> Back)
+  const handleSwitchView = (newView: BodyView) => {
+    if (newView === bodyView) return;
+    setBodyView(newView);
+
+    // If currently selected region is view-specific, safely clear selection without losing entered data
+    if (selectedRegion && selectedRegion.view !== 'both' && selectedRegion.view !== newView) {
+      setSelectedRegion(null);
+      setSelectedSubregion(null);
+    }
+  };
+
+  // Save issue handler
+  const handleSaveIssue = (issue: RecordedRegionIssue) => {
+    healthMemoryAdapter.saveRecord(issue);
+    setRecordedIssues(healthMemoryAdapter.getAllRecords());
+  };
+
+  // Delete issue handler
+  const handleDeleteIssue = (issueId: string) => {
+    healthMemoryAdapter.deleteRecord(issueId);
+    setRecordedIssues(healthMemoryAdapter.getAllRecords());
+    setSelectedRegion(null);
+    setSelectedSubregion(null);
+  };
+
+  // Find if currently selected area has an existing record
+  const currentExistingIssue = selectedRegion
+    ? recordedIssues.find(
+        (issue) =>
+          issue.regionId === selectedRegion.id &&
+          (!selectedSubregion || issue.subregionId === selectedSubregion.id)
+      )
+    : null;
+
+  // Calculate anchored placement coordinates for floating frosted-glass panel
+  const pin = selectedRegion?.pinCoordinates || { x: 384, y: 512 };
+  const isLeftHalf = pin.x <= 384;
+  const floatTopPercent = Math.min(Math.max((pin.y / 1024) * 85 - 8, 4), 48);
 
   return (
     <section
       id="feature-body-map"
       className="showcase-feature-section theme-dark body-map-showcase-section"
-      aria-label="Body Map Feature"
+      aria-label="MEDVIDHI Interactive Anatomical Body Map"
+      data-reveal="scale"
     >
       <div className="feature-section-inner">
         {/* Section Subhead & Eyebrow */}
@@ -22,195 +117,216 @@ export const BodyMapSlot: React.FC = () => {
           <div className="dark-badge-row">
             <span className="dark-mint-pill">
               <Crosshair size={13} className="pill-icon" />
-              {BODY_MAP_CONTENT.badge}
+              Realistic Anatomical Digital Twin
             </span>
             <span className="dark-anchor-tag">#feature-body-map</span>
           </div>
 
           <h3 className="dark-feature-headline">
-            Point to where it hurts.{' '}
+            Map what you feel.{' '}
             <span className="editorial-serif dark-serif-mint">Let context follow.</span>
           </h3>
 
-          <p className="dark-feature-lead">{BODY_MAP_CONTENT.subhead}</p>
+          <p className="dark-feature-lead">
+            Select a body area and tell us what you've noticed. Your body map helps you track changes and give your doctor a clearer picture of your symptoms.
+          </p>
         </div>
 
-        {/* Integration Ready Card */}
+        {/* Main Body Map Integration Card (Pure Black Stage) */}
         <div className="body-map-integration-card">
-          {/* Top Status Header */}
+          {/* Card Topbar: Status, Front/Back Glass Toggles, Privacy Tag */}
           <div className="body-map-card-topbar">
             <div className="slot-boundary-badge">
               <span className="boundary-pulse-dot" />
-              <span className="boundary-label">{BODY_MAP_CONTENT.integrationNotice.status}</span>
+              <span className="boundary-label">
+                INTERACTIVE BODY MAP • VOLATILE MEMORY
+              </span>
             </div>
-            <div className="slot-security-tag">
-              <Shield size={14} className="security-icon" />
-              <span>{BODY_MAP_CONTENT.integrationNotice.pill}</span>
+
+            <div className="slot-topbar-controls">
+              {/* Compact Glass Controls: Front & Back */}
+              <div className="body-view-toggle-pill" role="group" aria-label="Anatomical view selector">
+                <button
+                  type="button"
+                  className={`view-toggle-btn ${bodyView === 'front' ? 'is-active' : ''}`}
+                  onClick={() => handleSwitchView('front')}
+                  aria-pressed={bodyView === 'front'}
+                >
+                  Front
+                </button>
+                <button
+                  type="button"
+                  className={`view-toggle-btn ${bodyView === 'back' ? 'is-active' : ''}`}
+                  onClick={() => handleSwitchView('back')}
+                  aria-pressed={bodyView === 'back'}
+                >
+                  Back
+                </button>
+              </div>
+
+              {/* Reset view to center */}
+              <button
+                type="button"
+                className="view-reset-btn"
+                onClick={() => {
+                  setSelectedRegion(null);
+                  setSelectedSubregion(null);
+                  setBodyView('front');
+                }}
+                title="Reset selection"
+              >
+                <RotateCcw size={12} />
+                <span>Reset</span>
+              </button>
+
+              <div className="slot-security-tag" title="Sensitive medical data stays in volatile browser memory">
+                <Shield size={13} className="security-icon" />
+                <span>Session-only in this prototype</span>
+              </div>
             </div>
           </div>
 
-          {/* Main Visual Preview Grid */}
-          <div className="body-map-preview-grid">
-            {/* Visual Anatomical Canvas (Static Silhouette Preview) */}
-            <div className="body-map-silhouette-pane">
-              <div className="silhouette-ambient-glow" />
-              
-              {/* SVG Anatomical Wireframe Silhouette */}
-              <div className="silhouette-canvas" aria-hidden="true">
-                <svg
-                  viewBox="0 0 320 480"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="anatomical-wireframe-svg"
-                >
-                  <defs>
-                    <linearGradient id="bodyWireGrad" x1="160" y1="20" x2="160" y2="460" gradientUnits="userSpaceOnUse">
-                      <stop offset="0%" stopColor="rgba(255, 255, 255, 0.45)" />
-                      <stop offset="50%" stopColor="rgba(64, 217, 177, 0.4)" />
-                      <stop offset="100%" stopColor="rgba(255, 255, 255, 0.2)" />
-                    </linearGradient>
-                    <radialGradient id="hotspotGlow" cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.8" />
-                      <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
-                    </radialGradient>
-                  </defs>
-
-                  {/* Head & Neck */}
-                  <circle cx="160" cy="56" r="30" stroke="url(#bodyWireGrad)" strokeWidth="1.5" strokeDasharray="3 3" />
-                  <path d="M152 86 L152 108 M168 86 L168 108" stroke="url(#bodyWireGrad)" strokeWidth="1.5" />
-
-                  {/* Shoulders & Torso Outline */}
-                  <path
-                    d="M160 108 C135 110 108 122 96 138 L84 210 L74 278 M160 108 C185 110 212 122 224 138 L236 210 L246 278"
-                    stroke="url(#bodyWireGrad)"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M116 142 C124 190 126 240 132 284 L142 340 M204 142 C196 190 194 240 188 284 L178 340"
-                    stroke="url(#bodyWireGrad)"
-                    strokeWidth="1.5"
-                    strokeDasharray="4 2"
-                  />
-
-                  {/* Pelvis & Lower Extremities */}
-                  <path
-                    d="M132 284 C144 294 176 294 188 284 M142 340 L136 430 L132 458 M178 340 L184 430 L188 458"
-                    stroke="url(#bodyWireGrad)"
-                    strokeWidth="1.5"
-                  />
-
-                  {/* Right Arm Coordinate (Active Focal Point) */}
-                  <g className="focal-marker focal-elbow" transform="translate(236, 210)">
-                    <circle cx="0" cy="0" r="16" fill="url(#hotspotGlow)" className="pulse-aura" />
-                    <circle cx="0" cy="0" r="6" fill="#FFFFFF" stroke="#000000" strokeWidth="2" />
-                    <line x1="0" y1="0" x2="45" y2="-20" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="2 2" />
-                    <circle cx="45" cy="-20" r="3" fill="#FFFFFF" />
-                    <text x="52" y="-16" fill="#FFFFFF" fontSize="10" fontFamily="var(--font-family-mono)" fontWeight="600">
-                      R. ELBOW PIN
-                    </text>
-                  </g>
-
-                  {/* Lumbar Spine Marker */}
-                  <g className="focal-marker focal-lumbar" transform="translate(160, 240)">
-                    <circle cx="0" cy="0" r="4" fill="rgba(255,255,255,0.6)" stroke="#080A0A" strokeWidth="1.5" />
-                  </g>
-
-                  {/* Cervical Neck Marker */}
-                  <g className="focal-marker focal-cervical" transform="translate(160, 102)">
-                    <circle cx="0" cy="0" r="4" fill="rgba(255,255,255,0.6)" stroke="#080A0A" strokeWidth="1.5" />
-                  </g>
-                </svg>
-
-                {/* Spatial Grid Reticle Lines */}
-                <div className="spatial-reticle horizontal top" />
-                <div className="spatial-reticle horizontal middle" />
-                <div className="spatial-reticle horizontal bottom" />
-                <div className="spatial-reticle vertical center" />
+          {/* Unified Black Stage: Centered Realistic Model + Anchored Floating Glass UI */}
+          <div className="body-map-unified-stage">
+            {/* State A: Guidance banner when no region is selected */}
+            {!selectedRegion && (
+              <div className="bodymap-state-a-banner" aria-live="polite">
+                <div className="state-a-glass-pill">
+                  <span className="state-a-pill-tag">Map what you feel</span>
+                  <p className="state-a-instruction">
+                    Select a body area and tell us what you've noticed. Your body map helps you track changes and give your doctor a clearer picture of your symptoms.
+                  </p>
+                </div>
               </div>
+            )}
 
-              {/* Watermark Notice */}
-              <div className="silhouette-overlay-caption">
-                <span className="caption-mono">STATIC PREVIEW • 3D MMCIF / MOL* COMPONENT RESERVED</span>
-              </div>
+            {/* Central Realistic Anatomical Body Model */}
+            <div className="body-map-figure-pane">
+              <AnatomicalFigure
+                view={bodyView}
+                selectedRegion={selectedRegion}
+                hoveredRegion={hoveredRegion}
+                recordedIssues={recordedIssues}
+                activeCondition={draftCondition}
+                selectedSubregion={selectedSubregion}
+                onSelectRegion={handleSelectRegion}
+                onHoverRegion={setHoveredRegion}
+                onSelectSubregion={setSelectedSubregion}
+              />
             </div>
 
-            {/* Right Interactive Region Inspection Area */}
-            <div className="body-map-details-pane">
-              <div className="details-header">
-                <span className="details-eyebrow">Spatial Coordinate Binding</span>
-                <h4 className="details-title">Select Region to Inspect Localization</h4>
-                <p className="details-text">
-                  In the complete MEDVIDHI system, touching or clicking an anatomical landmark immediately
-                  orients the follow-up dialogue and maps medical history to verified body regions.
-                </p>
+            {/* State B, C, D: Anchored Floating Frosted-Glass Panel beside Selected Region */}
+            {selectedRegion && (
+              <div
+                className={`body-map-floating-glass-pane ${isLeftHalf ? 'is-anchored-right' : 'is-anchored-left'}`}
+                style={{
+                  top: `clamp(20px, ${floatTopPercent}%, 46%)`,
+                }}
+              >
+                <ContextualSymptomPanel
+                  selectedRegion={selectedRegion}
+                  selectedSubregion={selectedSubregion}
+                  existingIssue={currentExistingIssue}
+                  onDraftConditionChange={setDraftCondition}
+                  onSaveIssue={handleSaveIssue}
+                  onDeleteIssue={handleDeleteIssue}
+                  onOpenDoctorSummary={() => setIsDoctorModalOpen(true)}
+                  recordedCount={recordedIssues.length}
+                  onClose={() => {
+                    setSelectedRegion(null);
+                    setSelectedSubregion(null);
+                  }}
+                />
               </div>
+            )}
+          </div>
 
-              {/* Sample Region Selection Chips */}
-              <div className="regions-chips-list" role="tablist" aria-label="Selectable anatomical regions">
-                {BODY_MAP_CONTENT.sampleRegions.map((region) => {
-                  const isSelected = region.id === selectedRegionId;
+          {/* Bottom Timeline Strip: Session Recorded Landmarks */}
+          <div className="stage-bottom-timeline-strip">
+            <div className="strip-label-row">
+              <span className="strip-title">Session Recorded Landmarks ({recordedIssues.length})</span>
+              {recordedIssues.length > 0 && (
+                <button
+                  type="button"
+                  className="strip-doctor-btn"
+                  onClick={() => setIsDoctorModalOpen(true)}
+                >
+                  <FileText size={12} />
+                  <span>Physician Brief</span>
+                </button>
+              )}
+            </div>
+
+            <div className="recorded-chips-scroll" role="list">
+              {recordedIssues.length === 0 ? (
+                <span className="empty-chips-msg">
+                  Touch any anatomical region above to attach a glass symptom tag. Entries persist throughout your session.
+                </span>
+              ) : (
+                recordedIssues.map((issue) => {
+                  const isCurrentActive =
+                    issue.regionId === selectedRegion?.id &&
+                    (!selectedSubregion || issue.subregionId === selectedSubregion.id);
+
                   return (
-                    <button
-                      key={region.id}
-                      type="button"
-                      role="tab"
-                      aria-selected={isSelected}
-                      className={`region-chip-btn ${isSelected ? 'is-selected' : ''}`}
-                      onClick={() => setSelectedRegionId(region.id)}
+                    <div
+                      key={issue.id}
+                      className={`landmark-record-chip ${isCurrentActive ? 'is-active' : ''}`}
+                      onClick={() => {
+                        const reg = ALL_BODY_REGIONS.find((r) => r.id === issue.regionId);
+                        if (reg) {
+                          handleSelectRegion(reg);
+                          if (issue.subregionId) {
+                            const sub = HAND_SUBREGIONS.find((s) => s.id === issue.subregionId);
+                            if (sub) {
+                              setSelectedSubregion(sub);
+                            }
+                          }
+                        }
+                      }}
+                      role="button"
+                      tabIndex={0}
                     >
-                      <span className="chip-indicator" />
-                      <span className="chip-name">{region.name}</span>
-                      <span className="chip-status-tag">{region.status}</span>
-                    </button>
+                      <span
+                        className="chip-color-dot"
+                        style={{ backgroundColor: issue.visualOverlay?.color || '#FFAA00' }}
+                      />
+                      <span className="chip-name">
+                        {issue.subregionName || issue.regionName}
+                      </span>
+                      <span className="chip-type-tag">
+                        {issue.primaryIssue}
+                        {issue.pain ? ` ${issue.pain.severity}/10` : ''}
+                      </span>
+                      <button
+                        type="button"
+                        className="chip-remove-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteIssue(issue.id);
+                        }}
+                        title="Remove landmark record"
+                        aria-label={`Remove ${issue.regionName} record`}
+                      >
+                        ×
+                      </button>
+                    </div>
                   );
-                })}
-              </div>
-
-              {/* Selected Region Data Inspector */}
-              <div className="selected-region-card">
-                <div className="region-card-header">
-                  <div className="region-card-title-row">
-                    <Crosshair size={16} className="text-white" />
-                    <span className="region-card-name">{selectedRegion.name}</span>
-                  </div>
-                  <span className="region-coord-pill">{selectedRegion.coordinates}</span>
-                </div>
-
-                <div className="region-meta-grid">
-                  <div className="region-meta-item">
-                    <span className="meta-label">Downstream Flow</span>
-                    <span className="meta-value">Pre-selects Extensor Tendon Examination</span>
-                  </div>
-                  <div className="region-meta-item">
-                    <span className="meta-label">Voice / Chat Binding</span>
-                    <span className="meta-value">Links “वस्तू उचलताना” to Lateral Epicondyle</span>
-                  </div>
-                  <div className="region-meta-item">
-                    <span className="meta-label">Doctor Brief Mapping</span>
-                    <span className="meta-value">Section 01 (Current Concern) &amp; Section 07</span>
-                  </div>
-                </div>
-
-                <div className="region-connection-signal">
-                  <Sparkles size={14} className="signal-icon" />
-                  <span>
-                    Selecting a region eliminates vague verbal directions (&ldquo;somewhere in my arm&rdquo;).
-                  </span>
-                </div>
-              </div>
-
-              {/* Alpha Drop-in Guarantee Note */}
-              <div className="body-map-dropin-note">
-                <Layers size={16} className="note-icon" />
-                <p className="note-text">
-                  <strong>Protected Implementation:</strong> The verified Body Map from the Alpha project
-                  plugs into this container with zero layout shifts or dock reconfigurations.
-                </p>
-              </div>
+                })
+              )}
             </div>
           </div>
         </div>
+
+        {/* 30-Second Doctor Brief Modal */}
+        <DoctorSummaryModal
+          isOpen={isDoctorModalOpen}
+          onClose={() => setIsDoctorModalOpen(false)}
+          recordedIssues={recordedIssues}
+        />
       </div>
     </section>
   );
 };
+
+export default BodyMapSlot;
