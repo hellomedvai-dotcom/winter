@@ -15,8 +15,27 @@ export const FloatingCapsuleNav: React.FC<FloatingCapsuleNavProps> = ({
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const leaveTimeoutRef = useRef<number | null>(null);
   const navRef = useRef<HTMLElement>(null);
+
+  // Surface treatment shifts once the page moves, without a scroll handler per frame.
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 24);
+        raf = 0;
+      });
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
+  }, []);
 
   // Derived expansion state
   const isExpanded = isHovered || isFocused || isMobileMenuOpen;
@@ -100,7 +119,7 @@ export const FloatingCapsuleNav: React.FC<FloatingCapsuleNavProps> = ({
         aria-label="Main Navigation"
         className={`floating-capsule-nav ${isExpanded ? 'is-expanded' : 'is-compact'} ${
           isMobileMenuOpen ? 'is-mobile-open' : ''
-        } ${className}`}
+        } ${isScrolled ? 'is-scrolled' : ''} ${className}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onFocus={handleFocus}

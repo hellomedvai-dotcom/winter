@@ -13,20 +13,20 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ onOpenModal })
     <section id="join" className="final-cta-section" aria-labelledby="final-cta-heading">
       <Container size="default" className="final-cta-container">
         {/* Central Editable Brand Tagline Badge */}
-        <div className="final-tagline-container">
-          <div className="final-tagline-pill">
+        <div className="final-tagline-container" data-reveal>
+          <div className="final-tagline-pill" data-reveal="fade" style={{ '--si': 0 } as React.CSSProperties}>
             <span className="tagline-dot" />
-            <span className="tagline-text">{SITE_CONTENT.brandTagline}</span>
+            <span className="tagline-text">BE PART OF WHAT COMES NEXT</span>
           </div>
         </div>
 
         {/* Narrative Headline */}
-        <div className="final-cta-header">
-          <h2 id="final-cta-heading" className="final-cta-title">
+        <div className="final-cta-header" data-reveal style={{ '--si': 1 } as React.CSSProperties}>
+          <h2 id="final-cta-heading" className="final-cta-title" data-reveal style={{ '--si': 0 } as React.CSSProperties}>
             Your health story is{' '}
             <span className="final-serif-highlight">bigger than a single visit.</span>
           </h2>
-          <p className="final-cta-supporting">
+          <p className="final-cta-supporting" data-reveal style={{ '--si': 1 } as React.CSSProperties}>
             {SITE_CONTENT.finalCta.supportingCopy}
           </p>
         </div>
@@ -35,7 +35,7 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ onOpenModal })
         {/* HIERARCHICAL ENTRY PATH 1: WIDE HORIZONTAL WHITE-GLASS CAPSULE     */}
         {/* Clear Primary Entry: Join the MEDVIDHI Waitlist                    */}
         {/* ================================================================== */}
-        <div className="waitlist-horizontal-capsule">
+        <div className="waitlist-horizontal-capsule" data-reveal style={{ '--si': 2 } as React.CSSProperties}>
           <div className="capsule-left-content">
             <div className="capsule-badge-row">
               <span className="capsule-primary-tag">EARLY ACCESS</span>
@@ -53,22 +53,25 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ onOpenModal })
               className="capsule-cta-button"
               onClick={() => onOpenModal('waitlist')}
               aria-label="Join the MEDVIDHI Waitlist"
+              data-nudge-arrow
             >
               <span>Join the Waitlist</span>
-              <ArrowRight size={16} aria-hidden="true" className="cta-arrow-icon" />
+              <ArrowRight size={16} aria-hidden="true" className="cta-arrow-icon arrow-nudge" />
             </button>
             <span className="capsule-caption">Product updates and early-access announcements. No unnecessary noise.</span>
           </div>
         </div>
 
         {/* ================================================================== */}
-        {/* HIERARCHICAL ENTRY PATHS 2, 3, 4: THREE DISTINCT VERTICAL BLACK CARDS */}
-        {/* Softly curved black cards with white typography & subtle glass edge */}
+        {/* HIERARCHICAL ENTRY PATHS 2, 3, 4: THREE EDITORIAL OPPORTUNITY CARDS */}
+        {/* Deep charcoal cards, top-right pill, metadata row & mint CTA      */}
         {/* ================================================================== */}
         <div className="secondary-entries-grid">
-          {/* Card 1: MEDVIDHI Verified Doctor */}
+          {/* Card 1: Verified Doctor */}
           <div
-            className="dark-entry-card"
+            className="dark-opportunity-card"
+            data-reveal="fade"
+            style={{ '--si': 1 } as React.CSSProperties}
             onClick={() => onOpenModal('verified_doctor')}
             role="button"
             tabIndex={0}
@@ -78,35 +81,69 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ onOpenModal })
                 onOpenModal('verified_doctor');
               }
             }}
-            aria-label="Join as MEDVIDHI Verified Doctor"
+            aria-label="Join as a MEDVIDHI Verified Doctor"
+            data-cursor="explore"
           >
-            <div className="card-top-row">
-              <span className="card-icon-wrap" aria-hidden="true">
-                <ShieldCheck size={18} />
-              </span>
-              <span className="card-index-tag">CLINICAL REVIEW</span>
+            {/* Top row: Upper-left icon squircle & Upper-right category badge */}
+            <div className="opportunity-top-row">
+              <div className="opportunity-icon-squircle" aria-hidden="true">
+                <ShieldCheck size={20} />
+              </div>
+              <div className="opportunity-category-pill">
+                <span className="category-accent-dot" />
+                <span className="category-pill-label">CLINICAL REVIEW</span>
+              </div>
             </div>
-            <h3 className="card-title">Join as MEDVIDHI Verified Doctor</h3>
-            <p className="card-body">
+
+            {/* Strong, readable title */}
+            <h3 className="opportunity-card-title">Join as a MEDVIDHI Verified Doctor</h3>
+
+            {/* Compact metadata row separated by subtle vertical dividers */}
+            <div className="opportunity-metadata-row">
+              <div className="meta-col">
+                <span className="meta-label">Domain</span>
+                <span className="meta-val">Clinical Review</span>
+              </div>
+              <div className="meta-divider" aria-hidden="true" />
+              <div className="meta-col">
+                <span className="meta-label">Focus</span>
+                <span className="meta-val">Patient Context</span>
+              </div>
+            </div>
+
+            {/* Concise description with comfortable line-height */}
+            <p className="opportunity-description">
               Help review clinical context, patient summaries and structured pre-consultation workflows.
             </p>
-            <button
-              type="button"
-              className="card-action-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                onOpenModal('verified_doctor');
-              }}
-              aria-label="Express Clinical Interest"
-            >
-              <span>Express Clinical Interest</span>
-              <ArrowRight size={14} aria-hidden="true" className="card-arrow-icon" />
-            </button>
+
+            {/* Thin separator above bottom action row */}
+            <div className="opportunity-divider" />
+
+            {/* Bottom action row with restrained mint accent CTA */}
+            <div className="opportunity-bottom-row">
+              <div className="opportunity-cohort-tag">
+                <span className="cohort-label">Clinical Network</span>
+              </div>
+              <button
+                type="button"
+                className="opportunity-mint-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenModal('verified_doctor');
+                }}
+                aria-label="Express Clinical Interest"
+              >
+                <span>Express Clinical Interest</span>
+                <ArrowRight size={14} aria-hidden="true" className="mint-btn-arrow" />
+              </button>
+            </div>
           </div>
 
           {/* Card 2: General Doctor */}
           <div
-            className="dark-entry-card"
+            className="dark-opportunity-card"
+            data-reveal="fade"
+            style={{ '--si': 2 } as React.CSSProperties}
             onClick={() => onOpenModal('doctor')}
             role="button"
             tabIndex={0}
@@ -117,34 +154,68 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ onOpenModal })
               }
             }}
             aria-label="Join as Doctor"
+            data-cursor="explore"
           >
-            <div className="card-top-row">
-              <span className="card-icon-wrap" aria-hidden="true">
-                <Stethoscope size={18} />
-              </span>
-              <span className="card-index-tag">DOCTOR COMMUNITY</span>
+            {/* Top row: Upper-left icon squircle & Upper-right category badge */}
+            <div className="opportunity-top-row">
+              <div className="opportunity-icon-squircle" aria-hidden="true">
+                <Stethoscope size={20} />
+              </div>
+              <div className="opportunity-category-pill">
+                <span className="category-accent-dot" />
+                <span className="category-pill-label">DOCTOR COMMUNITY</span>
+              </div>
             </div>
-            <h3 className="card-title">Join as Doctor</h3>
-            <p className="card-body">
-              Help shape practical clinical tools around better-organised patient context and prepared consultations.
+
+            {/* Strong, readable title */}
+            <h3 className="opportunity-card-title">Join as a Doctor</h3>
+
+            {/* Compact metadata row separated by subtle vertical dividers */}
+            <div className="opportunity-metadata-row">
+              <div className="meta-col">
+                <span className="meta-label">Domain</span>
+                <span className="meta-val">Clinical Perspective</span>
+              </div>
+              <div className="meta-divider" aria-hidden="true" />
+              <div className="meta-col">
+                <span className="meta-label">Focus</span>
+                <span className="meta-val">Care Navigation</span>
+              </div>
+            </div>
+
+            {/* Concise description with comfortable line-height */}
+            <p className="opportunity-description">
+              Help shape practical healthcare tools around better-organised patient history and more informed consultations.
             </p>
-            <button
-              type="button"
-              className="card-action-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                onOpenModal('doctor');
-              }}
-              aria-label="Join as Doctor"
-            >
-              <span>Join as Doctor</span>
-              <ArrowRight size={14} aria-hidden="true" className="card-arrow-icon" />
-            </button>
+
+            {/* Thin separator above bottom action row */}
+            <div className="opportunity-divider" />
+
+            {/* Bottom action row with restrained mint accent CTA */}
+            <div className="opportunity-bottom-row">
+              <div className="opportunity-cohort-tag">
+                <span className="cohort-label">Care Advisory</span>
+              </div>
+              <button
+                type="button"
+                className="opportunity-mint-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenModal('doctor');
+                }}
+                aria-label="Join as Doctor"
+              >
+                <span>Join as Doctor</span>
+                <ArrowRight size={14} aria-hidden="true" className="mint-btn-arrow" />
+              </button>
+            </div>
           </div>
 
-          {/* Card 3: Core Team Member */}
+          {/* Card 3: Core Team */}
           <div
-            className="dark-entry-card"
+            className="dark-opportunity-card"
+            data-reveal="fade"
+            style={{ '--si': 3 } as React.CSSProperties}
             onClick={() => onOpenModal('team')}
             role="button"
             tabIndex={0}
@@ -154,30 +225,62 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ onOpenModal })
                 onOpenModal('team');
               }
             }}
-            aria-label="Join Our Core Team"
+            aria-label="Join the MEDVIDHI Core Team"
+            data-cursor="explore"
           >
-            <div className="card-top-row">
-              <span className="card-icon-wrap" aria-hidden="true">
-                <Users size={18} />
-              </span>
-              <span className="card-index-tag">ENGINEERING &amp; DESIGN</span>
+            {/* Top row: Upper-left icon squircle & Upper-right category badge */}
+            <div className="opportunity-top-row">
+              <div className="opportunity-icon-squircle" aria-hidden="true">
+                <Users size={20} />
+              </div>
+              <div className="opportunity-category-pill">
+                <span className="category-accent-dot" />
+                <span className="category-pill-label">ENGINEERING &amp; DESIGN</span>
+              </div>
             </div>
-            <h3 className="card-title">Join Our Core Team</h3>
-            <p className="card-body">
+
+            {/* Strong, readable title */}
+            <h3 className="opportunity-card-title">Join the MEDVIDHI Core Team</h3>
+
+            {/* Compact metadata row separated by subtle vertical dividers */}
+            <div className="opportunity-metadata-row">
+              <div className="meta-col">
+                <span className="meta-label">Roles</span>
+                <span className="meta-val">Engineering &middot; AI/ML</span>
+              </div>
+              <div className="meta-divider" aria-hidden="true" />
+              <div className="meta-col">
+                <span className="meta-label">Discipline</span>
+                <span className="meta-val">Product Design</span>
+              </div>
+            </div>
+
+            {/* Concise description with comfortable line-height */}
+            <p className="opportunity-description">
               Help build MEDVIDHI across engineering, AI/ML, product design and clinical advisory.
             </p>
-            <button
-              type="button"
-              className="card-action-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                onOpenModal('team');
-              }}
-              aria-label="Explore Team Opportunities"
-            >
-              <span>Explore Team Opportunities</span>
-              <ArrowRight size={14} aria-hidden="true" className="card-arrow-icon" />
-            </button>
+
+            {/* Thin separator above bottom action row */}
+            <div className="opportunity-divider" />
+
+            {/* Bottom action row with restrained mint accent CTA */}
+            <div className="opportunity-bottom-row">
+              <div className="opportunity-cohort-tag">
+                <span className="cohort-label">Active Cohort</span>
+              </div>
+              <button
+                type="button"
+                className="opportunity-mint-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenModal('team');
+                }}
+                aria-label="Explore Team Opportunities"
+              >
+                <span>Explore Team Opportunities</span>
+                <ArrowRight size={14} aria-hidden="true" className="mint-btn-arrow" />
+              </button>
+            </div>
           </div>
         </div>
 

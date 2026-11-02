@@ -8,13 +8,13 @@
   position: relative;
   background-color: #FFFFFF;
   color: #000000;
-  padding: var(--space-16) 0 var(--space-20);
+  padding: clamp(64px, 9vh, 96px) 0 clamp(72px, 10vh, 110px);
   overflow: hidden;
 }
 
 @media (min-width: 768px) {
   .medvidhi-context-bridge {
-    padding: var(--space-20) 0 var(--space-24);
+    padding: clamp(72px, 10vh, 110px) 0 clamp(80px, 11vh, 120px);
   }
 }
 
@@ -23,7 +23,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 1040px;
+  max-width: 1180px;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -35,6 +35,24 @@
   align-items: center;
   max-width: 820px;
   margin: 0 auto;
+}
+
+.bridge-badge-row {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: var(--space-2);
+}
+
+.bridge-editorial-microcopy {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #71717A;
+  font-style: italic;
 }
 
 .bridge-headline {
@@ -76,3 +94,4 @@
     margin-top: var(--space-10);
   }
 }
+

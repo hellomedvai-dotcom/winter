@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  ChevronRight,
   ArrowLeft,
   CheckCircle2,
   FileText,
@@ -13,6 +12,9 @@ import {
   Lock,
   HelpCircle,
   Trash2,
+  ChevronDown,
+  Check,
+  X,
 } from 'lucide-react';
 import {
   BodyRegionDefinition,
@@ -62,35 +64,40 @@ export const ContextualSymptomPanel: React.FC<ContextualSymptomPanelProps> = ({
 }) => {
   const [currentStep, setCurrentStep] = useState<QuestionStep>('concern');
   const [selectedIssueType, setSelectedIssueType] = useState<PrimaryIssueType>('pain');
+  const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
 
   // Pain fields
   const [painSeverity, setPainSeverity] = useState<number>(5);
   const [painOnset, setPainOnset] = useState<string>('1–3 days');
   const [painPattern, setPainPattern] = useState<string>('Comes and goes');
-  const [painTrigger, setPainTrigger] = useState<string>('Worse when moving/bending');
+  const [painTrigger, setPainTrigger] = useState<string>('Movement / bending');
   const [painCharacter, setPainCharacter] = useState<string>('Dull ache');
+  const [painChanges, setPainChanges] = useState<string>('Unchanged');
 
   // Injury fields
   const [injuryCause, setInjuryCause] = useState<string>('Strain / overuse');
   const [injuryTimeSince, setInjuryTimeSince] = useState<string>('1–3 days ago');
-  const [injuryMobility, setInjuryMobility] = useState<string>('Mild stiffness, still weight-bearing');
+  const [injuryMobility, setInjuryMobility] = useState<string>('Mild stiffness');
   const [injurySigns, setInjurySigns] = useState<string>('Neither');
 
   // Swelling fields
-  const [swellingExtent, setSwellingExtent] = useState<string>('Mild localized puffiness');
+  const [swellingExtent, setSwellingExtent] = useState<string>('Mild puffiness');
   const [swellingProgression, setSwellingProgression] = useState<'increasing' | 'stable' | 'decreasing'>('stable');
   const [swellingWarmth, setSwellingWarmth] = useState<boolean>(false);
   const [swellingRedness, setSwellingRedness] = useState<boolean>(false);
+  const [swellingSensation, setSwellingSensation] = useState<string>('Tender to touch');
 
   // Cut fields
   const [cutDepth, setCutDepth] = useState<'superficial' | 'deep' | 'puncture' | 'unsure'>('superficial');
   const [cutSize, setCutSize] = useState<'< 1 cm' | '1 - 3 cm' | '> 3 cm'>('< 1 cm');
   const [cutBleeding, setCutBleeding] = useState<'stopped' | 'slow_ooze' | 'active_bleeding'>('stopped');
+  const [cutChanges, setCutChanges] = useState<string>('Clean healing');
 
   // Skin color fields
   const [skinColor, setSkinColor] = useState<'red' | 'blue_purple' | 'dark_black' | 'pale' | 'normal' | 'unsure'>('red');
   const [skinWarmth, setSkinWarmth] = useState<boolean>(true);
   const [skinSensation, setSkinSensation] = useState<string>('Warm / burning');
+  const [skinProgression, setSkinProgression] = useState<string>('Same area');
 
   // Numbness fields
   const [numbnessSensation, setNumbnessSensation] = useState<string>('Pins & needles (tingling)');
@@ -102,7 +109,10 @@ export const ContextualSymptomPanel: React.FC<ContextualSymptomPanelProps> = ({
   const [stiffnessWorstTime, setStiffnessWorstTime] = useState<string>('Morning upon waking');
   const [stiffnessMobility, setStiffnessMobility] = useState<string>('Difficulty bending');
 
-  // Treatments & Notes
+  // Other fields
+  const [otherDescription, setOtherDescription] = useState<string>('Unexplained ache');
+
+  // Treatments & Notes (Universal)
   const [remedies, setRemedies] = useState<string[]>([]);
   const [patientNotes, setPatientNotes] = useState<string>('');
   const [isSavedFeedback, setIsSavedFeedback] = useState<boolean>(false);
@@ -155,6 +165,7 @@ export const ContextualSymptomPanel: React.FC<ContextualSymptomPanelProps> = ({
     } else {
       setCurrentStep('concern');
       setIsSavedFeedback(false);
+      setActiveGroupId(null);
     }
   }, [existingIssue, selectedRegion.id, selectedSubregion?.id]);
 
@@ -178,26 +189,26 @@ export const ContextualSymptomPanel: React.FC<ContextualSymptomPanelProps> = ({
 
   const handleSave = () => {
     let overlayType: RecordedRegionIssue['visualOverlay']['type'] = 'highlight';
-    let overlayColor = '#FFAA00';
+    let overlayColor = '#79D0BD';
 
     if (selectedIssueType === 'color_change' || skinColor === 'red' || skinWarmth || swellingRedness) {
       overlayType = 'red_overlay';
-      overlayColor = '#FF2A4B';
+      overlayColor = '#79D0BD';
     } else if (skinColor === 'blue_purple' || injurySigns.includes('Bruising')) {
       overlayType = 'bruise_overlay';
-      overlayColor = '#9B51E0';
+      overlayColor = '#79D0BD';
     } else if (selectedIssueType === 'swelling') {
       overlayType = 'halo';
-      overlayColor = '#5FD7FF';
+      overlayColor = '#79D0BD';
     } else if (selectedIssueType === 'cut') {
       overlayType = 'cut_marker';
-      overlayColor = '#EF4444';
+      overlayColor = '#79D0BD';
     } else if (selectedIssueType === 'numbness') {
       overlayType = 'highlight';
-      overlayColor = '#A855F7';
+      overlayColor = '#79D0BD';
     } else if (selectedIssueType === 'stiffness') {
       overlayType = 'highlight';
-      overlayColor = '#F59E0B';
+      overlayColor = '#79D0BD';
     }
 
     const painData: PainDetails | undefined =
@@ -247,7 +258,7 @@ export const ContextualSymptomPanel: React.FC<ContextualSymptomPanelProps> = ({
         ? {
             observedColor: skinColor,
             warmthReported: skinWarmth,
-            textureChange: skinSensation,
+            textureChange: `${skinSensation} (${skinProgression})`,
           }
         : undefined;
 
@@ -309,488 +320,166 @@ export const ContextualSymptomPanel: React.FC<ContextualSymptomPanelProps> = ({
     ? `${selectedSubregion.name} (${selectedRegion.name})`
     : selectedRegion.name;
 
-  const currentAnatomicalTerm = selectedSubregion
-    ? selectedSubregion.anatomicalName
-    : selectedRegion.anatomicalName;
+  // Helper to get group list for the active concern
+  interface DetailGroup {
+    id: string;
+    title: string;
+    summaryValue: string;
+    renderContent: () => React.ReactNode;
+  }
 
-  return (
-    <div className="floating-symptom-glass-panel" aria-label="Interactive Symptom Intake Glass Panel">
-      {/* 1. Translucent Frosted Glass Header */}
-      <div className="glass-panel-header">
-        <div className="glass-top-status-row">
-          <span className="glass-prompt-tag">What have you noticed here?</span>
-          <div className="glass-header-controls">
-            <span className="glass-session-tag">Session-only in this prototype</span>
-            {onClose && (
-              <button
-                type="button"
-                className="glass-panel-close-btn"
-                onClick={onClose}
-                aria-label="Close symptom panel"
-                title="Close"
-              >
-                ×
-              </button>
-            )}
-          </div>
-        </div>
-
-        <div className="glass-title-block">
-          <h4 className="glass-region-heading">{currentDisplayTitle}</h4>
-          <span className="glass-anatomical-latin">
-            {currentAnatomicalTerm} · {selectedRegion.side === 'midline' ? 'Midline' : selectedRegion.side.toUpperCase()}
-          </span>
-        </div>
-
-        {/* Step Indicator */}
-        <div className="glass-step-bar">
-          <button
-            type="button"
-            className={`glass-step-btn ${currentStep === 'concern' ? 'is-active' : 'is-done'}`}
-            onClick={() => setCurrentStep('concern')}
-          >
-            1. Concern
-          </button>
-          <span className="glass-step-sep">›</span>
-          <button
-            type="button"
-            className={`glass-step-btn ${currentStep === 'details' ? 'is-active' : currentStep === 'review' ? 'is-done' : ''}`}
-            onClick={() => setCurrentStep('details')}
-          >
-            2. Details
-          </button>
-          <span className="glass-step-sep">›</span>
-          <button
-            type="button"
-            className={`glass-step-btn ${currentStep === 'review' ? 'is-active' : ''}`}
-            onClick={() => setCurrentStep('review')}
-          >
-            3. Tag Pinned
-          </button>
-        </div>
-      </div>
-
-      {/* 2. Glass Scroll Body */}
-      <div className="glass-panel-body-scroll">
-        {/* STEP 1: CONCERN SELECTION (8 Frosted Chips) */}
-        {currentStep === 'concern' && (
-          <div className="concern-selection-view">
-            <span className="glass-prompt-label">Select what best matches your observation:</span>
-            <div className="glass-concern-grid" role="group" aria-label="Primary symptom type">
-              {[
-                { type: 'pain', label: '1. Pain or soreness', icon: Activity, desc: 'Ache, sharp discomfort, or throbbing tenderness' },
-                { type: 'injury', label: '2. Injury or accident', icon: Zap, desc: 'Strain, impact, twist, or sudden trauma' },
-                { type: 'swelling', label: '3. Swelling or lump', icon: CircleDot, desc: 'Puffiness, visible lump, or fluid retention' },
-                { type: 'cut', label: '4. Cut or wound', icon: Scissors, desc: 'Scrape, laceration, graze, or open skin' },
-                { type: 'color_change', label: '5. Skin colour or appearance change', icon: Sparkles, desc: 'Redness, bruising, rash, or discoloration' },
-                { type: 'numbness', label: '6. Numbness or tingling', icon: Radio, desc: 'Pins & needles, reduced sensation, or asleep feeling' },
-                { type: 'stiffness', label: '7. Stiffness or movement difficulty', icon: Lock, desc: 'Restricted range of motion, tightness, or joint resistance' },
-                { type: 'other', label: '8. Other / unsure', icon: HelpCircle, desc: 'Non-specific sensation or general observation' },
-              ].map((item) => {
-                const Icon = item.icon;
-                const isChosen = selectedIssueType === item.type;
-                return (
-                  <button
-                    key={item.type}
-                    type="button"
-                    className={`glass-concern-chip ${isChosen ? 'is-selected' : ''}`}
-                    onClick={() => {
-                      setSelectedIssueType(item.type as PrimaryIssueType);
-                      setCurrentStep('details');
-                    }}
-                  >
-                    <div className="concern-icon-wrap">
-                      <Icon size={16} />
-                    </div>
-                    <div className="concern-text-wrap">
-                      <span className="concern-chip-name">{item.label}</span>
-                      <span className="concern-chip-desc">{item.desc}</span>
-                    </div>
-                    <ChevronRight size={14} className="concern-chevron" />
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* STEP 2: CONTEXTUAL FOLLOW-UP QUESTIONS (Tailored to concern) */}
-        {currentStep === 'details' && (
-          <div className="contextual-details-view">
-            <button
-              type="button"
-              className="glass-back-link"
-              onClick={() => setCurrentStep('concern')}
-            >
-              <ArrowLeft size={13} />
-              <span>Change Concern ({selectedIssueType.replace('_', ' ')})</span>
-            </button>
-
-            {/* SEVERITY SLIDER (For Pain, Injury, Numbness, Other) */}
-            {(selectedIssueType === 'pain' || selectedIssueType === 'injury' || selectedIssueType === 'other') && (
-              <div className="glass-form-group">
+  const getConcernGroups = (): DetailGroup[] => {
+    switch (selectedIssueType) {
+      case 'pain':
+        return [
+          {
+            id: 'severity',
+            title: 'Severity (0–10)',
+            summaryValue: `${painSeverity}/10`,
+            renderContent: () => (
+              <div className="group-content-inner">
                 <div className="glass-slider-header">
-                  <span className="glass-field-label">Discomfort Severity</span>
+                  <span className="glass-field-label">Discomfort rating</span>
                   <span className="glass-severity-numeric-pill">
                     {painSeverity}/10 · {painSeverity <= 3 ? 'Mild' : painSeverity <= 6 ? 'Moderate' : painSeverity <= 8 ? 'Severe' : 'Very Severe'}
                   </span>
                 </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="10"
-                  value={painSeverity}
-                  onChange={(e) => setPainSeverity(Number(e.target.value))}
-                  className="glass-severity-slider"
-                  aria-label="Pain severity slider 0 to 10"
-                />
-                <div className="glass-slider-labels">
-                  <span>0 None</span>
-                  <span>3 Mild</span>
-                  <span>6 Moderate</span>
-                  <span>10 Severe</span>
+                <div className="compact-number-scale" role="radiogroup" aria-label="Pain rating scale">
+                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                    <button
+                      key={num}
+                      type="button"
+                      className={`scale-num-btn ${painSeverity === num ? 'is-selected' : ''}`}
+                      onClick={() => {
+                        setPainSeverity(num);
+                        advanceGroup('severity');
+                      }}
+                      aria-label={`Severity ${num}`}
+                    >
+                      {num}
+                    </button>
+                  ))}
                 </div>
               </div>
-            )}
-
-            {/* ONSET & DURATION CHIPS */}
-            <div className="glass-form-group">
-              <span className="glass-field-label">Onset / Timing</span>
-              <div className="glass-pill-options-wrap">
-                {['Hours ago', '1–3 days', '1–2 weeks', '> 1 month', 'Not sure'].map((time) => (
+            ),
+          },
+          {
+            id: 'sensation',
+            title: 'Sensation Character',
+            summaryValue: painCharacter,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Sharp', 'Dull ache', 'Burning', 'Throbbing', 'Tingling', 'Other / unsure'].map((ch) => (
+                  <button
+                    key={ch}
+                    type="button"
+                    className={`glass-mini-chip ${painCharacter === ch ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setPainCharacter(ch);
+                      advanceGroup('sensation');
+                    }}
+                  >
+                    {ch}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'onset',
+            title: 'When It Started',
+            summaryValue: painOnset,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Hours ago', '1–3 days', '1–2 weeks', '> 1 month', 'Unsure'].map((time) => (
                   <button
                     key={time}
                     type="button"
                     className={`glass-mini-chip ${painOnset === time ? 'is-active' : ''}`}
-                    onClick={() => setPainOnset(time)}
+                    onClick={() => {
+                      setPainOnset(time);
+                      advanceGroup('onset');
+                    }}
                   >
                     {time}
                   </button>
                 ))}
               </div>
-            </div>
-
-            {/* PAIN-SPECIFIC QUESTIONS */}
-            {selectedIssueType === 'pain' && (
-              <>
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Symptom Pattern</span>
-                  <div className="glass-pill-options-wrap">
-                    {['Constant ache', 'Comes and goes', 'Sharp / sudden', 'Throbbing', 'Not sure'].map((p) => (
-                      <button
-                        key={p}
-                        type="button"
-                        className={`glass-mini-chip ${painPattern === p ? 'is-active' : ''}`}
-                        onClick={() => setPainPattern(p)}
-                      >
-                        {p}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Movement Triggers</span>
-                  <div className="glass-pill-options-wrap">
-                    {['Worse when moving/bending', 'Worse bearing weight', 'Worse at rest', 'None noticed', 'Not sure'].map((trig) => (
-                      <button
-                        key={trig}
-                        type="button"
-                        className={`glass-mini-chip ${painTrigger === trig ? 'is-active' : ''}`}
-                        onClick={() => setPainTrigger(trig)}
-                      >
-                        {trig}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* INJURY-SPECIFIC QUESTIONS */}
-            {selectedIssueType === 'injury' && (
-              <>
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Mechanism of Incident</span>
-                  <div className="glass-pill-options-wrap">
-                    {['Strain / overuse', 'Fall / slip', 'Impact / collision', 'Awkward twist', 'Not sure'].map((c) => (
-                      <button
-                        key={c}
-                        type="button"
-                        className={`glass-mini-chip ${injuryCause === c ? 'is-active' : ''}`}
-                        onClick={() => setInjuryCause(c)}
-                      >
-                        {c}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Mobility Impact</span>
-                  <div className="glass-pill-options-wrap">
-                    {['Normal motion', 'Mild stiffness', 'Limited range', 'Cannot bear weight', 'Not sure'].map((m) => (
-                      <button
-                        key={m}
-                        type="button"
-                        className={`glass-mini-chip ${injuryMobility === m ? 'is-active' : ''}`}
-                        onClick={() => setInjuryMobility(m)}
-                      >
-                        {m}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Visible Signs</span>
-                  <div className="glass-pill-options-wrap">
-                    {['Swelling', 'Bruising', 'Both', 'Neither', 'Not sure'].map((s) => (
-                      <button
-                        key={s}
-                        type="button"
-                        className={`glass-mini-chip ${injurySigns === s ? 'is-active' : ''}`}
-                        onClick={() => setInjurySigns(s)}
-                      >
-                        {s}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* SWELLING-SPECIFIC QUESTIONS */}
-            {selectedIssueType === 'swelling' && (
-              <>
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Swelling Extent</span>
-                  <div className="glass-pill-options-wrap">
-                    {['Mild localized puffiness', 'Distinct lump / bump', 'Spreading swelling', 'Not sure'].map((ext) => (
-                      <button
-                        key={ext}
-                        type="button"
-                        className={`glass-mini-chip ${swellingExtent === ext ? 'is-active' : ''}`}
-                        onClick={() => setSwellingExtent(ext)}
-                      >
-                        {ext}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Progression</span>
-                  <div className="glass-pill-options-wrap">
-                    {[
-                      { val: 'increasing', label: 'Getting larger' },
-                      { val: 'stable', label: 'Stable' },
-                      { val: 'decreasing', label: 'Decreasing' },
-                    ].map((prog) => (
-                      <button
-                        key={prog.val}
-                        type="button"
-                        className={`glass-mini-chip ${swellingProgression === prog.val ? 'is-active' : ''}`}
-                        onClick={() => setSwellingProgression(prog.val as any)}
-                      >
-                        {prog.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Associated Sensations</span>
-                  <div className="glass-checkbox-row">
-                    <label className="glass-toggle-label">
-                      <input
-                        type="checkbox"
-                        checked={swellingWarmth}
-                        onChange={(e) => setSwellingWarmth(e.target.checked)}
-                      />
-                      <span>Feels unusually warm / hot to touch</span>
-                    </label>
-                    <label className="glass-toggle-label">
-                      <input
-                        type="checkbox"
-                        checked={swellingRedness}
-                        onChange={(e) => setSwellingRedness(e.target.checked)}
-                      />
-                      <span>Skin appears visibly red</span>
-                    </label>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* CUT-SPECIFIC QUESTIONS */}
-            {selectedIssueType === 'cut' && (
-              <>
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Wound Depth & Type</span>
-                  <div className="glass-pill-options-wrap">
-                    {[
-                      { val: 'superficial', label: 'Superficial scrape / graze' },
-                      { val: 'deep', label: 'Deep laceration' },
-                      { val: 'puncture', label: 'Puncture wound' },
-                      { val: 'unsure', label: 'Not sure' },
-                    ].map((d) => (
-                      <button
-                        key={d.val}
-                        type="button"
-                        className={`glass-mini-chip ${cutDepth === d.val ? 'is-active' : ''}`}
-                        onClick={() => setCutDepth(d.val as any)}
-                      >
-                        {d.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Bleeding Status</span>
-                  <div className="glass-pill-options-wrap">
-                    {[
-                      { val: 'stopped', label: 'Completely stopped' },
-                      { val: 'slow_ooze', label: 'Slow oozing' },
-                      { val: 'active_bleeding', label: 'Active bleeding' },
-                    ].map((b) => (
-                      <button
-                        key={b.val}
-                        type="button"
-                        className={`glass-mini-chip ${cutBleeding === b.val ? 'is-active' : ''}`}
-                        onClick={() => setCutBleeding(b.val as any)}
-                      >
-                        {b.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* COLOR CHANGE QUESTIONS */}
-            {selectedIssueType === 'color_change' && (
-              <>
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Observed Appearance</span>
-                  <div className="glass-pill-options-wrap">
-                    {[
-                      { val: 'red', label: 'Red / rash' },
-                      { val: 'blue_purple', label: 'Blue / purple bruise' },
-                      { val: 'pale', label: 'Pale / white' },
-                      { val: 'dark_black', label: 'Dark / pigmented' },
-                      { val: 'unsure', label: 'Not sure' },
-                    ].map((c) => (
-                      <button
-                        key={c.val}
-                        type="button"
-                        className={`glass-mini-chip ${skinColor === c.val ? 'is-active' : ''}`}
-                        onClick={() => setSkinColor(c.val as any)}
-                      >
-                        {c.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Sensation</span>
-                  <div className="glass-pill-options-wrap">
-                    {['Warm / burning', 'Itchy', 'Tender / painful', 'Normal sensation', 'Not sure'].map((sens) => (
-                      <button
-                        key={sens}
-                        type="button"
-                        className={`glass-mini-chip ${skinSensation === sens ? 'is-active' : ''}`}
-                        onClick={() => setSkinSensation(sens)}
-                      >
-                        {sens}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* NUMBNESS QUESTIONS */}
-            {selectedIssueType === 'numbness' && (
-              <>
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Sensation Character</span>
-                  <div className="glass-pill-options-wrap">
-                    {['Pins & needles (tingling)', 'Total loss of feeling', 'Cold sensation', 'Not sure'].map((n) => (
-                      <button
-                        key={n}
-                        type="button"
-                        className={`glass-mini-chip ${numbnessSensation === n ? 'is-active' : ''}`}
-                        onClick={() => setNumbnessSensation(n)}
-                      >
-                        {n}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Frequency & Pattern</span>
-                  <div className="glass-pill-options-wrap">
-                    {['Constant', 'Position-dependent', 'Sleep / morning', 'Intermittent', 'Not sure'].map((np) => (
-                      <button
-                        key={np}
-                        type="button"
-                        className={`glass-mini-chip ${numbnessPattern === np ? 'is-active' : ''}`}
-                        onClick={() => setNumbnessPattern(np)}
-                      >
-                        {np}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* STIFFNESS QUESTIONS */}
-            {selectedIssueType === 'stiffness' && (
-              <>
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Stiffness Degree</span>
-                  <div className="glass-pill-options-wrap">
-                    {['Mild (eases with movement)', 'Moderate (restricts motion)', 'Severe / locked', 'Not sure'].map((st) => (
-                      <button
-                        key={st}
-                        type="button"
-                        className={`glass-mini-chip ${stiffnessLevel === st ? 'is-active' : ''}`}
-                        onClick={() => setStiffnessLevel(st)}
-                      >
-                        {st}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="glass-form-group">
-                  <span className="glass-field-label">Peak Time</span>
-                  <div className="glass-pill-options-wrap">
-                    {['Morning upon waking', 'After sitting / rest', 'End of day', 'Constant', 'Not sure'].map((tm) => (
-                      <button
-                        key={tm}
-                        type="button"
-                        className={`glass-mini-chip ${stiffnessWorstTime === tm ? 'is-active' : ''}`}
-                        onClick={() => setStiffnessWorstTime(tm)}
-                      >
-                        {tm}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* HOME TREATMENT / INTERVENTIONS TRIED (Universal) */}
-            <div className="glass-form-group">
-              <span className="glass-field-label">Home Treatments or Medications Tried</span>
-              <div className="glass-pill-options-wrap">
-                {['Ice / cold pack', 'Heat', 'Pain relief / NSAIDs', 'Bandage / brace', 'Rest', 'None / not sure'].map((rem) => (
+            ),
+          },
+          {
+            id: 'frequency',
+            title: 'Frequency & Pattern',
+            summaryValue: painPattern,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Constant ache', 'Comes and goes', 'Only during movement', 'Throbbing', 'Other / unsure'].map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    className={`glass-mini-chip ${painPattern === p ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setPainPattern(p);
+                      advanceGroup('frequency');
+                    }}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'triggers',
+            title: 'Triggers or Relief',
+            summaryValue: painTrigger,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Movement / bending', 'Bearing weight', 'Rest', 'Touch', 'None / unsure'].map((trig) => (
+                  <button
+                    key={trig}
+                    type="button"
+                    className={`glass-mini-chip ${painTrigger === trig ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setPainTrigger(trig);
+                      advanceGroup('triggers');
+                    }}
+                  >
+                    {trig}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'changes',
+            title: 'Changes Over Time',
+            summaryValue: painChanges,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Improving', 'Unchanged', 'Worsening', 'Fluctuating', 'Unsure'].map((ch) => (
+                  <button
+                    key={ch}
+                    type="button"
+                    className={`glass-mini-chip ${painChanges === ch ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setPainChanges(ch);
+                      advanceGroup('changes');
+                    }}
+                  >
+                    {ch}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'treatment',
+            title: 'Treatment Tried',
+            summaryValue: remedies.length > 0 ? remedies.join(', ') : 'None yet',
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Medication / NSAIDs', 'Ice / cold pack', 'Heat', 'Bandage / brace', 'Rest', 'Nothing yet', 'Unsure'].map((rem) => (
                   <button
                     key={rem}
                     type="button"
@@ -801,156 +490,987 @@ export const ContextualSymptomPanel: React.FC<ContextualSymptomPanelProps> = ({
                   </button>
                 ))}
               </div>
-            </div>
+            ),
+          },
+        ];
 
-            {/* OPTIONAL NOTES */}
-            <div className="glass-form-group">
-              <span className="glass-field-label">Additional notes for doctor (optional)</span>
-              <input
-                type="text"
-                placeholder="e.g. sharp when bending elbow"
-                value={patientNotes}
-                onChange={(e) => setPatientNotes(e.target.value)}
-                className="glass-text-input"
-              />
-            </div>
-          </div>
-        )}
+      case 'injury':
+        return [
+          {
+            id: 'cause',
+            title: 'What Happened',
+            summaryValue: injuryCause,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Strain / overuse', 'Fall / slip', 'Impact / collision', 'Awkward twist', 'Other / unsure'].map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    className={`glass-mini-chip ${injuryCause === c ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setInjuryCause(c);
+                      advanceGroup('cause');
+                    }}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'timeSince',
+            title: 'Approximate Timing',
+            summaryValue: injuryTimeSince,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Hours ago', '1–3 days ago', '1–2 weeks ago', '> 1 month', 'Unsure'].map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    className={`glass-mini-chip ${injuryTimeSince === t ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setInjuryTimeSince(t);
+                      advanceGroup('timeSince');
+                    }}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'mobility',
+            title: 'Mobility Restriction',
+            summaryValue: injuryMobility,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Normal motion', 'Mild stiffness', 'Limited range', 'Cannot bear weight', 'Unsure'].map((m) => (
+                  <button
+                    key={m}
+                    type="button"
+                    className={`glass-mini-chip ${injuryMobility === m ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setInjuryMobility(m);
+                      advanceGroup('mobility');
+                    }}
+                  >
+                    {m}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'signs',
+            title: 'Visible Signs',
+            summaryValue: injurySigns,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Swelling', 'Bruising', 'Both swelling & bruising', 'Cut / graze', 'Neither', 'Unsure'].map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    className={`glass-mini-chip ${injurySigns === s ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setInjurySigns(s);
+                      advanceGroup('signs');
+                    }}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'severity',
+            title: 'Severity (0–10)',
+            summaryValue: `${painSeverity}/10`,
+            renderContent: () => (
+              <div className="compact-number-scale">
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    className={`scale-num-btn ${painSeverity === num ? 'is-selected' : ''}`}
+                    onClick={() => {
+                      setPainSeverity(num);
+                      advanceGroup('severity');
+                    }}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+        ];
 
-        {/* STEP 3: REVIEW & PINNED TAG PREVIEW */}
-        {currentStep === 'review' && (
-          <div className="glass-review-view">
-            <div className="review-tag-card">
-              <div className="review-tag-header">
-                <span className="review-tag-badge">Pinned Symptom Tag</span>
-                <span className="review-tag-time">Session volatile memory</span>
+      case 'swelling':
+        return [
+          {
+            id: 'onset',
+            title: 'When Noticed',
+            summaryValue: painOnset,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Today', '1–3 days ago', '1–2 weeks ago', '> 1 month', 'Unsure'].map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    className={`glass-mini-chip ${painOnset === t ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setPainOnset(t);
+                      advanceGroup('onset');
+                    }}
+                  >
+                    {t}
+                  </button>
+                ))}
               </div>
-              <div className="review-tag-title-row">
-                <h5 className="review-tag-title">{currentDisplayTitle}</h5>
-                <span className="review-tag-type-pill">{selectedIssueType.toUpperCase()}</span>
+            ),
+          },
+          {
+            id: 'extent',
+            title: 'Approximate Extent',
+            summaryValue: swellingExtent,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Mild puffiness', 'Distinct lump / bump', 'Spreading swelling', 'Unsure'].map((ext) => (
+                  <button
+                    key={ext}
+                    type="button"
+                    className={`glass-mini-chip ${swellingExtent === ext ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setSwellingExtent(ext);
+                      advanceGroup('extent');
+                    }}
+                  >
+                    {ext}
+                  </button>
+                ))}
               </div>
-              <div className="review-summary-snippet">
-                {selectedIssueType === 'pain' && (
-                  <p>Pain severity {painSeverity}/10 · Onset {painOnset} · {painTrigger}</p>
-                )}
-                {selectedIssueType === 'injury' && (
-                  <p>{injuryCause} · Timing: {injuryTimeSince} · Mobility: {injuryMobility}</p>
-                )}
-                {selectedIssueType === 'swelling' && (
-                  <p>{swellingExtent} · {swellingProgression} · {swellingWarmth ? 'Warmth reported' : 'No warmth'}</p>
-                )}
-                {selectedIssueType === 'cut' && (
-                  <p>{cutDepth} cut · Bleeding: {cutBleeding} · Size: {cutSize}</p>
-                )}
-                {selectedIssueType === 'color_change' && (
-                  <p>Observed {skinColor} · Sensation: {skinSensation}</p>
-                )}
-                {selectedIssueType === 'numbness' && (
-                  <p>{numbnessSensation} · {numbnessPattern}</p>
-                )}
-                {selectedIssueType === 'stiffness' && (
-                  <p>{stiffnessLevel} · Worst: {stiffnessWorstTime}</p>
-                )}
-                {selectedIssueType === 'other' && (
-                  <p>{patientNotes || 'General discomfort reported'} · Onset: {painOnset}</p>
-                )}
+            ),
+          },
+          {
+            id: 'progression',
+            title: 'Changes Over Time',
+            summaryValue: swellingProgression,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {[
+                  { val: 'increasing', label: 'Getting larger' },
+                  { val: 'stable', label: 'Stable' },
+                  { val: 'decreasing', label: 'Decreasing' },
+                ].map((prog) => (
+                  <button
+                    key={prog.val}
+                    type="button"
+                    className={`glass-mini-chip ${swellingProgression === prog.val ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setSwellingProgression(prog.val as any);
+                      advanceGroup('progression');
+                    }}
+                  >
+                    {prog.label}
+                  </button>
+                ))}
               </div>
-              {remedies.length > 0 && (
-                <div className="review-remedies-row">
-                  <span className="review-sub">Interventions:</span>
-                  <span>{remedies.join(', ')}</span>
-                </div>
+            ),
+          },
+          {
+            id: 'sensation',
+            title: 'Relevant Sensations',
+            summaryValue: swellingSensation,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Warm to touch', 'Tender / painful', 'Visibly red', 'Normal sensation', 'Unsure'].map((sens) => (
+                  <button
+                    key={sens}
+                    type="button"
+                    className={`glass-mini-chip ${swellingSensation === sens ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setSwellingSensation(sens);
+                      if (sens === 'Warm to touch') setSwellingWarmth(true);
+                      if (sens === 'Visibly red') setSwellingRedness(true);
+                      advanceGroup('sensation');
+                    }}
+                  >
+                    {sens}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+        ];
+
+      case 'cut':
+        return [
+          {
+            id: 'age',
+            title: 'When It Occurred',
+            summaryValue: painOnset,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Hours ago', 'Today', '1–3 days ago', 'Older', 'Unsure'].map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    className={`glass-mini-chip ${painOnset === t ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setPainOnset(t);
+                      advanceGroup('age');
+                    }}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'appearance',
+            title: 'Size & Appearance',
+            summaryValue: `${cutSize} (${cutDepth})`,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {[
+                  { size: '< 1 cm', depth: 'superficial', label: '< 1 cm superficial scrape' },
+                  { size: '1 - 3 cm', depth: 'superficial', label: '1–3 cm clean cut' },
+                  { size: '> 3 cm', depth: 'deep', label: '> 3 cm laceration' },
+                  { size: '< 1 cm', depth: 'puncture', label: 'Puncture wound' },
+                ].map((item, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    className={`glass-mini-chip ${cutSize === item.size && cutDepth === item.depth ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setCutSize(item.size as any);
+                      setCutDepth(item.depth as any);
+                      advanceGroup('appearance');
+                    }}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'bleeding',
+            title: 'Bleeding Status',
+            summaryValue: cutBleeding.replace('_', ' '),
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {[
+                  { val: 'stopped', label: 'Completely stopped' },
+                  { val: 'slow_ooze', label: 'Slow oozing' },
+                  { val: 'active_bleeding', label: 'Active bleeding' },
+                ].map((b) => (
+                  <button
+                    key={b.val}
+                    type="button"
+                    className={`glass-mini-chip ${cutBleeding === b.val ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setCutBleeding(b.val as any);
+                      advanceGroup('bleeding');
+                    }}
+                  >
+                    {b.label}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'changes',
+            title: 'Changes Noticed',
+            summaryValue: cutChanges,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Clean healing', 'Red / inflamed edges', 'Warm or painful', 'Discharge', 'Unsure'].map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    className={`glass-mini-chip ${cutChanges === c ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setCutChanges(c);
+                      advanceGroup('changes');
+                    }}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+        ];
+
+      case 'color_change':
+        return [
+          {
+            id: 'observedColor',
+            title: 'What Changed',
+            summaryValue: skinColor,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {[
+                  { val: 'red', label: 'Red / rash' },
+                  { val: 'blue_purple', label: 'Blue / purple bruise' },
+                  { val: 'pale', label: 'Pale / white' },
+                  { val: 'dark_black', label: 'Dark / pigmented' },
+                  { val: 'unsure', label: 'Unsure' },
+                ].map((c) => (
+                  <button
+                    key={c.val}
+                    type="button"
+                    className={`glass-mini-chip ${skinColor === c.val ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setSkinColor(c.val as any);
+                      advanceGroup('observedColor');
+                    }}
+                  >
+                    {c.label}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'onset',
+            title: 'When It Began',
+            summaryValue: painOnset,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Today', '1–3 days ago', '1–2 weeks', '> 1 month', 'Unsure'].map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    className={`glass-mini-chip ${painOnset === t ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setPainOnset(t);
+                      advanceGroup('onset');
+                    }}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'progression',
+            title: 'Changes Over Time',
+            summaryValue: skinProgression,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Spreading / larger', 'Same area', 'Fading / shrinking', 'Changing texture', 'Unsure'].map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    className={`glass-mini-chip ${skinProgression === p ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setSkinProgression(p);
+                      advanceGroup('progression');
+                    }}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'sensation',
+            title: 'Sensation',
+            summaryValue: skinSensation,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Warm / burning', 'Itchy', 'Tender / painful', 'Normal sensation', 'Unsure'].map((sens) => (
+                  <button
+                    key={sens}
+                    type="button"
+                    className={`glass-mini-chip ${skinSensation === sens ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setSkinSensation(sens);
+                      advanceGroup('sensation');
+                    }}
+                  >
+                    {sens}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+        ];
+
+      case 'numbness':
+        return [
+          {
+            id: 'sensation',
+            title: 'Sensation Character',
+            summaryValue: numbnessSensation,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Pins & needles (tingling)', 'Total loss of feeling', 'Cold sensation', 'Buzzing', 'Unsure'].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    className={`glass-mini-chip ${numbnessSensation === n ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setNumbnessSensation(n);
+                      advanceGroup('sensation');
+                    }}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'onset',
+            title: 'Onset & Timing',
+            summaryValue: painOnset,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Hours ago', '1–3 days', 'Weeks ago', 'Intermittent', 'Unsure'].map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    className={`glass-mini-chip ${painOnset === t ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setPainOnset(t);
+                      advanceGroup('onset');
+                    }}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'pattern',
+            title: 'Circumstances & Pattern',
+            summaryValue: numbnessPattern,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Constant', 'Position-dependent', 'Sleep / morning', 'After activity', 'Unsure'].map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    className={`glass-mini-chip ${numbnessPattern === p ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setNumbnessPattern(p);
+                      advanceGroup('pattern');
+                    }}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'severity',
+            title: 'Severity (0–10)',
+            summaryValue: `${numbnessSeverity}/10`,
+            renderContent: () => (
+              <div className="compact-number-scale">
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    className={`scale-num-btn ${numbnessSeverity === num ? 'is-selected' : ''}`}
+                    onClick={() => {
+                      setNumbnessSeverity(num);
+                      advanceGroup('severity');
+                    }}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+        ];
+
+      case 'stiffness':
+        return [
+          {
+            id: 'mobility',
+            title: 'Affected Movement',
+            summaryValue: stiffnessMobility,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Difficulty bending', 'Locked / restricted', 'General tightness', 'Painful at limits', 'Unsure'].map((m) => (
+                  <button
+                    key={m}
+                    type="button"
+                    className={`glass-mini-chip ${stiffnessMobility === m ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setStiffnessMobility(m);
+                      advanceGroup('mobility');
+                    }}
+                  >
+                    {m}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'onset',
+            title: 'Onset & Timing',
+            summaryValue: painOnset,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Hours ago', '1–3 days', '1–2 weeks', 'Chronic / recurring', 'Unsure'].map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    className={`glass-mini-chip ${painOnset === t ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setPainOnset(t);
+                      advanceGroup('onset');
+                    }}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'severity',
+            title: 'Severity Level',
+            summaryValue: stiffnessLevel,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Mild (eases with motion)', 'Moderate (restricts motion)', 'Severe / locked', 'Unsure'].map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    className={`glass-mini-chip ${stiffnessLevel === s ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setStiffnessLevel(s);
+                      advanceGroup('severity');
+                    }}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'worstTime',
+            title: 'Triggers / Peak Time',
+            summaryValue: stiffnessWorstTime,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Morning upon waking', 'After sitting / rest', 'End of day', 'Constant', 'Unsure'].map((tm) => (
+                  <button
+                    key={tm}
+                    type="button"
+                    className={`glass-mini-chip ${stiffnessWorstTime === tm ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setStiffnessWorstTime(tm);
+                      advanceGroup('worstTime');
+                    }}
+                  >
+                    {tm}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+        ];
+
+      case 'other':
+      default:
+        return [
+          {
+            id: 'description',
+            title: 'Description',
+            summaryValue: otherDescription,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Unexplained ache', 'Fatigue / weakness', 'Unusual sensation', 'General discomfort', 'Unsure'].map((d) => (
+                  <button
+                    key={d}
+                    type="button"
+                    className={`glass-mini-chip ${otherDescription === d ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setOtherDescription(d);
+                      advanceGroup('description');
+                    }}
+                  >
+                    {d}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'onset',
+            title: 'When Noticed',
+            summaryValue: painOnset,
+            renderContent: () => (
+              <div className="group-chips-grid">
+                {['Today', '1–3 days ago', 'Weeks ago', 'Months ago', 'Unsure'].map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    className={`glass-mini-chip ${painOnset === t ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setPainOnset(t);
+                      advanceGroup('onset');
+                    }}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'severity',
+            title: 'Severity / Impact (0–10)',
+            summaryValue: `${painSeverity}/10`,
+            renderContent: () => (
+              <div className="compact-number-scale">
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    className={`scale-num-btn ${painSeverity === num ? 'is-selected' : ''}`}
+                    onClick={() => {
+                      setPainSeverity(num);
+                      advanceGroup('severity');
+                    }}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+            ),
+          },
+          {
+            id: 'patientNotes',
+            title: 'Notes for Physician (Optional)',
+            summaryValue: patientNotes.trim() ? 'Notes added' : 'Optional',
+            renderContent: () => (
+              <div className="group-content-inner">
+                <input
+                  type="text"
+                  placeholder="e.g. sharp when bending, worse at night"
+                  value={patientNotes}
+                  onChange={(e) => setPatientNotes(e.target.value)}
+                  className="glass-text-input"
+                />
+              </div>
+            ),
+          },
+        ];
+    }
+  };
+
+  const groups = getConcernGroups();
+
+  // Helper to advance to next group after selection
+  const advanceGroup = (currentGroupId: string) => {
+    const idx = groups.findIndex((g) => g.id === currentGroupId);
+    if (idx !== -1 && idx < groups.length - 1) {
+      setActiveGroupId(groups[idx + 1].id);
+    } else {
+      // All answered: collapse to concise summary
+      setActiveGroupId(null);
+    }
+  };
+
+  return (
+    <div className={`bodymap-symptom-flow-root ${currentStep === 'concern' ? 'is-toggles-view' : 'is-form-view'}`}>
+      {/* State B: Eight compact, individually selectable liquid-glass toggle tiles with heading directly above them */}
+      {currentStep === 'concern' ? (
+        <div className="bodymap-concern-toggles-block" aria-label="Anatomical Concern Selection">
+          <div className="mobile-sheet-drag-pill" aria-hidden="true" />
+          <div className="bodymap-toggles-header">
+            <h4 className="bodymap-toggles-title">What have you noticed here?</h4>
+            <div className="bodymap-region-sub-badge">
+              <span className="bodymap-region-name">{currentDisplayTitle}</span>
+              {onClose && (
+                <button
+                  type="button"
+                  className="bodymap-region-dismiss"
+                  onClick={onClose}
+                  aria-label="Dismiss selection"
+                  title="Close"
+                >
+                  <X size={13} />
+                </button>
               )}
             </div>
-
-            <p className="glass-save-hint">
-              This entry is attached to this body landmark with a glowing glass lens on the black stage. You can select another region to map multiple concerns.
-            </p>
           </div>
-        )}
-      </div>
 
-      {/* 3. Glass Action Footer */}
-      <div className="glass-panel-footer">
-        <div className="glass-clinical-disclaimer-note">
-          <span>Your entries reflect what you report. They are not a medical diagnosis.</span>
+          <div className="bodymap-glass-toggle-grid" role="group" aria-label="Select primary concern">
+            {[
+              { type: 'pain', label: 'Pain or soreness', icon: Activity },
+              { type: 'injury', label: 'Injury or accident', icon: Zap },
+              { type: 'swelling', label: 'Swelling or lump', icon: CircleDot },
+              { type: 'cut', label: 'Cut or wound', icon: Scissors },
+              { type: 'color_change', label: 'Skin colour or appearance change', icon: Sparkles },
+              { type: 'numbness', label: 'Numbness or tingling', icon: Radio },
+              { type: 'stiffness', label: 'Stiffness or difficulty moving', icon: Lock },
+              { type: 'other', label: 'Other / unsure', icon: HelpCircle },
+            ].map((item) => {
+              const Icon = item.icon;
+              const isChosen = selectedIssueType === item.type;
+              return (
+                <button
+                  key={item.type}
+                  type="button"
+                  className={`liquid-glass-toggle-tile ${isChosen ? 'is-selected' : ''}`}
+                  onClick={() => {
+                    setSelectedIssueType(item.type as PrimaryIssueType);
+                    setCurrentStep('details');
+                    // Automatically open first group
+                    const initialGroup = item.type === 'pain' ? 'severity' : item.type === 'injury' ? 'cause' : 'onset';
+                    setActiveGroupId(initialGroup);
+                  }}
+                >
+                  <div className="toggle-specular-edge" aria-hidden="true" />
+                  <div className="toggle-icon-wrap">
+                    <Icon size={15} />
+                  </div>
+                  <span className="toggle-label-text">{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
-
-        {currentStep !== 'review' ? (
-          <div className="glass-footer-action-row">
-            <button
-              type="button"
-              className="glass-secondary-btn"
-              onClick={() => {
-                if (currentStep === 'concern') {
-                  setCurrentStep('details');
-                } else {
-                  handleSave();
-                }
-              }}
-            >
-              Skip / Not sure
-            </button>
-            <button
-              type="button"
-              className="glass-primary-save-btn"
-              onClick={handleSave}
-            >
-              <CheckCircle2 size={15} />
-              <span>{existingIssue ? 'Update in Body Map' : 'Add to Body Map'}</span>
-            </button>
-          </div>
-        ) : (
-          <div className="glass-footer-action-row">
-            {existingIssue && onDeleteIssue && (
-              <button
-                type="button"
-                className="glass-danger-btn"
-                onClick={() => {
-                  onDeleteIssue(existingIssue.id);
-                  setCurrentStep('concern');
-                }}
-                title="Remove this mapped tag"
-              >
-                <Trash2 size={14} />
-                <span>Remove</span>
-              </button>
-            )}
-            <button
-              type="button"
-              className="glass-secondary-btn"
-              onClick={() => setCurrentStep('details')}
-            >
-              Edit Details
-            </button>
+      ) : (
+        /* State C & D: Compact Concern-Specific Detail Wizard on lightweight glass surface */
+        <div className="bodymap-followup-glass-surface" role="dialog" aria-label="Symptom Details Questionnaire">
+          <div className="mobile-sheet-drag-pill" aria-hidden="true" />
+          {/* Surface Header */}
+          <div className="followup-glass-header">
+            <div className="followup-header-titles">
+              <span className="followup-region-tag">{currentDisplayTitle}</span>
+              <h4 className="followup-concern-heading">
+                {selectedIssueType.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
+              </h4>
+            </div>
             {onClose && (
               <button
                 type="button"
-                className="glass-done-btn"
+                className="glass-panel-close-btn"
                 onClick={onClose}
+                aria-label="Close symptom panel"
+                title="Close"
               >
-                Done
+                <X size={14} />
               </button>
             )}
-            <button
-              type="button"
-              className="glass-doctor-brief-link-btn"
-              onClick={onOpenDoctorSummary}
-            >
-              <FileText size={14} />
-              <span>Doctor Brief ({recordedCount})</span>
-            </button>
           </div>
-        )}
 
-        {isSavedFeedback && (
-          <div className="glass-save-toast">
-            <CheckCircle2 size={14} className="text-emerald-400" />
-            <span>Symptom tag attached to {selectedRegion.name}</span>
+          {/* Subnav & Progress indicator */}
+          {currentStep === 'details' && (
+            <div className="followup-subnav-row">
+              <button
+                type="button"
+                className="glass-back-link"
+                onClick={() => setCurrentStep('concern')}
+                title="Return to the 8 concern choices"
+              >
+                <ArrowLeft size={13} />
+                <span>Change Concern</span>
+              </button>
+              <span className="glass-step-count-hint">
+                {groups.length} categories
+              </span>
+            </div>
+          )}
+
+          {/* Body: Collapsible Question Groups (Progressive Wizard) */}
+          <div className="glass-panel-body-scroll">
+            {currentStep === 'details' && (
+              <div className="glass-accordion-groups-list" role="tablist">
+                {groups.map((group) => {
+                  const isOpen = activeGroupId === group.id;
+                  const isAnswered = Boolean(group.summaryValue && group.summaryValue !== 'Optional' && group.summaryValue !== 'None yet');
+
+                  return (
+                    <div
+                      key={group.id}
+                      className={`glass-accordion-card ${isOpen ? 'is-expanded' : ''} ${isAnswered ? 'is-completed' : ''}`}
+                    >
+                      <button
+                        type="button"
+                        className="glass-accordion-header-btn"
+                        onClick={() => setActiveGroupId(isOpen ? null : group.id)}
+                        aria-expanded={isOpen}
+                      >
+                        <div className="accordion-title-col">
+                          <span className={`accordion-indicator-pip ${isAnswered ? 'is-done' : ''}`}>
+                            {isAnswered ? <Check size={10} /> : null}
+                          </span>
+                          <span className="accordion-label">{group.title}</span>
+                        </div>
+
+                        <div className="accordion-meta-col">
+                          <span className="accordion-value-pill">{group.summaryValue}</span>
+                          <ChevronDown size={14} className={`accordion-chevron-icon ${isOpen ? 'is-open' : ''}`} />
+                        </div>
+                      </button>
+
+                      {isOpen && (
+                        <div className="glass-accordion-body-pane">
+                          {group.renderContent()}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* STEP 3: REVIEW & PINNED TAG PREVIEW */}
+            {currentStep === 'review' && (
+              <div className="glass-review-view">
+                <div className="review-tag-card">
+                  <div className="review-tag-header">
+                    <span className="review-tag-badge">Pinned Symptom Tag</span>
+                    <span className="review-tag-time">Session volatile memory</span>
+                  </div>
+                  <div className="review-tag-title-row">
+                    <h5 className="review-tag-title">{currentDisplayTitle}</h5>
+                    <span className="review-tag-type-pill">{selectedIssueType.replace('_', ' ').toUpperCase()}</span>
+                  </div>
+                  <div className="review-summary-snippet">
+                    <span className="review-metric">Severity: {painSeverity}/10</span>
+                    <span className="review-sep">•</span>
+                    <span className="review-metric">Onset: {painOnset}</span>
+                    <span className="review-sep">•</span>
+                    <span className="review-metric">{painCharacter || injuryCause || swellingExtent || skinColor}</span>
+                  </div>
+                </div>
+
+                <p className="glass-save-hint">
+                  This landmark is attached to this body area with a soft white glass lens and pinned tag. Tap any other body area to continue mapping.
+                </p>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+
+          {/* Sticky Persistent Bottom Action Footer (Requirement 4) */}
+          <div className="glass-panel-sticky-footer">
+            <div className="glass-footer-action-row">
+              {currentStep !== 'review' ? (
+                <>
+                  <div className="glass-footer-nav-group">
+                    <button
+                      type="button"
+                      className="glass-secondary-btn"
+                      onClick={() => setCurrentStep('concern')}
+                      title="Return to the 8 concerns"
+                    >
+                      <ArrowLeft size={13} />
+                      <span>Back</span>
+                    </button>
+
+                    {onClose && (
+                      <button
+                        type="button"
+                        className="glass-ghost-btn"
+                        onClick={onClose}
+                        title="Close without saving changes"
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="glass-footer-submit-group">
+                    {activeGroupId && (
+                      <button
+                        type="button"
+                        className="glass-continue-btn"
+                        onClick={() => advanceGroup(activeGroupId)}
+                        title="Proceed to next category"
+                      >
+                        <span>Continue</span>
+                      </button>
+                    )}
+
+                    <button
+                      type="button"
+                      className="glass-primary-save-btn"
+                      onClick={handleSave}
+                    >
+                      <CheckCircle2 size={15} />
+                      <span>{existingIssue ? 'Update in Body Map' : 'Add to Body Map'}</span>
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {existingIssue && onDeleteIssue && (
+                    <button
+                      type="button"
+                      className="glass-danger-btn"
+                      onClick={() => {
+                        onDeleteIssue(existingIssue.id);
+                        setCurrentStep('concern');
+                      }}
+                      title="Remove this mapped tag"
+                    >
+                      <Trash2 size={14} />
+                      <span>Remove</span>
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="glass-secondary-btn"
+                    onClick={() => setCurrentStep('details')}
+                  >
+                    Edit Details
+                  </button>
+                  {onClose && (
+                    <button
+                      type="button"
+                      className="glass-done-btn"
+                      onClick={onClose}
+                    >
+                      Done
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="glass-doctor-brief-link-btn"
+                    onClick={onOpenDoctorSummary}
+                  >
+                    <FileText size={14} />
+                    <span>Doctor Brief ({recordedCount})</span>
+                  </button>
+                </>
+              )}
+            </div>
+
+            {isSavedFeedback && (
+              <div className="glass-save-toast">
+                <CheckCircle2 size={14} style={{ color: '#79D0BD' }} />
+                <span>Symptom tag attached to {selectedRegion.name}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
+
 export default ContextualSymptomPanel;

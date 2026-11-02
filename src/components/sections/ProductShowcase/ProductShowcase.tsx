@@ -43,29 +43,31 @@ export const ProductShowcase: React.FC = () => {
       {/* 0. Showcase Hub: Master Header, In-Page Horizontal Selector & Single Active Floating Preview (#features) */}
       <section id="features" className="showcase-hub-section" aria-label="MEDVIDHI Product Architecture Hub">
         <Container size="default" className="showcase-hub-container">
-          <div className="showcase-master-header">
-            <div className="showcase-header-badge">
+          <div className="showcase-master-header" data-reveal>
+            <div className="showcase-header-badge" data-reveal="fade" style={{ '--si': 0 } as React.CSSProperties}>
               <span className="showcase-status-indicator" />
-              <span className="badge-text">Connected Product Architecture</span>
+              <span className="badge-text">SEE THE CONTEXT TAKE SHAPE</span>
             </div>
 
-            <h2 className="showcase-headline">
+            <h2 className="showcase-headline" data-reveal style={{ '--si': 1 } as React.CSSProperties}>
               One intelligent environment.{' '}
               <span className="editorial-serif showcase-serif-accent">Unified clinical capabilities.</span>
             </h2>
 
-            <p className="showcase-lead">
-              Health information is usually lost across different apps, clinics, and paper slips. 
-              MEDVIDHI unites conversational intake, spatial mapping, longitudinal memory, and pre-consultation 
+            <p className="showcase-lead" data-reveal style={{ '--si': 2 } as React.CSSProperties}>
+              Health information is usually lost across different apps, clinics, and paper slips.
+              MEDVIDHI unites conversational intake, spatial mapping, longitudinal memory, and pre-consultation
               synthesis into a single, cohesive clinical ecosystem.
             </p>
           </div>
 
           {/* In-page horizontal feature-icon selector in normal page flow */}
-          <FeatureIconSelector
-            activeFeatureId={activeFeatureId}
-            onSelectFeature={handleSelectFeature}
-          />
+          <div className="showcase-selector-wrap" data-reveal style={{ '--si': 3 } as React.CSSProperties}>
+            <FeatureIconSelector
+              activeFeatureId={activeFeatureId}
+              onSelectFeature={handleSelectFeature}
+            />
+          </div>
 
           {/* Stable anchor targets for deep navigation and screen readers */}
           <div id="feature-body-map" className="feature-anchor-target" aria-hidden="true" />
@@ -76,10 +78,12 @@ export const ProductShowcase: React.FC = () => {
           <div id="feature-report-explainer" className="feature-anchor-target" aria-hidden="true" />
 
           {/* Single Active Floating Feature Window */}
-          <ActiveFeatureFloatingPanel
-            activeFeatureId={activeFeatureId}
-            onSelectFeature={handleSelectFeature}
-          />
+          <div className="showcase-panel-wrap" data-reveal style={{ '--si': 4 } as React.CSSProperties}>
+            <ActiveFeatureFloatingPanel
+              activeFeatureId={activeFeatureId}
+              onSelectFeature={handleSelectFeature}
+            />
+          </div>
         </Container>
       </section>
 

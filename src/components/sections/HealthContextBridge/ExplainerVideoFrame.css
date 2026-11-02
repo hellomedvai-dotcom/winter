@@ -1,20 +1,22 @@
 /* ==========================================================================
    Explainer Video Frame Component
    Retro Viewfinder Composition with Crisp Black Corner Brackets Outside Frame
-   Strict Monochrome: Pure Black (#000000), Pure White (#FFFFFF), Neutral Grayscale
+   Single Centered Liquid Glass Play/Pause Button
+   Pure Minimalist Presentation (No top badge, No bottom bar)
    ========================================================================== */
 
 .explainer-video-frame-wrapper {
   position: relative;
   width: 100%;
-  max-width: 860px;
+  max-width: 900px;
   margin: var(--space-6) auto 0;
-  padding: 14px; /* Generous breathing space for corner brackets outside the frame */
+  padding: 14px; /* Space for corner brackets outside the frame */
   box-sizing: border-box;
+  outline: none;
 }
 
 /* -------------------------------------------------------------------------- */
-/* Four Small, Crisp Black Corner-Bracket Details OUTSIDE the Frame            */
+/* Four Crisp Black Corner Brackets OUTSIDE the Frame                         */
 /* -------------------------------------------------------------------------- */
 .retro-corner-bracket {
   position: absolute;
@@ -45,7 +47,7 @@
 }
 
 /* -------------------------------------------------------------------------- */
-/* Media Boundary Container (Landscape-oriented, Softly Rounded)             */
+/* Media Boundary Container (16:9 Landscape, Softly Rounded)                   */
 /* -------------------------------------------------------------------------- */
 .explainer-media-boundary {
   position: relative;
@@ -53,15 +55,17 @@
   aspect-ratio: 16 / 9;
   border-radius: 18px;
   overflow: hidden;
-  background-color: #0A0A0C;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  background-color: #FFFFFF; /* Matches the white MEDVIDHI poster backdrop */
+  border: 1px solid rgba(0, 0, 0, 0.12);
   box-shadow: 
-    0 24px 60px -12px rgba(0, 0, 0, 0.18),
-    0 4px 16px -2px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    0 24px 60px -12px rgba(0, 0, 0, 0.16),
+    0 4px 16px -2px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  user-select: none;
 }
 
 @media (min-width: 768px) {
@@ -70,159 +74,159 @@
   }
 }
 
-/* Genuine Video Element when configured */
+/* Video Element */
 .explainer-native-video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* Displays the 16:9 poster and video crisply without clipping */
+  background-color: #FFFFFF;
   display: block;
 }
 
-/* -------------------------------------------------------------------------- */
-/* Poster Placeholder when video is not yet configured                        */
-/* -------------------------------------------------------------------------- */
-.explainer-poster-placeholder {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: var(--space-4) var(--space-5);
-  box-sizing: border-box;
-  background: 
-    radial-gradient(circle at 50% 50%, #18181B 0%, #09090B 100%);
-  color: #FFFFFF;
-  user-select: none;
-}
-
-@media (min-width: 768px) {
-  .explainer-poster-placeholder {
-    padding: var(--space-6) var(--space-8);
-  }
-}
-
-.poster-monochrome-pattern {
+/* Ambient Subtle Scrim when paused to maintain button contrast */
+.explainer-video-scrim {
   position: absolute;
   inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0.12) 0%,
+    rgba(0, 0, 0, 0.04) 50%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
   pointer-events: none;
-  opacity: 0.85;
-}
-
-/* Poster Topline Brand Tag */
-.poster-topline {
-  position: relative;
   z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  align-self: flex-start;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius-full);
-  padding: 5px 14px;
+  transition: opacity 0.35s ease;
 }
 
-.poster-brand-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: #FFFFFF;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.7);
+.scrim--visible {
+  opacity: 1;
 }
 
-.poster-title-label {
-  font-family: var(--font-family-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #FFFFFF;
+.scrim--hidden {
+  opacity: 0;
 }
 
-/* Clearly Positioned Circular Play Control */
-.poster-center-control {
-  position: relative;
-  z-index: 2;
+/* -------------------------------------------------------------------------- */
+/* Exactly One Centered Liquid Glass Play/Pause Control Button                */
+/* -------------------------------------------------------------------------- */
+.explainer-center-control-layer {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: auto 0;
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity 0.35s ease;
 }
 
-.poster-play-circle {
-  width: 68px;
-  height: 68px;
+/* Visible initially and when paused; on hover when playing */
+.control-layer--visible {
+  opacity: 1;
+}
+
+.control-layer--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Reveal play/pause button on container hover even while playing */
+.explainer-media-boundary:hover .control-layer--hidden {
+  opacity: 0.85;
+  pointer-events: auto;
+}
+
+.explainer-liquid-glass-btn {
+  pointer-events: auto;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  /* Liquid-glass translucent surface with high-refraction specular gradient */
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.12) 60%, rgba(255, 255, 255, 0.25) 100%);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.65) 0%,
+    rgba(240, 240, 245, 0.35) 50%,
+    rgba(255, 255, 255, 0.5) 100%
+  );
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 
-    inset 0 1.5px 2px rgba(255, 255, 255, 0.85),
-    inset 0 -1.5px 2px rgba(0, 0, 0, 0.35),
-    0 16px 36px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(0, 0, 0, 0.2);
+    inset 0 1.5px 2px rgba(255, 255, 255, 1),
+    inset 0 -1.5px 2px rgba(0, 0, 0, 0.15),
+    0 16px 36px rgba(0, 0, 0, 0.22),
+    0 4px 12px rgba(0, 0, 0, 0.12);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  cursor: pointer;
+  color: #18181B; /* Darker iconography for liquid glass over bright poster */
+  outline: none;
+}
+
+@media (min-width: 768px) {
+  .explainer-liquid-glass-btn {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+.explainer-liquid-glass-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 
+    inset 0 2px 3px rgba(255, 255, 255, 1),
+    inset 0 -1.5px 2px rgba(0, 0, 0, 0.15),
+    0 22px 48px rgba(0, 0, 0, 0.28),
+    0 0 20px rgba(255, 255, 255, 0.6);
+}
+
+.explainer-liquid-glass-btn:active {
+  transform: scale(0.96);
+}
+
+.glass-btn-icon {
+  fill: #18181B;
+  color: #18181B;
+  filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.8));
+}
+
+.glass-btn-icon--play {
+  margin-left: 4px; /* Optical center compensation for play triangle */
+}
+
+/* -------------------------------------------------------------------------- */
+/* Error Overlay                                                              */
+/* -------------------------------------------------------------------------- */
+.explainer-error-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 12, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #EF4444;
+  font-family: var(--font-family-sans);
+  font-size: 0.9rem;
+  z-index: 10;
+}
+
+.glass-error-retry {
+  padding: 6px 16px;
+  width: auto;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  font-size: 0.8rem;
+  color: #FFFFFF;
   cursor: pointer;
 }
 
-@media (min-width: 768px) {
-  .poster-play-circle {
-    width: 76px;
-    height: 76px;
-  }
-}
-
-.poster-play-circle:hover {
-  transform: scale(1.05);
-  box-shadow: 
-    inset 0 2px 3px rgba(255, 255, 255, 0.95),
-    inset 0 -1.5px 2px rgba(0, 0, 0, 0.35),
-    0 20px 44px rgba(0, 0, 0, 0.55),
-    0 0 20px rgba(255, 255, 255, 0.2);
-}
-
-.poster-play-icon {
-  margin-left: 4px; /* Optical center compensation for play triangle */
-  fill: #FFFFFF;
-  color: #FFFFFF;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-}
-
-/* Restrained Caption & Technical Specs Footer */
-.poster-footer {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: var(--space-3);
-}
-
-.poster-caption-tag {
-  font-family: var(--font-family-sans);
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: #D4D4D8;
-  letter-spacing: 0.01em;
-}
-
-.poster-specs-mono {
-  font-family: var(--font-family-mono);
-  font-size: 0.62rem;
-  color: #71717A;
-  letter-spacing: 0.06em;
-}
-
-@media (max-width: 579px) {
+/* -------------------------------------------------------------------------- */
+/* Mobile Adjustments                                                         */
+/* -------------------------------------------------------------------------- */
+@media (max-width: 639px) {
   .explainer-video-frame-wrapper {
     padding: 10px;
   }
@@ -230,5 +234,15 @@
   .retro-corner-bracket {
     width: 14px;
     height: 14px;
+  }
+
+  .explainer-liquid-glass-btn {
+    width: 68px;
+    height: 68px;
+  }
+
+  .glass-btn-icon {
+    width: 24px;
+    height: 24px;
   }
 }

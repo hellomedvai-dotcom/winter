@@ -73,6 +73,12 @@
 
 .mv-halo-ring {
   animation: haloPulse 2s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+/* Demo starts only once the visual enters the viewport (see useReveal in the TSX) */
+.doctor-brief-convergence-wrapper.is-visible .mv-halo-ring {
+  animation-play-state: running;
 }
 
 @keyframes haloPulse {

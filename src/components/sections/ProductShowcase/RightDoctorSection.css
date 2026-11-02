@@ -157,6 +157,36 @@
   }
 }
 
+/* Connector draw-in: transform/opacity only (no layout impact).
+   Triggered by the care-path grid's is-visible state from useReveal(). */
+.care-path-arrow {
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  transition:
+    transform var(--motion-duration-slow) var(--motion-ease-out),
+    opacity var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.care-path-grid.is-visible .care-path-arrow {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+/* Touch press feedback (restrained, monochrome) */
+.care-path-node-card:active {
+  transform: translateY(0) scale(0.99);
+  transition-duration: var(--motion-duration-fast);
+}
+
+.scenario-chip:active {
+  transform: scale(0.96);
+}
+
+.handover-jump-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
 /* Scenario Studio */
 .path-scenario-studio {
   padding: clamp(24px, 4vw, 36px);

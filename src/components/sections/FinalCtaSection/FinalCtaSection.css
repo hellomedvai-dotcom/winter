@@ -242,123 +242,230 @@
   }
 }
 
-.dark-entry-card {
-  background-color: #000000;
+.dark-opportunity-card {
+  background: linear-gradient(180deg, #18191C 0%, #0F1012 100%);
   color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
-  padding: 30px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 26px;
+  padding: 28px 24px 24px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
   position: relative;
   overflow: hidden;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-/* Subtle grayscale glass highlight reflection on hover */
-.dark-entry-card::after {
+/* Subtle top sheen reflection */
+.dark-opportunity-card::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
+  height: 48%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, transparent 100%);
   pointer-events: none;
-  opacity: 0;
+  opacity: 0.6;
   transition: opacity 0.3s ease;
 }
 
-.dark-entry-card:hover {
+.dark-opportunity-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+  border-color: rgba(125, 255, 162, 0.35);
+  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.4), 0 0 24px rgba(125, 255, 162, 0.08);
 }
 
-.dark-entry-card:hover::after {
+.dark-opportunity-card:hover::after {
   opacity: 1;
 }
 
-.card-top-row {
+.dark-opportunity-card:focus-visible {
+  outline: 2px solid #7DFFA2;
+  outline-offset: 3px;
+}
+
+/* Top Row: Category Icon Squircle + Upper-Right Floating Pill */
+.opportunity-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
-.card-icon-wrap {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
+.opportunity-icon-squircle {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.card-index-tag {
+.opportunity-category-pill {
+  background: rgba(30, 32, 36, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 5px 12px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.category-accent-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6EE7B7;
+  box-shadow: 0 0 8px rgba(110, 231, 183, 0.75);
+}
+
+.category-pill-label {
   font-family: var(--font-family-mono, monospace);
-  font-size: 0.68rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #F4F4F5;
+}
+
+/* Strong, readable title */
+.opportunity-card-title {
+  font-size: 1.22rem;
+  font-weight: 700;
+  line-height: 1.34;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  margin: 0 0 14px;
+}
+
+/* Compact metadata row separated by subtle vertical dividers */
+.opportunity-metadata-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+}
+
+.opportunity-metadata-row .meta-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.opportunity-metadata-row .meta-label {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.62rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.5);
+  color: #71717A;
 }
 
-.card-title {
-  font-size: 1.15rem;
+.opportunity-metadata-row .meta-val {
+  font-size: 0.8rem;
   font-weight: 600;
-  line-height: 1.35;
-  color: #FFFFFF;
-  margin: 0 0 10px;
+  color: #E4E4E7;
+  white-space: nowrap;
 }
 
-.card-body {
+.opportunity-metadata-row .meta-divider {
+  width: 1px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+}
+
+/* Concise description with comfortable line-height */
+.opportunity-description {
   font-size: 0.88rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.65);
-  margin: 0 0 24px;
+  line-height: 1.62;
+  color: #A1A1AA;
+  margin: 0 0 20px;
   flex-grow: 1;
 }
 
-.card-action-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 11px 18px;
-  background: transparent;
-  color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 9999px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  font-family: inherit;
+/* Thin separator above bottom action row */
+.opportunity-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-bottom: 18px;
   margin-top: auto;
 }
 
-.card-action-btn .card-arrow-icon {
+/* Bottom Action Row with Restrained Mint Accent CTA */
+.opportunity-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.opportunity-cohort-tag .cohort-label {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #71717A;
+}
+
+.opportunity-mint-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #7DFFA2 0%, #46E28C 100%);
+  color: #061A0C;
+  border: none;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, filter 0.2s ease;
+  box-shadow: 0 4px 14px rgba(70, 226, 140, 0.35);
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.opportunity-mint-btn .mint-btn-arrow {
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.dark-entry-card:hover .card-arrow-icon,
-.card-action-btn:hover .card-arrow-icon,
-.card-action-btn:focus-visible .card-arrow-icon {
+.dark-opportunity-card:hover .opportunity-mint-btn .mint-btn-arrow,
+.opportunity-mint-btn:hover .mint-btn-arrow,
+.opportunity-mint-btn:focus-visible .mint-btn-arrow {
   transform: translateX(3px);
 }
 
-.dark-entry-card:hover .card-action-btn,
-.card-action-btn:hover,
-.card-action-btn:focus-visible {
-  background-color: #FFFFFF;
-  color: #000000;
-  border-color: #FFFFFF;
+.dark-opportunity-card:hover .opportunity-mint-btn,
+.opportunity-mint-btn:hover,
+.opportunity-mint-btn:focus-visible {
+  filter: brightness(1.06);
+  box-shadow: 0 6px 20px rgba(70, 226, 140, 0.5);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+  .opportunity-bottom-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .opportunity-mint-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -389,6 +496,20 @@
   .safety-disclaimer-text {
     text-align: left;
   }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Motion: staggered fade entrance for the entry-option cards.                */
+/* Scoped so their own hover transform/shadow/border stay snappy while the    */
+/* [data-reveal="fade"] opacity animates with the --si stagger.               */
+/* -------------------------------------------------------------------------- */
+.waitlist-horizontal-capsule[data-reveal],
+.dark-entry-card[data-reveal] {
+  transition:
+    transform var(--motion-duration-normal) var(--motion-ease-out),
+    box-shadow var(--motion-duration-normal) var(--motion-ease-out),
+    border-color var(--motion-duration-normal) var(--motion-ease-out),
+    opacity var(--motion-duration-slow) var(--motion-ease-out) calc(var(--si, 0) * 90ms);
 }
 
 /* -------------------------------------------------------------------------- */

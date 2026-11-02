@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Mic,
   History,
-  Shield,
   Sparkles,
   ChevronLeft,
   ChevronRight,
@@ -15,15 +14,16 @@ import {
   Pill,
   Stethoscope,
   Activity,
-  Eye,
   RotateCcw,
-  Layers,
+  Clock,
+  Compass,
+  HelpCircle,
+  AlertCircle,
+  FileCheck2,
 } from 'lucide-react';
 import {
   VOICE_DEMO_CONTENT,
   CHAT_DEMO_STEPS,
-  DOCTOR_BRIEF_SOURCES,
-  DOCTOR_BRIEF_SECTIONS,
   HEALTH_MEMORY_SOURCES,
   HEALTH_MEMORY_TIMELINE,
   REPORT_EXPLAINER_SAMPLES,
@@ -31,7 +31,9 @@ import {
   ChatMessage,
   ChatSuggestedAnswer,
 } from '@/config/showcaseContent';
-import { DoctorBriefConvergenceVisual } from './DoctorBriefConvergenceVisual';
+import { BodyMapSlot } from './BodyMapSlot';
+import { SwipeHint } from '@/components/common/SwipeHint/SwipeHint';
+import { useSwipeHint } from '@/lib/motion/useSwipeHint';
 import './ActiveFeatureFloatingPanel.css';
 
 interface ActiveFeatureFloatingPanelProps {
@@ -121,8 +123,9 @@ export const ActiveFeatureFloatingPanel: React.FC<ActiveFeatureFloatingPanelProp
   // State for Sub-Feature Interactions
   // ---------------------------------------------------------------------------
 
-  // 1. Body Map
-  const [selectedBodyRegion, setSelectedBodyRegion] = useState<string>('elbow');
+  // Horizontal timeline step strip (Health Memory)
+  const timelineSwipe = useSwipeHint<HTMLDivElement>();
+
 
   // 2. Voice Demo
   const [voiceLang, setVoiceLang] = useState<LanguageCode>('mr');
@@ -136,12 +139,10 @@ export const ActiveFeatureFloatingPanel: React.FC<ActiveFeatureFloatingPanelProp
   ]);
   const [selectedChipId, setSelectedChipId] = useState<string | null>(null);
 
-  // 4. Doctor Brief Demo
+  // 4. Doctor Brief Demo (Illustrative Knee-Discomfort Interactive Exploration)
+  type BriefTab = 'reported' | 'timeline' | 'to_clarify' | 'care_to_explore' | 'doctor_brief';
+  const [briefTab, setBriefTab] = useState<BriefTab>('reported');
   const [briefViewMode, setBriefViewMode] = useState<'doctor' | 'patient'>('patient');
-  const [highlightedBriefFragmentId, setHighlightedBriefFragmentId] = useState<string | null>(null);
-  const [isSynthesizingBrief, setIsSynthesizingBrief] = useState<boolean>(false);
-  const [briefReplayKey, setBriefReplayKey] = useState<number>(0);
-  const [briefAnimationStep, setBriefAnimationStep] = useState<number>(5);
 
   // 5. Health Memory Demo
   // Crucial requirement: cards should react ONLY to actual pointer hover or keyboard focus,
@@ -187,41 +188,6 @@ export const ActiveFeatureFloatingPanel: React.FC<ActiveFeatureFloatingPanelProp
         { label: ans.resultingEntity.label, value: ans.resultingEntity.value },
       ]);
     }, 450);
-  };
-
-  const handleReplayBriefSynthesis = () => {
-    setIsSynthesizingBrief(true);
-    setBriefReplayKey((prev) => prev + 1);
-    setBriefAnimationStep(1);
-
-    setTimeout(() => setBriefAnimationStep(2), 350);
-    setTimeout(() => setBriefAnimationStep(3), 750);
-    setTimeout(() => setBriefAnimationStep(4), 1150);
-    setTimeout(() => {
-      setBriefAnimationStep(5);
-      setIsSynthesizingBrief(false);
-    }, 1500);
-  };
-
-  const renderBriefSourceIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'MessageSquare':
-        return <MessageSquare size={13} />;
-      case 'Mic':
-        return <Mic size={13} />;
-      case 'Crosshair':
-        return <Crosshair size={13} />;
-      case 'FileText':
-        return <FileText size={13} />;
-      case 'Pill':
-        return <Pill size={13} />;
-      case 'History':
-        return <History size={13} />;
-      case 'Activity':
-        return <Activity size={13} />;
-      default:
-        return <Layers size={13} />;
-    }
   };
 
   const renderMemorySourceIcon = (iconName: string) => {
@@ -277,7 +243,11 @@ export const ActiveFeatureFloatingPanel: React.FC<ActiveFeatureFloatingPanelProp
             <span>Prev</span>
           </button>
 
-          <div className="panel-dots-track" aria-hidden="true">
+          <div
+            className="panel-dots-track"
+            role="group"
+            aria-label="Feature preview pagination"
+          >
             {FEATURE_LIST.map((feat, i) => (
               <button
                 key={feat.id}
@@ -285,6 +255,7 @@ export const ActiveFeatureFloatingPanel: React.FC<ActiveFeatureFloatingPanelProp
                 className={`panel-dot ${i === safeIdx ? 'is-active' : ''}`}
                 onClick={() => onSelectFeature(feat.id)}
                 aria-label={`Switch to ${feat.label}`}
+                aria-current={i === safeIdx ? 'true' : undefined}
               />
             ))}
           </div>
@@ -308,158 +279,11 @@ export const ActiveFeatureFloatingPanel: React.FC<ActiveFeatureFloatingPanelProp
         {/* 01. BODY MAP PREVIEW                                             */}
         {/* ================================================================ */}
         {activeFeatureId === 'feature-body-map' && (
-          <div className="preview-container preview-body-map">
-            <div className="preview-header-block">
-              <span className="preview-eyebrow">Spatial Anatomical Intake</span>
-              <h3 className="preview-headline">
-                Point to where it hurts.{' '}
-                <span className="editorial-serif preview-serif">Let context follow.</span>
-              </h3>
-              <p className="preview-description">
-                Patients describe physical concerns intuitively by pinpointing anatomical regions. 
-                Spatial intake pairs location with clinical coordinates without requiring medical terminology.
-              </p>
-            </div>
-
-            <div className="body-map-interactive-grid">
-              {/* Silhouette Anatomical Preview */}
-              <div className="body-wireframe-card">
-                <div className="wireframe-status-tag">
-                  <Shield size={12} />
-                  <span>Reserved Integration Area • Legacy Body Map Protected</span>
-                </div>
-
-                <div className="anatomical-wireframe-visual">
-                  <svg viewBox="0 0 280 380" fill="none" className="body-silhouette-svg" aria-label="Anatomical Body Silhouette">
-                    <circle cx="140" cy="45" r="28" stroke="rgba(255, 255, 255, 0.4)" strokeWidth="1.2" strokeDasharray="3 3" />
-                    <line x1="140" y1="73" x2="140" y2="190" stroke="rgba(255, 255, 255, 0.35)" strokeWidth="1.4" />
-                    {/* Shoulders and Arms */}
-                    <path d="M70 120 L140 95 L210 120" stroke="rgba(255, 255, 255, 0.4)" strokeWidth="1.2" />
-                    <path d="M70 120 L50 200 L40 260" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.2" />
-                    <path d="M210 120 L230 200 L240 260" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.2" />
-                    {/* Torso & Pelvis */}
-                    <path d="M95 190 L140 195 L185 190" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.2" />
-                    {/* Legs */}
-                    <path d="M110 200 L105 285 L100 360" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.2" />
-                    <path d="M170 200 L175 285 L180 360" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.2" />
-
-                    {/* Interactive Pain Region Pins */}
-                    {[
-                      { id: 'head', cx: 140, cy: 45, label: 'Head' },
-                      { id: 'chest', cx: 140, cy: 130, label: 'Chest' },
-                      { id: 'elbow', cx: 50, cy: 200, label: 'Elbow' },
-                      { id: 'lumbar', cx: 140, cy: 175, label: 'Spine' },
-                      { id: 'knee', cx: 175, cy: 285, label: 'Knee' },
-                    ].map((pin) => {
-                      const isPinSelected = selectedBodyRegion === pin.id;
-                      return (
-                        <g
-                          key={pin.id}
-                          className="pin-group"
-                          role="button"
-                          tabIndex={0}
-                          aria-label={`Select ${pin.label} anatomical landmark`}
-                          aria-pressed={isPinSelected}
-                          onClick={() => setSelectedBodyRegion(pin.id)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              setSelectedBodyRegion(pin.id);
-                            }
-                          }}
-                          style={{ cursor: 'pointer' }}
-                        >
-                          <circle
-                            cx={pin.cx}
-                            cy={pin.cy}
-                            r={isPinSelected ? 12 : 7}
-                            fill={isPinSelected ? '#FFFFFF' : 'rgba(255, 255, 255, 0.2)'}
-                            stroke="#000000"
-                            strokeWidth="1.5"
-                          />
-                          {isPinSelected && (
-                            <circle cx={pin.cx} cy={pin.cy} r={18} stroke="#FFFFFF" strokeWidth="0.8" strokeDasharray="2 3" />
-                          )}
-                          <text
-                            x={pin.cx + 16}
-                            y={pin.cy + 4}
-                            fill={isPinSelected ? '#FFFFFF' : 'rgba(255, 255, 255, 0.6)'}
-                            fontSize="10"
-                            fontFamily="monospace"
-                            fontWeight="bold"
-                          >
-                            {pin.label}
-                          </text>
-                        </g>
-                      );
-                    })}
-                  </svg>
-                </div>
-
-                {/* Mobile & Touch Landmark Selector Pills */}
-                <div className="body-region-pills-row" role="tablist" aria-label="Anatomical landmark selectors">
-                  {[
-                    { id: 'head', label: 'Head' },
-                    { id: 'chest', label: 'Chest' },
-                    { id: 'elbow', label: 'Elbow' },
-                    { id: 'lumbar', label: 'Spine' },
-                    { id: 'knee', label: 'Knee' },
-                  ].map((pin) => (
-                    <button
-                      key={pin.id}
-                      type="button"
-                      role="tab"
-                      aria-selected={selectedBodyRegion === pin.id}
-                      className={`region-pill-btn ${selectedBodyRegion === pin.id ? 'is-selected' : ''}`}
-                      onClick={() => setSelectedBodyRegion(pin.id)}
-                    >
-                      {pin.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Selected Region Anatomical Information */}
-              <div className="body-region-detail-card">
-                <span className="card-mini-tag">ANATOMICAL COORDINATES</span>
-                <h4 className="detail-region-title">
-                  {selectedBodyRegion === 'elbow' && 'Right Lateral Epicondyle (Elbow)'}
-                  {selectedBodyRegion === 'chest' && 'Retrosternal Midline (Chest)'}
-                  {selectedBodyRegion === 'head' && 'Temporal Frontal Region (Head)'}
-                  {selectedBodyRegion === 'lumbar' && 'L4-L5 Paraspinal Segment (Spine)'}
-                  {selectedBodyRegion === 'knee' && 'Medial Patellofemoral Joint (Knee)'}
-                </h4>
-
-                <div className="detail-specs-list">
-                  <div className="spec-row">
-                    <span className="spec-label">Clinical Location:</span>
-                    <span className="spec-value">
-                      {selectedBodyRegion === 'elbow' && 'Extensor tendon origin, lateral humeral epicondyle'}
-                      {selectedBodyRegion === 'chest' && 'Substernal anterior thoracic wall'}
-                      {selectedBodyRegion === 'head' && 'Unilateral frontotemporal distribution'}
-                      {selectedBodyRegion === 'lumbar' && 'Lower paraspinal muscular junction'}
-                      {selectedBodyRegion === 'knee' && 'Anterior tibiofemoral weight-bearing line'}
-                    </span>
-                  </div>
-
-                  <div className="spec-row">
-                    <span className="spec-label">Mapped Context:</span>
-                    <span className="spec-value">
-                      Mechanical load-dependent aggravation, timeline tracking, and referral symptom history.
-                    </span>
-                  </div>
-                </div>
-
-                <div className="body-integration-note">
-                  <p>
-                    Patients select an anatomical region on screen. The system attaches this precise spatial 
-                    coordinate directly to their health timeline without manual data re-entry.
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="preview-container preview-body-map-wrap">
+            <BodyMapSlot />
           </div>
         )}
+
 
         {/* ================================================================ */}
         {/* 02. VOICE DEMONSTRATION PREVIEW                                  */}
@@ -664,7 +488,7 @@ export const ActiveFeatureFloatingPanel: React.FC<ActiveFeatureFloatingPanelProp
         )}
 
         {/* ================================================================ */}
-        {/* 04. 30-SECOND DOCTOR BRIEF PREVIEW                               */}
+        {/* 04. 30-SECOND DOCTOR BRIEF PREVIEW: KNEE-DISCOMFORT DEMO         */}
         {/* ================================================================ */}
         {activeFeatureId === 'feature-doctor-brief' && (
           <div className="preview-container preview-doctor-brief">
@@ -675,170 +499,403 @@ export const ActiveFeatureFloatingPanel: React.FC<ActiveFeatureFloatingPanelProp
                 <span className="editorial-serif preview-serif">Time reclaimed for clinical listening.</span>
               </h3>
               <p className="preview-description">
-                Scattered diagnostic reports, medications, and symptom timelines are distilled into a concise, 
-                high-yield clinical brief ready for the healthcare professional.
+                Scattered symptom descriptions, timelines, and details requiring clarification are organized into a structured briefing before a doctor consultation.
               </p>
             </div>
 
-            {/* Controls Bar & Illustrative Data Disclaimer */}
-            <div className="brief-controls-topbar">
-              <div className="brief-controls-left">
-                {/* Perspective View Toggle */}
-                <div className="toggle-pill-container" role="radiogroup" aria-label="Perspective view mode">
-                  <button
-                    type="button"
-                    role="radio"
-                    aria-checked={briefViewMode === 'patient'}
-                    className={`toggle-pill-btn ${briefViewMode === 'patient' ? 'is-active' : ''}`}
-                    onClick={() => setBriefViewMode('patient')}
-                  >
-                    Patient Language
-                  </button>
-                  <button
-                    type="button"
-                    role="radio"
-                    aria-checked={briefViewMode === 'doctor'}
-                    className={`toggle-pill-btn ${briefViewMode === 'doctor' ? 'is-active' : ''}`}
-                    onClick={() => setBriefViewMode('doctor')}
-                  >
-                    Medical View
-                  </button>
-                </div>
-
-                {/* Clear / Toggle Inspection Button */}
-                {highlightedBriefFragmentId && (
-                  <button
-                    type="button"
-                    className="brief-action-btn"
-                    onClick={() => setHighlightedBriefFragmentId(null)}
-                  >
-                    <Eye size={12} />
-                    <span>Clear Highlight</span>
-                  </button>
-                )}
-
-                {/* Re-Synthesize Sequence Replay */}
-                <button
-                  type="button"
-                  className="brief-action-btn"
-                  onClick={handleReplayBriefSynthesis}
-                  title="Re-run synthesis convergence animation"
-                >
-                  <RotateCcw size={12} />
-                  <span>Re-synthesize</span>
-                </button>
+            {/* Illustrative Patient Statement Box */}
+            <div className="brief-illustrative-statement-card">
+              <div className="brief-statement-topbar">
+                <span className="brief-statement-pill">
+                  <Activity size={12} aria-hidden="true" />
+                  Illustrative example &middot; Not real patient data
+                </span>
+                <span className="brief-statement-meta">Reported Concern &middot; Knee Discomfort</span>
               </div>
-
-              {/* Sample Data Disclaimer Tag */}
-              <div className="brief-sample-pill">
-                <span className="brief-sample-indicator" />
-                <span>Illustrative Sample Data • Clinical Demo</span>
-              </div>
+              <blockquote className="brief-statement-quote">
+                &ldquo;My knee has been hurting on and off for about two weeks. Stairs seem to make it worse. Rest helps temporarily, but it keeps coming back.&rdquo;
+              </blockquote>
             </div>
 
-            {/* 3-Column Converging Information Pipeline */}
-            <div className="brief-converging-pipeline" key={briefReplayKey}>
-              {/* Left Column: 7 Scattered Context Fragments */}
-              <div className="brief-column brief-fragments-column">
-                <div className="brief-column-header">
-                  <span className="brief-col-eyebrow">Scattered Inputs</span>
-                  <span className="brief-col-title">Patient Context Fragments</span>
-                  <span className="brief-col-hint">Click any fragment to trace into brief</span>
-                </div>
+            {/* 5 Accessible User-Controlled Tabs */}
+            <div
+              className="brief-tabs-nav"
+              role="tablist"
+              aria-label="Doctor Brief illustrative knee demonstration facets"
+            >
+              {[
+                { id: 'reported' as const, label: 'Reported', icon: <FileText size={13} /> },
+                { id: 'timeline' as const, label: 'Timeline', icon: <Clock size={13} /> },
+                { id: 'to_clarify' as const, label: 'To clarify', icon: <HelpCircle size={13} /> },
+                { id: 'care_to_explore' as const, label: 'Relevant care to explore', icon: <Compass size={13} /> },
+                { id: 'doctor_brief' as const, label: 'Doctor Brief', icon: <FileCheck2 size={13} /> },
+              ].map((tab) => {
+                const isActive = briefTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    role="tab"
+                    id={`brief-tab-${tab.id}`}
+                    aria-selected={isActive}
+                    aria-controls={`brief-panel-${tab.id}`}
+                    className={`brief-tab-nav-btn ${isActive ? 'is-active' : ''}`}
+                    onClick={() => setBriefTab(tab.id)}
+                  >
+                    <span className="tab-btn-icon" aria-hidden="true">{tab.icon}</span>
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
 
-                <div className="fragments-scroll-list">
-                  {DOCTOR_BRIEF_SOURCES.map((src) => {
-                    const isSelected = highlightedBriefFragmentId === src.id;
-                    return (
-                      <div
-                        key={src.id}
-                        className={`fragment-interactive-tile ${isSelected ? 'is-selected-fragment' : ''}`}
-                        onClick={() =>
-                          setHighlightedBriefFragmentId(isSelected ? null : src.id)
-                        }
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            setHighlightedBriefFragmentId(isSelected ? null : src.id);
-                          }
-                        }}
-                        role="button"
-                        tabIndex={0}
-                        aria-pressed={isSelected}
-                      >
-                        <div className="frag-tile-top">
-                          <span className="frag-type-tag">
-                            {renderBriefSourceIcon(src.iconName)}
-                            <span>{src.sourceType}</span>
-                          </span>
-                          <span className="frag-time-tag">{src.timestamp}</span>
-                        </div>
-                        <h5 className="frag-headline">{src.title}</h5>
-                        <p className="frag-raw-quote">&ldquo;{src.rawText}&rdquo;</p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Middle Column: Central Synthesis Engine & Connection Trajectories */}
-              <div className="brief-column brief-synthesis-column" aria-hidden="true">
-                <DoctorBriefConvergenceVisual
-                  animationStep={briefAnimationStep}
-                  highlightedFragmentId={highlightedBriefFragmentId}
-                  isSynthesizing={isSynthesizingBrief}
-                />
-              </div>
-
-              {/* Right Column: The 8-Section Readable Doctor Brief Sheet */}
-              <div className="brief-column brief-sheet-column">
-                <div className="brief-sheet-document">
-                  <div className="sheet-doc-header">
-                    <div>
-                      <span className="sheet-clinic-mono">MEDVIDHI CLINICAL SYNTHESIS</span>
-                      <h4 className="sheet-doc-title">Patient Context Orientation</h4>
-                      <span className="sheet-clinic-target">Target: Orthopedic / Sports Medicine Consultation</span>
+            {/* Active Tab Panel */}
+            <div
+              id={`brief-panel-${briefTab}`}
+              role="tabpanel"
+              aria-labelledby={`brief-tab-${briefTab}`}
+              className="brief-tab-panel-container"
+            >
+              {/* TAB 1: REPORTED */}
+              {briefTab === 'reported' && (
+                <div className="brief-tab-view brief-view-reported">
+                  <div className="brief-view-header">
+                    <div className="brief-view-badge">
+                      <span className="badge-dot dot-mint" />
+                      <span>REPORTED BY PATIENT</span>
                     </div>
-                    <span className="sheet-ready-badge">30-Sec Brief</span>
+                    <span className="brief-view-hint">Natural language account, without medical jargon</span>
                   </div>
 
-                  {/* Complete 8 Sections */}
-                  <div className="sheet-sections-list">
-                    {DOCTOR_BRIEF_SECTIONS.map((sec) => {
-                      const isMatched = highlightedBriefFragmentId === sec.sourceFragmentId;
-                      return (
-                        <div
-                          key={sec.id}
-                          className={`sheet-sec-tile ${isMatched ? 'is-matched-section' : ''}`}
-                          onClick={() =>
-                            setHighlightedBriefFragmentId(isMatched ? null : sec.sourceFragmentId)
-                          }
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              setHighlightedBriefFragmentId(isMatched ? null : sec.sourceFragmentId);
-                            }
-                          }}
-                          role="button"
-                          tabIndex={0}
-                          aria-pressed={isMatched}
-                        >
-                          <div className="sec-tile-top">
-                            <span className="sec-tile-num">{sec.number}</span>
-                            <span className="sec-tile-title">{sec.title}</span>
-                            {sec.statusBadge && (
-                              <span className="sec-alert-badge">{sec.statusBadge}</span>
-                            )}
-                          </div>
-                          <p className="sec-tile-text">
-                            {briefViewMode === 'doctor' ? sec.medicalViewText : sec.patientViewText}
-                          </p>
-                        </div>
-                      );
-                    })}
+                  <div className="brief-core-summary-box">
+                    <p className="brief-core-statement">
+                      Intermittent knee discomfort, described as worse on stairs and temporarily relieved by rest.
+                    </p>
+                  </div>
+
+                  <div className="brief-details-grid">
+                    <div className="brief-detail-card">
+                      <span className="detail-tag">Reported Sensation</span>
+                      <h5 className="detail-title">Episodic Knee Discomfort</h5>
+                      <p className="detail-desc">
+                        Described by the person as an aching, non-continuous pain located in the knee area that recurs across daily routines.
+                      </p>
+                    </div>
+
+                    <div className="brief-detail-card">
+                      <span className="detail-tag">Aggravating Factor</span>
+                      <h5 className="detail-title">Stairs Navigation</h5>
+                      <p className="detail-desc">
+                        Reported as a primary trigger that aggravates the discomfort, suggesting potential biomechanical joint loading.
+                      </p>
+                    </div>
+
+                    <div className="brief-detail-card">
+                      <span className="detail-tag">Relieving Factor</span>
+                      <h5 className="detail-title">Temporary Rest Relief</h5>
+                      <p className="detail-desc">
+                        Rest or non-weight-bearing periods provide temporary relief, though the concern recurs once active again.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="brief-clarity-note">
+                    <CheckCircle2 size={13} aria-hidden="true" />
+                    <span>Distinction: Direct patient-reported symptoms, preserving the human account for clinician review.</span>
                   </div>
                 </div>
-              </div>
+              )}
+
+              {/* TAB 2: TIMELINE */}
+              {briefTab === 'timeline' && (
+                <div className="brief-tab-view brief-view-timeline">
+                  <div className="brief-view-header">
+                    <div className="brief-view-badge">
+                      <span className="badge-dot dot-blue" />
+                      <span>TEMPORAL PROGRESSION</span>
+                    </div>
+                    <span className="brief-view-hint">Chronological tracking over days and weeks</span>
+                  </div>
+
+                  <div className="brief-core-summary-box">
+                    <p className="brief-core-statement">
+                      Reported timeframe: approximately two weeks. Reported pattern: comes and goes, with stairs reported as a possible aggravating factor.
+                    </p>
+                  </div>
+
+                  <div className="brief-details-grid">
+                    <div className="brief-detail-card">
+                      <span className="detail-tag">Timeframe</span>
+                      <h5 className="detail-title">~14-Day Duration</h5>
+                      <p className="detail-desc">
+                        Subacute timeframe; not an instantaneous acute injury, but ongoing long enough to rule out transient day-to-day muscle fatigue.
+                      </p>
+                    </div>
+
+                    <div className="brief-detail-card">
+                      <span className="detail-tag">Pattern Evolution</span>
+                      <h5 className="detail-title">Intermittent Recurrence</h5>
+                      <p className="detail-desc">
+                        Fluctuating episodes. Discomfort does not persist 24/7; it ebbs and flows with physical activity and stair elevation.
+                      </p>
+                    </div>
+
+                    <div className="brief-detail-card">
+                      <span className="detail-tag">Resolution Status</span>
+                      <h5 className="detail-title">Unresolved Trajectory</h5>
+                      <p className="detail-desc">
+                        Symptom persists without spontaneous recovery, motivating the patient to explore appropriate clinical navigation.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="brief-clarity-note">
+                    <Clock size={13} aria-hidden="true" />
+                    <span>Chronological context helps clinicians determine appropriate diagnostic velocity and follow-up urgency.</span>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 3: TO CLARIFY */}
+              {briefTab === 'to_clarify' && (
+                <div className="brief-tab-view brief-view-to-clarify">
+                  <div className="brief-view-header">
+                    <div className="brief-view-badge">
+                      <span className="badge-dot dot-amber" />
+                      <span>INFORMATION STILL TO CLARIFY</span>
+                    </div>
+                    <span className="brief-view-hint">Missing context flagged for the clinician</span>
+                  </div>
+
+                  <div className="brief-core-summary-box">
+                    <p className="brief-core-statement">
+                      Onset, severity, other symptoms, relevant health history and whether any previous evaluation has occurred.
+                    </p>
+                  </div>
+
+                  <div className="brief-checkpoints-list">
+                    <div className="brief-checkpoint-item">
+                      <div className="checkpoint-num">01</div>
+                      <div className="checkpoint-content">
+                        <h5 className="checkpoint-title">Onset Circumstances</h5>
+                        <p className="checkpoint-desc">
+                          Did the discomfort start after a specific twist, slip, or impact, or did it begin gradually during normal daily tasks?
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="brief-checkpoint-item">
+                      <div className="checkpoint-num">02</div>
+                      <div className="checkpoint-content">
+                        <h5 className="checkpoint-title">Severity Rating &amp; Functional Impact</h5>
+                        <p className="checkpoint-desc">
+                          Pain intensity on a 1&ndash;10 numerical scale at rest vs. descending stairs; any night pain or sleep disturbance.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="brief-checkpoint-item">
+                      <div className="checkpoint-num">03</div>
+                      <div className="checkpoint-content">
+                        <h5 className="checkpoint-title">Associated Joint Symptoms</h5>
+                        <p className="checkpoint-desc">
+                          Presence of visible swelling, localized warmth, joint effusion, catching, true locking, or a giving-way sensation.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="brief-checkpoint-item">
+                      <div className="checkpoint-num">04</div>
+                      <div className="checkpoint-content">
+                        <h5 className="checkpoint-title">Relevant Health &amp; Activity History</h5>
+                        <p className="checkpoint-desc">
+                          Prior knee injuries, repetitive occupational loading, sports participation, or known systemic/joint conditions.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="brief-checkpoint-item">
+                      <div className="checkpoint-num">05</div>
+                      <div className="checkpoint-content">
+                        <h5 className="checkpoint-title">Previous Interventions &amp; Consultations</h5>
+                        <p className="checkpoint-desc">
+                          Whether any over-the-counter anti-inflammatories, braces, ice/heat, or earlier clinician evaluations were attempted.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="brief-clarity-note note-amber">
+                    <AlertCircle size={13} aria-hidden="true" />
+                    <span>Distinguishing reported facts from unverified details protects against false diagnostic assumptions.</span>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 4: RELEVANT CARE TO EXPLORE */}
+              {briefTab === 'care_to_explore' && (
+                <div className="brief-tab-view brief-view-care">
+                  <div className="brief-view-header">
+                    <div className="brief-view-badge">
+                      <span className="badge-dot dot-purple" />
+                      <span>CARE NAVIGATION EXPLORATION</span>
+                    </div>
+                    <span className="brief-view-hint">Guiding the consultation starting point without diagnosis</span>
+                  </div>
+
+                  <div className="brief-core-summary-box">
+                    <p className="brief-core-statement">
+                      The appropriate type of healthcare professional depends on the full clinical context. No definitive specialist is named and no match is confirmed without professional evaluation.
+                    </p>
+                  </div>
+
+                  <div className="brief-details-grid">
+                    <div className="brief-detail-card">
+                      <span className="detail-tag">Primary Starting Point</span>
+                      <h5 className="detail-title">Primary Care / General Physician</h5>
+                      <p className="detail-desc">
+                        A clinical physical examination to assess knee range of motion, joint line tenderness, ligament laxity, and patellofemoral tracking.
+                      </p>
+                    </div>
+
+                    <div className="brief-detail-card">
+                      <span className="detail-tag">Specialist Pathways</span>
+                      <h5 className="detail-title">Musculoskeletal / Sports Medicine</h5>
+                      <p className="detail-desc">
+                        Depending on clinical examination findings, exploration of sports medicine, orthopedic evaluation, or physical therapy may be discussed.
+                      </p>
+                    </div>
+
+                    <div className="brief-detail-card">
+                      <span className="detail-tag">Clinical Stewardship</span>
+                      <h5 className="detail-title">Clinician-Directed Diagnostics</h5>
+                      <p className="detail-desc">
+                        Imaging (e.g. weight-bearing plain radiographs) or advanced testing is evaluated strictly if the examining clinician determines it is indicated.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="brief-clarity-note">
+                    <Compass size={13} aria-hidden="true" />
+                    <span>MEDVIDHI supports patient navigation and communication. It never provides a diagnosis or definitive specialist match.</span>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 5: DOCTOR BRIEF (ASSEMBLED SUMMARY) */}
+              {briefTab === 'doctor_brief' && (
+                <div className="brief-tab-view brief-view-brief-assembled">
+                  <div className="brief-view-header">
+                    <div className="brief-view-badge">
+                      <span className="badge-dot dot-mint" />
+                      <span>ASSEMBLED PRE-CONSULTATION SUMMARY</span>
+                    </div>
+                    <div className="brief-view-toggle-wrap">
+                      <button
+                        type="button"
+                        className={`brief-view-toggle-btn ${briefViewMode === 'patient' ? 'is-active' : ''}`}
+                        onClick={() => setBriefViewMode('patient')}
+                      >
+                        Patient Language
+                      </button>
+                      <button
+                        type="button"
+                        className={`brief-view-toggle-btn ${briefViewMode === 'doctor' ? 'is-active' : ''}`}
+                        onClick={() => setBriefViewMode('doctor')}
+                      >
+                        Clinical Structure
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Assembled Document Card */}
+                  <div className="brief-assembled-document-sheet">
+                    <div className="assembled-doc-header">
+                      <div>
+                        <span className="doc-mono-brand">MEDVIDHI &middot; CLINICAL BRIEF SYNTHESIS</span>
+                        <h4 className="doc-main-title">
+                          {briefViewMode === 'doctor'
+                            ? 'Pre-Consultation Clinical Intake Brief'
+                            : 'Patient Experience Summary'}
+                        </h4>
+                      </div>
+                      <span className="doc-illustrative-tag">Illustrative Sample</span>
+                    </div>
+
+                    <div className="assembled-doc-meta-strip">
+                      <div className="doc-meta-col">
+                        <span className="meta-lbl">Chief Presentation:</span>
+                        <span className="meta-val">
+                          {briefViewMode === 'doctor'
+                            ? 'Subacute Knee Arthralgia with Mechanical Loading'
+                            : 'Intermittent Knee Discomfort (2-Week Duration)'}
+                        </span>
+                      </div>
+                      <div className="doc-meta-col">
+                        <span className="meta-lbl">Navigation Focus:</span>
+                        <span className="meta-val">Primary Care / Musculoskeletal Clinical Exam</span>
+                      </div>
+                    </div>
+
+                    <div className="assembled-sections-grid">
+                      <div className="assembled-sec-box">
+                        <div className="assembled-sec-top">
+                          <span className="sec-idx">01</span>
+                          <span className="sec-lbl">Reported Concern</span>
+                        </div>
+                        <p className="sec-txt">
+                          {briefViewMode === 'doctor'
+                            ? 'Intermittent knee discomfort aggravated by stair ambulation; temporary symptomatic alleviation achieved with non-weight-bearing rest.'
+                            : 'My knee has been hurting on and off for about two weeks. Stairs seem to make it worse, and rest helps temporarily.'}
+                        </p>
+                      </div>
+
+                      <div className="assembled-sec-box">
+                        <div className="assembled-sec-top">
+                          <span className="sec-idx">02</span>
+                          <span className="sec-lbl">Timeline &amp; Pattern</span>
+                        </div>
+                        <p className="sec-txt">
+                          {briefViewMode === 'doctor'
+                            ? 'Subacute ~14-day history. Fluctuating episodic recurrence with activity, without spontaneous resolution.'
+                            : 'Has lasted approximately two weeks. Comes and goes rather than hurting constantly.'}
+                        </p>
+                      </div>
+
+                      <div className="assembled-sec-box sec-box-clarify">
+                        <div className="assembled-sec-top">
+                          <span className="sec-idx">03</span>
+                          <span className="sec-lbl">Details to Clarify</span>
+                        </div>
+                        <p className="sec-txt">
+                          {briefViewMode === 'doctor'
+                            ? 'Elicit: mechanism of onset (twist vs gradual load), VAS score, presence of joint effusion/locking/instability, prior NSAID use or clinic visits.'
+                            : 'Key points to discuss: exact start circumstances, pain level, any knee swelling or locking, and past treatments tried.'}
+                        </p>
+                      </div>
+
+                      <div className="assembled-sec-box">
+                        <div className="assembled-sec-top">
+                          <span className="sec-idx">04</span>
+                          <span className="sec-lbl">Care Navigation Horizon</span>
+                        </div>
+                        <p className="sec-txt">
+                          {briefViewMode === 'doctor'
+                            ? 'Outpatient evaluation for hands-on musculoskeletal physical examination (ROM, joint stability, patellar tracking). Imaging at clinician discretion.'
+                            : 'Initial consultation with a primary doctor to examine the knee, check joint stability, and explore relevant care.'}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="assembled-doc-footer">
+                      <Stethoscope size={13} aria-hidden="true" />
+                      <span>
+                        Assembled to prepare for consultation. Qualified healthcare professionals remain solely responsible for clinical assessment, diagnosis, and treatment.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -988,10 +1045,19 @@ export const ActiveFeatureFloatingPanel: React.FC<ActiveFeatureFloatingPanelProp
             <div className="memory-timeline-section">
               <div className="timeline-top-bar">
                 <span className="timeline-bar-label">Illustrative History Sequence:</span>
-                <span className="timeline-bar-hint">Select any step to view longitudinal continuity</span>
+                <span className="timeline-bar-hint">
+                  <SwipeHint active={timelineSwipe.active} />
+                  <span className="timeline-bar-hint-text">Select any step to view longitudinal continuity</span>
+                </span>
               </div>
 
-              <div className="timeline-steps-track" role="tablist" aria-label="Health Memory Timeline Steps">
+              <div
+                className="timeline-steps-track h-scroll-row"
+                role="tablist"
+                aria-label="Health Memory Timeline Steps"
+                ref={timelineSwipe.rowRef}
+                onScroll={timelineSwipe.onRowScroll}
+              >
                 {HEALTH_MEMORY_TIMELINE.map((evt, idx) => {
                   const isSelected = selectedTimelineEventId === evt.id;
                   return (
@@ -1001,7 +1067,10 @@ export const ActiveFeatureFloatingPanel: React.FC<ActiveFeatureFloatingPanelProp
                         role="tab"
                         aria-selected={isSelected}
                         className={`timeline-step-chip ${isSelected ? 'is-active-step' : ''}`}
-                        onClick={() => setSelectedTimelineEventId(evt.id)}
+                        onClick={() => {
+                          setSelectedTimelineEventId(evt.id);
+                          timelineSwipe.notify();
+                        }}
                       >
                         <span className="step-num">0{evt.stepNumber}</span>
                         <span className="step-stage">{evt.stageName}</span>

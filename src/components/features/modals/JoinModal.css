@@ -130,7 +130,7 @@
   gap: 7px;
 }
 
-.field-label {
+.join-modal-window .field-label {
   font-family: var(--font-family-mono, monospace);
   font-size: 0.72rem;
   font-weight: 700;
@@ -409,6 +409,177 @@
   font-style: italic;
 }
 
+/* ==========================================================================
+   Waitlist Specific Premium Confirmation & Progress Counter
+   ========================================================================== */
+.waitlist-confirm-emblem {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+}
+
+.confirm-pulse-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+  animation: pulseRingExpand 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.confirm-icon-core {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  animation: emblemPop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pulseRingExpand {
+  0% { transform: scale(0.92); opacity: 0.7; }
+  50% { transform: scale(1.12); opacity: 0.2; }
+  100% { transform: scale(0.92); opacity: 0.7; }
+}
+
+@keyframes emblemPop {
+  0% { transform: scale(0.75); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Frosted Dark-Glass Progress Metric Card */
+.waitlist-progress-card {
+  width: 100%;
+  max-width: 440px;
+  margin: 16px auto 20px;
+  padding: 18px 22px;
+  background: var(--glass-surface-dark-elevated, rgba(26, 26, 30, 0.85));
+  border: 1px solid var(--glass-border-dark, rgba(255, 255, 255, 0.14));
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow-dark, 0 12px 32px -4px rgba(0, 0, 0, 0.6)), var(--glass-highlight-dark, inset 0 1px 0 rgba(255, 255, 255, 0.15));
+  backdrop-filter: var(--glass-blur-sm, blur(14px));
+  -webkit-backdrop-filter: var(--glass-blur-sm, blur(14px));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  animation: fadeIn 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.progress-counter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.progress-counter-tag {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #A1A1AA;
+}
+
+.progress-gain-badge {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #000000;
+  background: #FFFFFF;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  letter-spacing: 0.06em;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.3);
+  animation: badgeGlowPop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.progress-gain-badge.is-registered {
+  background: rgba(255, 255, 255, 0.12);
+  color: #E4E4E7;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: none;
+}
+
+@keyframes badgeGlowPop {
+  0% { transform: scale(0.85); opacity: 0; }
+  60% { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.progress-counter-display {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.counter-number-value {
+  font-family: var(--font-family-sans, sans-serif);
+  font-size: clamp(2.4rem, 6vw, 3rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.counter-units-label {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #A1A1AA;
+}
+
+.progress-counter-meta {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 10px;
+}
+
+.progress-metric-title {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin-bottom: 3px;
+}
+
+.progress-metric-caption {
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: #A1A1AA;
+  margin: 0;
+}
+
+.waitlist-progress-fallback {
+  width: 100%;
+  max-width: 440px;
+  margin: 14px auto 18px;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  text-align: left;
+}
+
+.fallback-text {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #A1A1AA;
+  margin: 0;
+}
+
 .success-clarification-box {
   margin-top: 16px;
   display: inline-flex;
@@ -427,7 +598,7 @@
   margin-top: 8px;
 }
 
-.success-close-btn {
+.success-dismiss-btn {
   width: 100%;
   height: 44px;
   background: transparent;
@@ -441,10 +612,260 @@
   font-family: inherit;
 }
 
-.success-close-btn:hover {
+.success-dismiss-btn:hover {
   background: #FFFFFF;
   color: #000000;
   border-color: #FFFFFF;
+}
+
+/* ==========================================================================
+   Waitlist Gamified Success Composition (Milky Glass, Light Capsule, Overlapping Badge)
+   ========================================================================== */
+.success-window-waitlist {
+  background: rgba(252, 252, 254, 0.95) !important;
+  backdrop-filter: blur(28px) !important;
+  -webkit-backdrop-filter: blur(28px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.09) !important;
+  border-radius: 28px !important;
+  color: #000000 !important;
+  box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.9) inset !important;
+}
+
+.success-window-waitlist .modal-brand-tag {
+  color: #000000;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.success-window-waitlist .modal-close-btn {
+  color: #000000;
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.success-window-waitlist .modal-close-btn:hover {
+  background: #000000;
+  color: #FFFFFF;
+  border-color: #000000;
+}
+
+.success-body-waitlist {
+  padding: 24px 28px 28px;
+}
+
+.gamified-success-composition {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gamified-milky-glass-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Upper Central Area: Light glass logo capsule with floating circular badge overlapping upper right */
+.gamified-stage-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 290px;
+  margin: 6px auto 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gamified-logo-capsule {
+  width: 210px;
+  height: 104px;
+  border-radius: 52px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 242, 245, 0.92) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05), inset 0 2px 0 rgba(255, 255, 255, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.gamified-capsule-mark {
+  height: 46px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.06));
+}
+
+/* Floating circular number badge overlapping upper-right area of the central panel */
+.gamified-floating-badge {
+  position: absolute;
+  right: 6px;
+  top: -16px;
+  width: 98px;
+  height: 98px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(0, 0, 0, 0.09);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  animation: floatingCircleFloat 3.8s ease-in-out infinite alternate;
+}
+
+@keyframes floatingCircleFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+.floating-badge-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.floating-number {
+  font-family: var(--font-family-sans, sans-serif);
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #000000;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.floating-caption {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #71717A;
+  margin-top: 5px;
+}
+
+/* Exact Confirmation Content Hierarchy */
+.gamified-confirmation-message {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.gamified-status-label {
+  display: inline-block;
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #18181B;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  margin-bottom: 12px;
+}
+
+.gamified-main-heading {
+  font-size: clamp(1.4rem, 3.2vw, 1.85rem);
+  font-weight: 700;
+  color: #000000;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+}
+
+.gamified-supporting-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #27272A;
+  margin: 0 0 10px;
+}
+
+.gamified-additional-message {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #52525B;
+  max-width: 440px;
+  margin: 0 auto 16px;
+}
+
+/* Separate Dynamic +6 Progress Counter metric indicator */
+.gamified-metric-indicator {
+  margin: 0 auto 12px;
+}
+
+.metric-indicator-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  color: #52525B;
+}
+
+.metric-gain-pill {
+  background: #000000;
+  color: #FFFFFF;
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.66rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  letter-spacing: 0.04em;
+}
+
+.metric-number {
+  font-weight: 700;
+  color: #000000;
+}
+
+/* Final highlighted, handwritten-style quote at the bottom */
+.gamified-handwritten-footer {
+  width: 100%;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  padding-top: 20px;
+  margin-top: 4px;
+  margin-bottom: 20px;
+}
+
+.gamified-handwritten-quote {
+  font-family: var(--font-family-handwritten, 'Kalam', cursive);
+  font-size: 1.35rem;
+  line-height: 1.45;
+  color: #18181B;
+  margin: 0;
+}
+
+.handwritten-highlight {
+  background: linear-gradient(105deg, rgba(125, 255, 162, 0.22) 0%, rgba(70, 226, 140, 0.38) 100%);
+  padding: 3px 10px;
+  border-radius: 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.success-window-waitlist .success-dismiss-btn {
+  background: #000000;
+  color: #FFFFFF;
+  border: none;
+}
+
+.success-window-waitlist .success-dismiss-btn:hover {
+  background: #27272A;
+  color: #FFFFFF;
 }
 
 /* Animations & Reduced Motion */
@@ -458,6 +879,22 @@
   to { transform: scale(1); opacity: 1; }
 }
 
+@keyframes modalFadeOut {
+  to { opacity: 0; }
+}
+
+@keyframes modalScaleDown {
+  to { transform: scale(0.97) translateY(4px); opacity: 0; }
+}
+
+.join-modal-backdrop.is-closing {
+  animation: modalFadeOut 0.16s var(--motion-ease-out) forwards;
+}
+
+.join-modal-window.is-closing {
+  animation: modalScaleDown 0.16s var(--motion-ease-out) forwards;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
@@ -468,7 +905,11 @@
   .join-modal-window,
   .success-brand-capsule,
   .join-submit-btn,
-  .success-close-btn {
+  .success-close-btn,
+  .confirm-pulse-ring,
+  .confirm-icon-core,
+  .progress-gain-badge,
+  .waitlist-progress-card {
     animation: none !important;
     transition: none !important;
     transform: none !important;

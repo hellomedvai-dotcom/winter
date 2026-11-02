@@ -1234,3 +1234,25 @@
   background: #FFFFFF;
   color: #000000;
 }
+
+/* ==========================================================================
+   Viewport-gated cinematic sequence
+   The convergence/scan keyframes self-play on mount; pause the decorative
+   infinite animations until the section scrolls into view (is-visible added
+   by useReveal in the TSX). The one-shot doc-section-card reveal is left to
+   run on mount so content is never left hidden.
+   prefers-reduced-motion is handled globally.
+   ========================================================================== */
+.doctor-brief-showcase-section .stream-path,
+.doctor-brief-showcase-section .synthesis-scanning-line,
+.doctor-brief-showcase-section .convergence-pulse-dots .dot,
+.doctor-brief-showcase-section .pulse-mint-dot {
+  animation-play-state: paused;
+}
+
+.doctor-brief-showcase-section.is-visible .stream-path,
+.doctor-brief-showcase-section.is-visible .synthesis-scanning-line,
+.doctor-brief-showcase-section.is-visible .convergence-pulse-dots .dot,
+.doctor-brief-showcase-section.is-visible .pulse-mint-dot {
+  animation-play-state: running;
+}

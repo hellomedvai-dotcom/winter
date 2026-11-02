@@ -1,7 +1,14 @@
 /* Voice Demonstration Showcase Styles (Strict Monochrome) */
 
+/* Outer-wrapper entrance (restrained). Reduced-motion is neutralized globally. */
 .voice-showcase-section {
   position: relative;
+  animation: voiceSectionEntrance var(--motion-duration-slow) var(--motion-ease-out) both;
+}
+
+@keyframes voiceSectionEntrance {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
 }
 
 .voice-lang-bar {

@@ -1,0 +1,305 @@
+/* ==========================================================================
+   Meet Vidhi: Phone Showcase Section Styles
+   Inspired by Wabi.ai's refined phone presentation:
+   - Restrained horizontal track with smooth snapping
+   - Visible neighbouring phone previews
+   - Minimalist glass language capsule bar
+   - Strict MEDVIDHI monochrome typography & tokens
+   ========================================================================== */
+
+.medvidhi-meet-vidhi-section {
+  position: relative;
+  background-color: #FFFFFF;
+  padding: clamp(64px, 10vh, 100px) 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.meet-vidhi-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Header */
+.meet-vidhi-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto clamp(24px, 4vh, 36px);
+  padding: 0 16px;
+}
+
+.meet-vidhi-badge-row {
+  margin-bottom: 16px;
+}
+
+.meet-vidhi-headline {
+  font-family: var(--font-family-display);
+  font-size: clamp(2rem, 3.8vw, 3.4rem);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+  color: #09090B;
+  margin: 0 0 16px;
+}
+
+.meet-vidhi-serif-accent {
+  font-family: var(--font-family-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: #0D9488;
+}
+
+.meet-vidhi-description {
+  font-size: clamp(1rem, 1.3vw, 1.14rem);
+  color: #52525B;
+  line-height: 1.6;
+  max-width: 680px;
+  margin: 0 0 24px;
+}
+
+/* Three-Language Interactive Glass Capsule Dock */
+.meet-vidhi-lang-dock {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.lang-capsule-bar {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(244, 244, 245, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 4px 16px -2px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border-radius: 9999px;
+  padding: 5px 8px;
+  gap: 4px;
+}
+
+.lang-dock-label {
+  display: flex;
+  align-items: center;
+  padding: 0 6px 0 8px;
+  color: #71717A;
+}
+
+.lang-globe-icon {
+  color: #0D9488;
+}
+
+.lang-pill-btn {
+  background: transparent;
+  border: none;
+  font-family: var(--font-family-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #52525B;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.lang-pill-btn:hover {
+  color: #09090B;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.lang-pill-btn.is-active {
+  background-color: #000000;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.lang-pill-divider {
+  width: 1px;
+  height: 14px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dynamic Active Stage Card */
+.meet-vidhi-active-stage-card {
+  width: 100%;
+  max-width: 740px;
+  margin: 0 auto 32px;
+  padding: 16px 24px;
+  box-sizing: border-box;
+  background: #FAFAFA;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+@media (min-width: 640px) {
+  .meet-vidhi-active-stage-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px;
+  }
+}
+
+.stage-card-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stage-card-meta-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stage-card-index {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #0D9488;
+}
+
+.stage-card-tag {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: #52525B;
+  text-transform: uppercase;
+}
+
+.stage-card-title {
+  font-family: var(--font-family-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #09090B;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.stage-card-desc {
+  font-size: 0.84rem;
+  color: #52525B;
+  margin: 0;
+  line-height: 1.45;
+  max-width: 440px;
+}
+
+/* Nav Arrow Dock */
+.stage-nav-arrow-dock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.track-arrow-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #09090B;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.track-arrow-btn:hover:not(:disabled) {
+  background-color: #000000;
+  color: #FFFFFF;
+  border-color: #000000;
+  transform: scale(1.05);
+}
+
+.track-arrow-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.track-step-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.track-step-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.track-step-dot.is-active {
+  width: 18px;
+  border-radius: 9999px;
+  background-color: #000000;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Horizontal Phone Track Showcase Stage                                      */
+/* -------------------------------------------------------------------------- */
+.meet-vidhi-showcase-stage {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding: 24px 0 40px;
+  overflow: hidden;
+}
+
+/* Smooth Horizontal Track */
+.meet-vidhi-phone-track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px max(24px, calc(50vw - 165px));
+  scrollbar-width: none;
+  outline: none;
+}
+
+.meet-vidhi-phone-track::-webkit-scrollbar {
+  display: none;
+}
+
+.phone-track-slot {
+  scroll-snap-align: center;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  outline: none;
+}
+
+@media (min-width: 1024px) {
+  .meet-vidhi-phone-track {
+    gap: 36px;
+    padding: 14px max(32px, calc(50vw - 170px));
+  }
+}
+

@@ -104,6 +104,7 @@
   cursor: pointer;
   background: none;
   border: none;
+  transition: transform 150ms ease;
 }
 
 .hamburger-bar {
@@ -187,6 +188,32 @@
 .capsule-nav-link:hover {
   color: #000000;
   background-color: rgba(0, 0, 0, 0.06);
+}
+
+.capsule-nav-btn:active,
+.capsule-nav-link:active {
+  background-color: rgba(0, 0, 0, 0.11);
+  transform: scale(0.98);
+  transition-duration: 110ms;
+}
+
+.capsule-brand-link {
+  transition: opacity 160ms ease;
+}
+
+.capsule-brand-link:hover {
+  opacity: 0.78;
+}
+
+.capsule-mobile-toggle:active {
+  transform: scale(0.92);
+}
+
+/* Slightly stronger surface once the page has scrolled */
+.floating-capsule-nav.is-scrolled {
+  border-color: rgba(0, 0, 0, 0.18);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06),
+    var(--glass-capsule-inner-highlight);
 }
 
 .capsule-nav-btn:focus-visible,

@@ -50,11 +50,13 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   padding: 6px 18px;
   border-radius: var(--radius-full);
   margin-bottom: var(--space-5);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .showcase-status-indicator {
@@ -66,8 +68,8 @@
 
 .badge-text {
   font-family: var(--font-family-mono);
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #000000;
@@ -75,11 +77,11 @@
 
 .showcase-headline {
   font-size: clamp(1.85rem, 3.8vw, 2.75rem);
-  font-weight: var(--font-weight-extrabold);
+  font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
   color: #000000;
   margin-bottom: var(--space-4);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--letter-spacing-normal);
 }
 
 .showcase-serif-accent {
@@ -195,13 +197,14 @@
 .theme-dark .dark-feature-headline,
 .theme-dark .feature-headline {
   font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-extrabold);
+  font-weight: var(--font-weight-bold);
   color: #FFFFFF;
   line-height: var(--line-height-snug);
-  letter-spacing: -0.015em;
+  letter-spacing: var(--letter-spacing-normal);
 }
 
 @media (min-width: 768px) {
+
   .theme-dark .dark-feature-headline,
   .theme-dark .feature-headline {
     font-size: var(--font-size-3xl);
@@ -223,4 +226,13 @@
   color: #A1A1AA;
   line-height: var(--line-height-relaxed);
   max-width: 680px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Motion wrappers (entrances declared via [data-reveal] in ProductShowcase.tsx)
+   Preserve self-centering of the selector / panel and full-width layout.       */
+/* -------------------------------------------------------------------------- */
+.showcase-selector-wrap,
+.showcase-panel-wrap {
+  width: 100%;
 }

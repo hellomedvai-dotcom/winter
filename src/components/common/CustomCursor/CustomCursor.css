@@ -1,0 +1,92 @@
+/* ==========================================================================
+   MEDVIDHI Custom Cursor
+   Inspired by LEQB (https://le-qb.com/) & Avecanni Studio (https://avecanni.studio/)
+   ========================================================================== */
+
+.medvidhi-custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  will-change: transform;
+  opacity: 0;
+  transition: opacity 0.22s ease-out;
+  mix-blend-mode: difference;
+}
+
+.medvidhi-custom-cursor.is-visible {
+  opacity: 1;
+}
+
+.medvidhi-custom-cursor.is-none-active {
+  opacity: 0;
+}
+
+/* Core central dot */
+.medvidhi-custom-cursor .cursor-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    border-radius 0.25s ease,
+    background-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* Interactive hover expansion */
+.medvidhi-custom-cursor.is-active .cursor-dot {
+  width: 38px;
+  height: 38px;
+  opacity: 0.92;
+}
+
+/* Contextual labeled expansion */
+.medvidhi-custom-cursor.is-labeled .cursor-dot {
+  width: 56px;
+  height: 56px;
+  opacity: 0.94;
+}
+
+/* Contextual Action Label */
+.medvidhi-custom-cursor .cursor-label-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-family-mono, ui-monospace, monospace);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #000000;
+  pointer-events: none;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  user-select: none;
+}
+
+.medvidhi-custom-cursor.is-labeled .cursor-label-text {
+  opacity: 1;
+}
+
+/* Disable entirely on coarse pointers, touchscreens, mobile viewports & reduced-motion */
+@media (max-width: 1024px), (hover: none), (pointer: coarse) {
+  .medvidhi-custom-cursor {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .medvidhi-custom-cursor {
+    display: none !important;
+  }
+}

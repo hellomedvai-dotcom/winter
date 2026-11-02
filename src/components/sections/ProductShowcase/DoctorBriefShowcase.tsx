@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useReveal } from '@/lib/motion/useReveal';
 import {
   FileText,
   Sparkles,
@@ -32,6 +33,9 @@ export const DoctorBriefShowcase: React.FC = () => {
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
   const [animationStage, setAnimationStage] = useState<'converging' | 'synthesizing' | 'revealing' | 'ready'>('ready');
   const [shareConsentGranted, setShareConsentGranted] = useState<boolean>(false);
+
+  // Gate the self-playing convergence/scan animations until the section is in view.
+  const { ref: revealRef, isVisible: isSectionVisible } = useReveal<HTMLElement>();
 
   // Progressive cinematic reveal sequence
   const handleReplaySequence = () => {
@@ -75,18 +79,20 @@ export const DoctorBriefShowcase: React.FC = () => {
 
   return (
     <section
+      ref={revealRef}
       id="feature-doctor-brief"
-      className="showcase-feature-section theme-light doctor-brief-showcase-section"
+      className={`showcase-feature-section theme-light doctor-brief-showcase-section ${isSectionVisible ? 'is-visible' : ''}`}
       aria-label="30-Second Doctor Brief Feature"
     >
       <div className="feature-section-inner">
         {/* Section Header */}
-        <div className="dark-feature-header">
+        <div className="dark-feature-header" data-reveal style={{ '--si': 0 } as React.CSSProperties}>
           <div className="dark-badge-row">
             <span className="dark-mint-pill">
               <FileText size={13} className="pill-icon" />
               Pre-Consultation Synthesis
             </span>
+            <span className="dark-editorial-quote">&ldquo;The context clinicians need, before the conversation begins.&rdquo;</span>
             <span className="dark-anchor-tag">#feature-doctor-brief</span>
           </div>
 
@@ -102,7 +108,7 @@ export const DoctorBriefShowcase: React.FC = () => {
         </div>
 
         {/* Cinematic 3-Column Studio Canvas */}
-        <div className="brief-studio-card">
+        <div className="brief-studio-card" data-reveal="scale" style={{ '--si': 1 } as React.CSSProperties}>
           {/* Top Bar with Status & Interactive Controls */}
           <div className="brief-studio-topbar">
             <div className="brief-meta-row">

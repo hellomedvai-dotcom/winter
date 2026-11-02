@@ -68,7 +68,7 @@ export const InlineHandMagnifier: React.FC<InlineHandMagnifierProps> = ({
       <div className="magnifier-glass-header">
         <div className="magnifier-badge-row">
           <span className="magnifier-icon-wrap">
-            <Search size={12} className="text-sky-400" />
+            <Search size={12} color="#79D0BD" />
           </span>
           <span className="magnifier-title">
             {side === 'right' ? 'Right Hand' : 'Left Hand'} · Micro-Digital Detail
@@ -111,18 +111,7 @@ export const InlineHandMagnifier: React.FC<InlineHandMagnifierProps> = ({
         {/* Dynamic Symptom Highlight / Lens Spot */}
         {(matchingIssue || activeCondition) && (
           <div
-            className={`magnifier-spot-glow ${
-              matchingIssue?.primaryIssue === 'color_change' ||
-              activeCondition?.primaryIssue === 'color_change' ||
-              matchingIssue?.skinAppearance?.observedColor === 'red' ||
-              activeCondition?.skinColor === 'red' ||
-              activeCondition?.warmth ||
-              matchingIssue?.visualOverlay?.type === 'red_overlay'
-                ? 'is-red'
-                : matchingIssue?.primaryIssue === 'swelling' || activeCondition?.primaryIssue === 'swelling'
-                ? 'is-swelling'
-                : 'is-amber'
-            }`}
+            className="magnifier-spot-glow is-mint"
             style={{
               left: `${(activeTarget.coordinates.x / 300) * 100}%`,
               top: `${(activeTarget.coordinates.y / 500) * 100}%`,
@@ -137,15 +126,10 @@ export const InlineHandMagnifier: React.FC<InlineHandMagnifierProps> = ({
           aria-label="Finger and joint selection grid"
         >
           <defs>
-            <radialGradient id="magnifierRedHotspot" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#FF2A4B" stopOpacity="0.95" />
-              <stop offset="60%" stopColor="#FF0033" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#990022" stopOpacity="0" />
-            </radialGradient>
             <radialGradient id="magnifierLensGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.9" />
-              <stop offset="50%" stopColor="#5FD7FF" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="#00A2E8" stopOpacity="0" />
+              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.85" />
+              <stop offset="60%" stopColor="#79D0BD" stopOpacity="0.35" />
+              <stop offset="100%" stopColor="#79D0BD" stopOpacity="0" />
             </radialGradient>
           </defs>
 
@@ -247,8 +231,8 @@ export const InlineHandMagnifier: React.FC<InlineHandMagnifierProps> = ({
                   cx="0"
                   cy="0"
                   r={isTargetActive ? 5 : isHovered ? 4.5 : 3.5}
-                  fill={isTargetActive ? '#FFFFFF' : isHovered ? '#5FD7FF' : 'rgba(255, 255, 255, 0.6)'}
-                  stroke="#080A0D"
+                  fill={isTargetActive ? '#FFFFFF' : isHovered ? '#79D0BD' : 'rgba(255, 255, 255, 0.6)'}
+                  stroke="#000000"
                   strokeWidth="1.2"
                 />
 

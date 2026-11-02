@@ -1,0 +1,166 @@
+/* ==========================================================================
+   Wabi-Inspired Realistic Smartphone Frame
+   Precision bezel, Dynamic Island, Home bar, pure monochrome tokens
+   ========================================================================== */
+
+.vidhi-phone-frame-wrapper {
+  position: relative;
+  width: 310px;
+  max-width: 86vw;
+  flex-shrink: 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, box-shadow 0.4s ease;
+  user-select: none;
+}
+
+@media (min-width: 640px) {
+  .vidhi-phone-frame-wrapper {
+    width: 324px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .vidhi-phone-frame-wrapper {
+    width: 336px;
+  }
+}
+
+/* Focused Phone vs Neighbouring Phones */
+.vidhi-phone-frame-wrapper.is-active-phone {
+  transform: scale(1.02);
+  opacity: 1;
+  z-index: 2;
+}
+
+.vidhi-phone-frame-wrapper.is-inactive-phone {
+  transform: scale(0.96);
+  opacity: 0.65;
+  filter: grayscale(15%);
+  z-index: 1;
+}
+
+.vidhi-phone-frame-wrapper.is-inactive-phone:hover {
+  opacity: 0.88;
+  transform: scale(0.98);
+  cursor: pointer;
+}
+
+/* Smartphone Body / Chassis */
+.vidhi-phone-chassis {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 19.5;
+  background-color: #000000;
+  border-radius: 46px;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 
+    0 0 0 1px rgba(0, 0, 0, 0.12),
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 24px 50px -12px rgba(0, 0, 0, 0.28),
+    0 10px 20px -6px rgba(0, 0, 0, 0.12),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.5);
+  border: 3.5px solid #27272A;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dynamic Island Area */
+.vidhi-phone-island-slot {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.vidhi-island-pill {
+  width: 78px;
+  height: 22px;
+  background-color: #000000;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 9px;
+  gap: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.island-lens-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #18181B 0%, #09090B 80%);
+  box-shadow: inset 0 0.5px 1px rgba(255, 255, 255, 0.2);
+}
+
+.island-sensor-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #0F172A;
+}
+
+/* Screen Viewport */
+.vidhi-phone-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #FFFFFF;
+  border-radius: 38px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 42px 14px 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  color: #000000;
+  font-family: var(--font-family-sans);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.vidhi-phone-screen::-webkit-scrollbar {
+  display: none;
+}
+
+/* Home Indicator Bar */
+.vidhi-home-indicator-slot {
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.vidhi-home-indicator-bar {
+  width: 110px;
+  height: 4px;
+  background-color: #000000;
+  opacity: 0.25;
+  border-radius: 9999px;
+}
+
+/* Subtle Specular Sheen across Phone Face */
+.vidhi-glass-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: 46px;
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(255, 255, 255, 0.04) 30%,
+    transparent 65%
+  );
+  pointer-events: none;
+  z-index: 9;
+}
+

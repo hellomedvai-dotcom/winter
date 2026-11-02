@@ -13,6 +13,9 @@ export default defineConfig({
   server: {
     port: 3000,
     open: false,
+    allowedHosts: [
+      'total-believe-stan-molecular.trycloudflare.com',
+    ],
   },
   build: {
     target: 'es2022',

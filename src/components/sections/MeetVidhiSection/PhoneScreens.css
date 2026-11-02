@@ -1,0 +1,809 @@
+/* ==========================================================================
+   Meet Vidhi: Phone Screen UI System
+   Strict MEDVIDHI Brand Tokens: Pure Black (#000000), Pure White (#FFFFFF),
+   High-contrast Grayscale & Subtle Teal/Mint Accents (#0D9488 / #0F766E)
+   ========================================================================== */
+
+.ps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #18181B;
+}
+
+/* App Header */
+.ps-app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.ps-header-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ps-status-pill {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #0F766E;
+  background-color: rgba(15, 118, 110, 0.08);
+  border: 1px solid rgba(15, 118, 110, 0.2);
+  padding: 3px 8px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.ps-live-indicator {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #0D9488;
+  background: rgba(13, 148, 136, 0.12);
+  border-radius: 9999px;
+  padding: 2px 7px;
+}
+
+.ps-chat-title {
+  font-family: var(--font-family-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #09090B;
+}
+
+.ps-accent-icon {
+  color: #0D9488;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Screen 1: Welcome                                                          */
+/* -------------------------------------------------------------------------- */
+.ps-hero-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px 4px 6px;
+  gap: 6px;
+}
+
+.ps-avatar-cluster {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.ps-vidhi-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #09090B 0%, #27272A 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  border: 2px solid #FFFFFF;
+}
+
+.ps-online-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 11px;
+  height: 11px;
+  background-color: #0D9488;
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+}
+
+.ps-greeting-title {
+  font-family: var(--font-family-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: #09090B;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.ps-greeting-lead {
+  font-size: 0.82rem;
+  color: #52525B;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.ps-intro-block {
+  background-color: #F4F4F5;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  padding: 11px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ps-intro-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ps-intro-heading {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #18181B;
+}
+
+.ps-intro-body {
+  font-size: 0.74rem;
+  color: #52525B;
+  margin: 0;
+  line-height: 1.38;
+}
+
+.ps-action-tray {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ps-tray-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #71717A;
+  text-align: center;
+}
+
+.ps-primary-cta {
+  background-color: #000000;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  padding: 10px 16px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.ps-primary-cta:hover {
+  background-color: #18181B;
+  transform: translateY(-1px);
+}
+
+.ps-footer-privacy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 0.65rem;
+  color: #71717A;
+  margin-top: 4px;
+}
+
+.ps-shield-icon {
+  color: #0D9488;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Screen 2: Chat & Voice                                                     */
+/* -------------------------------------------------------------------------- */
+.ps-chat-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  flex: 1;
+}
+
+.ps-chat-bubble {
+  padding: 10px 12px;
+  border-radius: 16px;
+  max-width: 90%;
+  font-size: 0.76rem;
+  line-height: 1.38;
+}
+
+.ps-bubble-patient {
+  align-self: flex-end;
+  background-color: #000000;
+  color: #FFFFFF;
+  border-bottom-right-radius: 4px;
+}
+
+.ps-bubble-time {
+  display: block;
+  font-size: 0.6rem;
+  color: #A1A1AA;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.ps-voice-note-card {
+  align-self: flex-end;
+  background: #F4F4F5;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 8px 12px;
+  width: 82%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ps-voice-head {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #0F766E;
+}
+
+.ps-waveform-bars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 18px;
+}
+
+.wbar {
+  width: 3px;
+  background-color: #0D9488;
+  border-radius: 2px;
+  animation: pulseBar 1.2s ease-in-out infinite alternate;
+}
+
+.bar-a { height: 6px; animation-delay: 0.1s; }
+.bar-b { height: 14px; animation-delay: 0.3s; }
+.bar-c { height: 18px; animation-delay: 0.2s; }
+.bar-d { height: 10px; animation-delay: 0.5s; }
+.bar-e { height: 16px; animation-delay: 0.15s; }
+.bar-f { height: 8px; animation-delay: 0.4s; }
+.bar-g { height: 14px; animation-delay: 0.25s; }
+.bar-h { height: 18px; animation-delay: 0.35s; }
+.bar-i { height: 7px; animation-delay: 0.1s; }
+
+@keyframes pulseBar {
+  0% { transform: scaleY(0.5); }
+  100% { transform: scaleY(1); }
+}
+
+.ps-voice-quote {
+  font-style: italic;
+  font-size: 0.7rem;
+  color: #52525B;
+  margin: 0;
+}
+
+.ps-bubble-vidhi {
+  align-self: flex-start;
+  background-color: #F4F4F5;
+  color: #09090B;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom-left-radius: 4px;
+}
+
+.ps-vidhi-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 4px;
+}
+
+.ps-vidhi-name {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #09090B;
+}
+
+.ps-tag-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #0D9488;
+}
+
+.ps-tag-type {
+  font-size: 0.62rem;
+  color: #71717A;
+  font-weight: 600;
+}
+
+.ps-followup-box {
+  margin-top: 7px;
+  background-color: #FFFFFF;
+  border: 1px dashed rgba(13, 148, 136, 0.45);
+  border-radius: 10px;
+  padding: 6px 9px;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.ps-help-icon {
+  color: #0D9488;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.ps-followup-text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #0F766E;
+  margin: 0;
+}
+
+.ps-input-dock {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.ps-input-fake-field {
+  flex: 1;
+  background: #F4F4F5;
+  border-radius: 9999px;
+  padding: 8px 12px;
+  font-size: 0.7rem;
+  color: #A1A1AA;
+}
+
+.ps-mic-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #000000;
+  color: #FFFFFF;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Screen 3: Health Memory                                                    */
+/* -------------------------------------------------------------------------- */
+.ps-bodymap-widget {
+  background: #F4F4F5;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ps-bodymap-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ps-crosshair-icon {
+  color: #0D9488;
+}
+
+.ps-bodymap-title {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #09090B;
+}
+
+.ps-bodymap-visual {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 9px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ps-knee-pin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ps-pin-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #0D9488;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.25);
+}
+
+.ps-pin-text {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #09090B;
+}
+
+.ps-pin-detail {
+  font-size: 0.68rem;
+  color: #71717A;
+}
+
+.ps-memory-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ps-timeline-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #71717A;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ps-timeline-card {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.ps-tl-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 5px 0;
+}
+
+.ps-tl-label {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #71717A;
+  text-transform: uppercase;
+}
+
+.ps-tl-val {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #09090B;
+}
+
+.ps-tl-divider {
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Screen 4: Medical Explainer                                                */
+/* -------------------------------------------------------------------------- */
+.ps-term-focus-card {
+  background-color: #09090B;
+  color: #FFFFFF;
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ps-term-found-label {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.62rem;
+  color: #A1A1AA;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ps-term-word {
+  font-family: var(--font-family-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.ps-term-phonetic {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.68rem;
+  color: #0D9488;
+}
+
+.ps-explainer-card {
+  background-color: #F4F4F5;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  padding: 9px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ps-exp-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ps-check-icon {
+  color: #0D9488;
+}
+
+.ps-exp-title {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #09090B;
+}
+
+.ps-exp-body {
+  font-size: 0.72rem;
+  color: #52525B;
+  margin: 0;
+  line-height: 1.38;
+}
+
+.ps-doc-question-pill {
+  background-color: rgba(13, 148, 136, 0.06);
+  border: 1px dashed rgba(13, 148, 136, 0.4);
+  border-radius: 12px;
+  padding: 8px 11px;
+}
+
+.ps-q-tag {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: #0F766E;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.ps-q-text {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: #09090B;
+  margin: 0;
+  line-height: 1.35;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Screen 5: Care Navigation                                                  */
+/* -------------------------------------------------------------------------- */
+.ps-context-notice {
+  font-size: 0.68rem;
+  color: #71717A;
+  background: #F4F4F5;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.ps-specialty-card {
+  background-color: #FFFFFF;
+  border: 1.5px solid #000000;
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.ps-specialty-eyebrow {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #0F766E;
+  text-transform: uppercase;
+  display: block;
+}
+
+.ps-specialty-name {
+  font-family: var(--font-family-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: #09090B;
+  margin: 2px 0 4px;
+}
+
+.ps-specialty-scope {
+  font-size: 0.72rem;
+  color: #52525B;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.ps-rationale-box {
+  background-color: #F4F4F5;
+  border-radius: 12px;
+  padding: 8px 11px;
+}
+
+.ps-rationale-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #09090B;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.ps-rationale-body {
+  font-size: 0.7rem;
+  color: #52525B;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.ps-assessment-box {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 8px 11px;
+}
+
+.ps-assessment-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #71717A;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.ps-points-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ps-points-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  font-size: 0.68rem;
+  color: #18181B;
+  line-height: 1.3;
+}
+
+.ps-list-chevron {
+  color: #0D9488;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ps-safety-footnote {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  font-size: 0.62rem;
+  color: #71717A;
+  line-height: 1.3;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Screen 6: 30-Second Doctor Brief                                           */
+/* -------------------------------------------------------------------------- */
+.ps-brief-subhead {
+  font-size: 0.72rem;
+  color: #71717A;
+}
+
+.ps-brief-card {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 14px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.ps-brief-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ps-brief-tag {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #0F766E;
+  text-transform: uppercase;
+}
+
+.ps-brief-body {
+  font-size: 0.72rem;
+  color: #18181B;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.ps-brief-divider {
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.ps-brief-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ps-brief-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  font-size: 0.68rem;
+  color: #18181B;
+  line-height: 1.3;
+}
+
+.ps-orientation-note {
+  font-size: 0.66rem;
+  color: #71717A;
+  font-style: italic;
+  margin: 0;
+}
+
+.ps-brief-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.ps-brief-primary-btn {
+  background-color: #000000;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  padding: 8px 14px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.ps-brief-secondary-btn {
+  background-color: #F4F4F5;
+  color: #09090B;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 9999px;
+  padding: 7px 14px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+}
+

@@ -21,6 +21,9 @@ interface AnatomicalFigureProps {
   onHoverRegion: (region: BodyRegionDefinition | null) => void;
   onSelectSubregion?: (sub: HandSubregionDefinition | null) => void;
   onRequestHandMagnifier?: (side: AnatomicalSide) => void;
+  introSequenceStep?: number;
+  isDockRight?: boolean;
+  isAnchorBottom?: boolean;
 }
 
 export const AnatomicalFigure: React.FC<AnatomicalFigureProps> = ({
@@ -33,6 +36,9 @@ export const AnatomicalFigure: React.FC<AnatomicalFigureProps> = ({
   onSelectRegion,
   onHoverRegion,
   onSelectSubregion,
+  introSequenceStep,
+  isDockRight,
+  isAnchorBottom,
 }) => {
   const [showHandMagnifier, setShowHandMagnifier] = useState<boolean>(false);
   const [magnifierSide, setMagnifierSide] = useState<AnatomicalSide>('right');
@@ -96,25 +102,7 @@ export const AnatomicalFigure: React.FC<AnatomicalFigureProps> = ({
     return isJoint ? 'bodymap-svg-target is-joint-idle' : 'bodymap-svg-target is-limb-idle';
   };
 
-  // Determine active visual glow color based on patient-reported concern
-  const activeOverlayType = activeCondition?.primaryIssue || 'pain';
-  let lensGlowGrad = 'url(#lensPainGrad)';
-  let glowOuterColor = 'rgba(255, 170, 0, 0.35)';
 
-  if (
-    activeOverlayType === 'color_change' ||
-    activeCondition?.skinColor === 'red' ||
-    activeCondition?.warmth
-  ) {
-    lensGlowGrad = 'url(#lensRedGrad)';
-    glowOuterColor = 'rgba(255, 42, 75, 0.45)';
-  } else if (activeOverlayType === 'swelling') {
-    lensGlowGrad = 'url(#lensSwellingGrad)';
-    glowOuterColor = 'rgba(95, 215, 255, 0.45)';
-  } else if (activeCondition?.skinColor === 'blue_purple') {
-    lensGlowGrad = 'url(#lensBruiseGrad)';
-    glowOuterColor = 'rgba(155, 81, 224, 0.45)';
-  }
 
   // Filter recorded issues matching current view
   const visibleRecordedIssues = recordedIssues.filter((issue) => {
@@ -143,7 +131,7 @@ export const AnatomicalFigure: React.FC<AnatomicalFigureProps> = ({
         <div className="figure-canvas-container">
           <img
             src={view === 'front' ? '/models/bodymap-front.png' : '/models/bodymap-back.png'}
-            alt={`Realistic male body ${view} view on black stage`}
+            alt={`Realistic human body ${view} view on black stage`}
             className="figure-silhouette-img"
             loading="eager"
           />
@@ -159,35 +147,17 @@ export const AnatomicalFigure: React.FC<AnatomicalFigureProps> = ({
           aria-label={`Interactive anatomical hit map, ${view} view`}
         >
           <defs>
-            {/* LENS SOFT GLOW GRADIENTS */}
-            <radialGradient id="lensPainGrad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#FFAA00" stopOpacity="0.8" />
-              <stop offset="60%" stopColor="#FF7700" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#FF5500" stopOpacity="0" />
-            </radialGradient>
-
-            <radialGradient id="lensRedGrad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#FF2A4B" stopOpacity="0.85" />
-              <stop offset="50%" stopColor="#E6002A" stopOpacity="0.45" />
-              <stop offset="100%" stopColor="#770014" stopOpacity="0" />
-            </radialGradient>
-
-            <radialGradient id="lensSwellingGrad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#5FD7FF" stopOpacity="0.8" />
-              <stop offset="60%" stopColor="#00A2E8" stopOpacity="0.35" />
-              <stop offset="100%" stopColor="#005B8C" stopOpacity="0" />
-            </radialGradient>
-
-            <radialGradient id="lensBruiseGrad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#9B51E0" stopOpacity="0.85" />
-              <stop offset="60%" stopColor="#4A148C" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#1A237E" stopOpacity="0" />
-            </radialGradient>
-
+            {/* LENS SOFT GLOW GRADIENTS - Strict White & Mint */}
             <radialGradient id="lensWhiteFocused" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.75" />
-              <stop offset="60%" stopColor="#FFFFFF" stopOpacity="0.2" />
+              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.8" />
+              <stop offset="60%" stopColor="#FFFFFF" stopOpacity="0.25" />
               <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+            </radialGradient>
+
+            <radialGradient id="lensMintAccent" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#79D0BD" stopOpacity="0.85" />
+              <stop offset="60%" stopColor="#79D0BD" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#79D0BD" stopOpacity="0" />
             </radialGradient>
           </defs>
 
@@ -1241,29 +1211,39 @@ export const AnatomicalFigure: React.FC<AnatomicalFigureProps> = ({
               const isRightSide = tagPin.x >= 384;
 
               // Compute clean leader line offset away from body
-              const deltaX = isRightSide ? 55 : -55;
-              const deltaY = -24;
-              const pillX = isRightSide ? deltaX + 4 : deltaX - 160;
-              const pillY = deltaY - 12;
+              const deltaX = isRightSide ? 52 : -52;
+              const deltaY = -22;
+              const pillWidth = 148;
+              const pillHeight = 34;
+              const pillX = isRightSide ? deltaX + 4 : deltaX - pillWidth - 4;
+              const pillY = deltaY - 17;
 
-              // Color indicator based on symptom
-              let dotColor = '#FFAA00';
-              if (issue.primaryIssue === 'color_change' || issue.skinAppearance?.observedColor === 'red') {
-                dotColor = '#FF2A4B';
-              } else if (issue.primaryIssue === 'swelling') {
-                dotColor = '#5FD7FF';
-              } else if (issue.primaryIssue === 'cut') {
-                dotColor = '#EF4444';
-              } else if (issue.primaryIssue === 'numbness') {
-                dotColor = '#A855F7';
-              } else if (issue.primaryIssue === 'stiffness') {
-                dotColor = '#F59E0B';
+              // Color indicator based on symptom: strict mint #79D0BD
+              const dotColor = '#79D0BD';
+
+              // Region title & 2-line detail text matching prompt specification
+              const regionTitle = issue.subregionName || regDef.name;
+              let detailsLine = '';
+              if (issue.pain) {
+                detailsLine = `Pain · ${issue.pain.severity}/10${issue.pain.onset ? ` · ${issue.pain.onset}` : ''}`;
+              } else if (issue.injury) {
+                detailsLine = `Injury · ${issue.injury.cause}`;
+              } else if (issue.swelling) {
+                detailsLine = `Swelling · ${issue.swelling.extent}`;
+              } else if (issue.cut) {
+                detailsLine = `Cut · ${issue.cut.size}`;
+              } else if (issue.skinAppearance) {
+                detailsLine = `Skin · ${issue.skinAppearance.observedColor}`;
+              } else if (issue.numbness) {
+                detailsLine = `Numbness · ${issue.numbness.severity}/10`;
+              } else if (issue.stiffness) {
+                detailsLine = `Stiffness · ${issue.stiffness.severityLevel.split(' ')[0]}`;
+              } else {
+                detailsLine = issue.primaryIssue.replace('_', ' ');
               }
 
-              // Text summary e.g. Left elbow · Pain 6/10 · 3 days
-              const sevText = issue.pain ? ` · Pain ${issue.pain.severity}/10` : ` · ${issue.primaryIssue.toUpperCase()}`;
-              const durText = issue.pain?.onset ? ` · ${issue.pain.onset.split(' ')[0]}` : '';
-              const tagText = `${regDef.name.split(' ')[0]}${sevText}${durText}`;
+              const truncatedTitle = regionTitle.length > 20 ? regionTitle.slice(0, 18) + '…' : regionTitle;
+              const truncatedDetails = detailsLine.length > 24 ? detailsLine.slice(0, 22) + '…' : detailsLine;
 
               return (
                 <g
@@ -1277,13 +1257,13 @@ export const AnatomicalFigure: React.FC<AnatomicalFigureProps> = ({
                   style={{ cursor: 'pointer' }}
                 >
                   {/* Subtle skin glow spot */}
-                  <circle cx="0" cy="0" r="14" fill={dotColor} opacity="0.35" />
+                  <circle cx="0" cy="0" r="14" fill={dotColor} opacity="0.3" />
                   <circle cx="0" cy="0" r="4" fill="#FFFFFF" stroke="#000000" strokeWidth="1.2" />
 
                   {/* Leader connector line */}
                   <polyline
                     points={`0,0 ${deltaX * 0.4},${deltaY * 0.4} ${deltaX},${deltaY}`}
-                    stroke="rgba(255, 255, 255, 0.45)"
+                    stroke="rgba(255, 255, 255, 0.65)"
                     strokeWidth="1.2"
                     strokeDasharray="2 2"
                     fill="none"
@@ -1295,24 +1275,35 @@ export const AnatomicalFigure: React.FC<AnatomicalFigureProps> = ({
                     <rect
                       x="0"
                       y="0"
-                      width="156"
-                      height="24"
-                      rx="12"
-                      fill="rgba(12, 17, 26, 0.88)"
-                      stroke={isTagActive ? '#5FD7FF' : 'rgba(255, 255, 255, 0.22)'}
+                      width={pillWidth}
+                      height={pillHeight}
+                      rx="8"
+                      fill="rgba(0, 0, 0, 0.85)"
+                      stroke={isTagActive ? dotColor : 'rgba(255, 255, 255, 0.35)'}
                       strokeWidth={isTagActive ? '1.5' : '1'}
                       className="symptom-tag-pill-rect"
                     />
-                    <circle cx="10" cy="12" r="3.5" fill={dotColor} />
+                    {/* Subtle mint location marker */}
+                    <circle cx="10" cy="17" r="3" fill={dotColor} />
                     <text
                       x="18"
-                      y="15.5"
+                      y="14"
                       fill="#FFFFFF"
                       fontSize="9.5"
-                      fontFamily="var(--font-family-mono, monospace)"
-                      fontWeight="bold"
+                      fontFamily="var(--font-family-sans, sans-serif)"
+                      fontWeight="700"
                     >
-                      {tagText.length > 22 ? tagText.slice(0, 20) + '…' : tagText}
+                      {truncatedTitle}
+                    </text>
+                    <text
+                      x="18"
+                      y="26"
+                      fill="rgba(255, 255, 255, 0.85)"
+                      fontSize="8"
+                      fontFamily="var(--font-family-mono, monospace)"
+                      fontWeight="500"
+                    >
+                      {truncatedDetails}
                     </text>
                   </g>
                 </g>
@@ -1321,144 +1312,179 @@ export const AnatomicalFigure: React.FC<AnatomicalFigureProps> = ({
           </g>
 
           {/* ================================================================= */}
-          {/* LOCALIZED GLASS LENS (Requirement 4)                              */}
+          {/* INTRODUCTORY ANIMATED SEQUENCE (Requirement 1: Locate, Track, Share) */}
           {/* ================================================================= */}
+          {!selectedRegion && typeof introSequenceStep === 'number' && (
+            <g className="bodymap-intro-sequence-layer" aria-hidden="true">
+              {/* Sample demo location: Right Elbow / Forearm (x: 236, y: 440) */}
+              <g transform="translate(236, 440)">
+                {/* 01 · Locate: Soft white lens highlight pulse */}
+                <circle
+                  cx="0"
+                  cy="0"
+                  r="26"
+                  fill="url(#lensWhiteFocused)"
+                  className="intro-pulse-spot"
+                  opacity="0.85"
+                />
+                <circle cx="0" cy="0" r="18" stroke="rgba(255, 255, 255, 0.85)" strokeWidth="1.2" fill="none" />
+                <circle cx="0" cy="0" r="3.5" fill="#79D0BD" />
+
+                {/* 02 · Track & 03 · Share: Compact readable glass tag forms */}
+                {introSequenceStep >= 2 && (
+                  <g className="intro-sample-tag" transform="translate(32, -17)">
+                    <polyline
+                      points="0,17 -16,17 -32,0"
+                      stroke="rgba(255, 255, 255, 0.65)"
+                      strokeWidth="1.2"
+                      strokeDasharray="2 2"
+                      fill="none"
+                    />
+                    <rect
+                      x="0"
+                      y="0"
+                      width="144"
+                      height="34"
+                      rx="8"
+                      fill="rgba(0, 0, 0, 0.88)"
+                      stroke={introSequenceStep === 2 ? '#79D0BD' : 'rgba(255, 255, 255, 0.35)'}
+                      strokeWidth="1"
+                    />
+                    <circle cx="10" cy="17" r="3" fill="#79D0BD" />
+                    <text x="18" y="14" fill="#FFFFFF" fontSize="9.5" fontFamily="var(--font-family-sans, sans-serif)" fontWeight="700">Right Elbow</text>
+                    <text x="18" y="26" fill="rgba(255, 255, 255, 0.85)" fontSize="8" fontFamily="var(--font-family-mono, monospace)" fontWeight="500">Pain · 6/10 · 3 days</text>
+                  </g>
+                )}
+              </g>
+
+              {/* 03 · Share: Compact doctor-summary preview appears */}
+              {introSequenceStep === 3 && (
+                <g className="intro-brief-preview-pill" transform="translate(384, 950)">
+                  <rect
+                    x="-125"
+                    y="-16"
+                    width="250"
+                    height="32"
+                    rx="16"
+                    fill="rgba(0, 0, 0, 0.92)"
+                    stroke="#79D0BD"
+                    strokeWidth="1.2"
+                  />
+                  <circle cx="-105" cy="0" r="4" fill="#79D0BD" />
+                  <text
+                    x="-92"
+                    y="4"
+                    fill="#FFFFFF"
+                    fontSize="9.5"
+                    fontFamily="var(--font-family-mono, monospace)"
+                    fontWeight="600"
+                    letterSpacing="0.2px"
+                  >
+                    30s Doctor Brief · Synthesized
+                  </text>
+                </g>
+              )}
+            </g>
+          )}
+
           {/* ================================================================= */}
           {/* LOCALIZED GLASS LENS & CONNECTOR LEADER (Requirement 2 & 4)       */}
           {/* ================================================================= */}
-          {selectedRegion && pin && (
-            <>
-              {/* Connector line leading to floating glass panel */}
-              <g className="bodymap-panel-anchor-leader" aria-hidden="true">
-                {/* Horizontal line extending toward panel docking side */}
-                <line
-                  x1={pin.x}
-                  y1={pin.y}
-                  x2={pin.x <= 384 ? pin.x + 36 : pin.x - 36}
-                  y2={pin.y}
-                  stroke="rgba(255, 255, 255, 0.45)"
-                  strokeWidth="1.2"
-                />
-                <line
-                  x1={pin.x <= 384 ? pin.x + 36 : pin.x - 36}
-                  y1={pin.y}
-                  x2={pin.x <= 384 ? 680 : 88}
-                  y2={pin.y}
-                  stroke="rgba(255, 255, 255, 0.22)"
-                  strokeWidth="0.9"
-                  strokeDasharray="4 4"
-                />
-                <circle
-                  cx={pin.x <= 384 ? 680 : 88}
-                  cy={pin.y}
-                  r="3.5"
-                  fill="#5FD7FF"
-                  stroke="#FFFFFF"
-                  strokeWidth="1.2"
-                />
-              </g>
+          {selectedRegion && pin && (() => {
+            const isHead = pin.y < 170;
+            const dockRight = isDockRight !== undefined ? isDockRight : (isHead ? pin.x >= 384 : pin.x <= 384);
+            const anchorBottom = isAnchorBottom !== undefined ? isAnchorBottom : pin.y >= 360;
+            const dockTargetX = dockRight ? 670 : 98;
+            const dockTargetY = anchorBottom ? Math.max(340, Math.min(pin.y, 580)) : pin.y;
+            const elbowX = dockRight ? pin.x + 30 : pin.x - 30;
 
-              {/* Main Localized Glass Contact Lens */}
-              <g
-                className="bodymap-glass-lens-anchor"
-                transform={`translate(${pin.x}, ${pin.y})`}
-                aria-hidden="true"
-              >
-                {/* 1. Underlying Soft Symptom Glow / Halo */}
-                {activeOverlayType === 'swelling' ? (
-                  <circle
-                    cx="0"
-                    cy="0"
-                    r={
-                      activeCondition?.swellingExtent?.includes('Extensive')
-                        ? 54
-                        : activeCondition?.swellingExtent?.includes('Noticeable')
-                        ? 42
-                        : 32
-                    }
-                    fill="url(#lensSwellingGrad)"
-                    className="lens-symptom-glow-spot is-swelling-halo"
-                    style={{ filter: `drop-shadow(0 0 16px ${glowOuterColor})` }}
+            return (
+              <>
+                {/* Connector line leading to floating glass panel without crossing face */}
+                <g className="bodymap-panel-anchor-leader" aria-hidden="true">
+                  <polyline
+                    points={`${pin.x},${pin.y} ${elbowX},${pin.y} ${elbowX + (dockRight ? 24 : -24)},${dockTargetY} ${dockTargetX},${dockTargetY}`}
+                    stroke="rgba(255, 255, 255, 0.65)"
+                    strokeWidth="1.2"
+                    strokeDasharray="3 3"
+                    fill="none"
                   />
-                ) : activeOverlayType === 'numbness' ? (
-                  <g className="lens-numbness-ripples">
-                    <circle cx="0" cy="0" r="32" fill="none" stroke="#A855F7" strokeWidth="1" strokeDasharray="3 3" opacity="0.8" />
-                    <circle cx="0" cy="0" r="44" fill="none" stroke="#C084FC" strokeWidth="0.8" strokeDasharray="2 4" opacity="0.45" />
-                    <circle cx="0" cy="0" r="26" fill="rgba(168, 85, 247, 0.15)" />
-                  </g>
-                ) : activeOverlayType === 'stiffness' ? (
-                  <g className="lens-stiffness-brackets">
-                    <path d="M -22,-20 A 28 28 0 0 1 -22,20" fill="none" stroke="#F59E0B" strokeWidth="2.2" strokeLinecap="round" />
-                    <path d="M 22,-20 A 28 28 0 0 0 22,20" fill="none" stroke="#F59E0B" strokeWidth="2.2" strokeLinecap="round" />
-                    <circle cx="0" cy="0" r="28" fill="rgba(245, 158, 11, 0.12)" />
-                  </g>
-                ) : activeOverlayType === 'cut' ? (
-                  <g className="lens-cut-marker">
-                    <circle cx="0" cy="0" r="28" fill="rgba(239, 68, 68, 0.15)" />
-                    <line x1="-12" y1="-5" x2="12" y2="5" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" />
-                    <line x1="-3" y1="-9" x2="-1" y2="-1" stroke="#EF4444" strokeWidth="1.2" />
-                    <line x1="2" y1="1" x2="4" y2="9" stroke="#EF4444" strokeWidth="1.2" />
-                  </g>
-                ) : (
+                  <circle
+                    cx={dockTargetX}
+                    cy={dockTargetY}
+                    r="3.5"
+                    fill="#79D0BD"
+                    stroke="#FFFFFF"
+                    strokeWidth="1.2"
+                  />
+                </g>
+
+                {/* Main Localized Glass Contact Lens */}
+                <g
+                  className="bodymap-glass-lens-anchor"
+                  transform={`translate(${pin.x}, ${pin.y})`}
+                  aria-hidden="true"
+                >
+                  {/* 1. Underlying Soft White Glow Halo */}
                   <circle
                     cx="0"
                     cy="0"
                     r="34"
-                    fill={lensGlowGrad}
+                    fill="url(#lensWhiteFocused)"
                     className="lens-symptom-glow-spot"
-                    style={{ filter: `drop-shadow(0 0 16px ${glowOuterColor})` }}
+                    style={{ filter: 'drop-shadow(0 0 16px rgba(255, 255, 255, 0.45))' }}
                   />
-                )}
 
-                {/* 2. Soft focused white illumination (Reference #5 style) */}
-                <circle cx="0" cy="0" r="30" fill="url(#lensWhiteFocused)" opacity="0.65" />
+                  {/* 2. Soft focused white illumination */}
+                  <circle cx="0" cy="0" r="30" fill="url(#lensWhiteFocused)" opacity="0.65" />
 
-                {/* 3. Transparent Glass Disc with Thin Translucent White Rim (Reference #3 style) */}
-                <ellipse
-                  cx="0"
-                  cy="0"
-                  rx="27"
-                  ry="27"
-                  fill="rgba(255, 255, 255, 0.04)"
-                  stroke="rgba(255, 255, 255, 0.85)"
-                  strokeWidth="1.2"
-                  className="lens-glass-disc-rim"
-                />
+                  {/* 3. Transparent Glass Disc with Thin Translucent White Rim */}
+                  <ellipse
+                    cx="0"
+                    cy="0"
+                    rx="27"
+                    ry="27"
+                    fill="rgba(255, 255, 255, 0.04)"
+                    stroke="rgba(255, 255, 255, 0.85)"
+                    strokeWidth="1.2"
+                    className="lens-glass-disc-rim"
+                  />
 
-                {/* Inner concentric micro-etched ring */}
-                <ellipse
-                  cx="0"
-                  cy="0"
-                  rx="19"
-                  ry="19"
-                  fill="none"
-                  stroke="rgba(255, 255, 255, 0.38)"
-                  strokeWidth="0.8"
-                  strokeDasharray="3 3"
-                  className="lens-inner-ring"
-                />
+                  {/* Inner concentric micro-etched ring */}
+                  <ellipse
+                    cx="0"
+                    cy="0"
+                    rx="19"
+                    ry="19"
+                    fill="none"
+                    stroke="rgba(255, 255, 255, 0.38)"
+                    strokeWidth="0.8"
+                    strokeDasharray="3 3"
+                    className="lens-inner-ring"
+                  />
 
-                {/* Micro HUD Specular Highlight Arc */}
-                <path
-                  d="M -16,-16 A 23 23 0 0 1 12,-19"
-                  fill="none"
-                  stroke="rgba(255, 255, 255, 0.95)"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  className="lens-specular-highlight"
-                />
+                  {/* Micro HUD Specular Highlight Arc */}
+                  <path
+                    d="M -16,-16 A 23 23 0 0 1 12,-19"
+                    fill="none"
+                    stroke="rgba(255, 255, 255, 0.95)"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    className="lens-specular-highlight"
+                  />
 
-                {/* Precision Crosshair Ticks */}
-                <line x1="-33" y1="0" x2="-26" y2="0" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1" />
-                <line x1="26" y1="0" x2="33" y2="0" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1" />
-                <line x1="0" y1="-33" x2="0" y2="-26" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1" />
-                <line x1="0" y1="26" x2="0" y2="33" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1" />
+                  {/* Precision Crosshair Ticks */}
+                  <line x1="-33" y1="0" x2="-26" y2="0" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1" />
+                  <line x1="26" y1="0" x2="33" y2="0" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1" />
+                  <line x1="0" y1="-33" x2="0" y2="-26" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1" />
+                  <line x1="0" y1="26" x2="0" y2="33" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1" />
 
-                {/* Luminous center landmark point */}
-                <circle cx="0" cy="0" r="3" fill="#FFFFFF" stroke="#000000" strokeWidth="1" />
-              </g>
-            </>
-          )}
+                  {/* Luminous center landmark point */}
+                  <circle cx="0" cy="0" r="3" fill="#FFFFFF" stroke="#000000" strokeWidth="1" />
+                </g>
+              </>
+            );
+          })()}
         </svg>
       </div>
 

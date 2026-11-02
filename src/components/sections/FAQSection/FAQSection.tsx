@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Container } from '@/components/layout/Container/Container';
 import { Badge } from '@/components/common/Badge/Badge';
 import { HelpCircle, ChevronRight } from 'lucide-react';
@@ -14,20 +14,6 @@ interface FAQItem {
 
 const FAQ_ITEMS: FAQItem[] = [
   {
-    id: 'faq-what-is',
-    category: 'Platform Foundation',
-    question: 'What is MEDVIDHI?',
-    answer:
-      'MEDVIDHI is an intelligent health context platform being built to connect a person’s symptoms, medical reports, medications, and clinical history over time. Rather than starting from zero at every medical visit, MEDVIDHI organizes your continuous health context and synthesizes it into clear, pre-consultation briefings for healthcare professionals.',
-  },
-  {
-    id: 'faq-replace-doctor',
-    category: 'Clinical Primacy',
-    question: 'Does MEDVIDHI replace a doctor?',
-    answer:
-      'No. MEDVIDHI is designed to support the consultation, never to replace qualified healthcare professionals. It does not provide autonomous clinical diagnoses, prescribe medications, or replace physical examinations. Qualified medical professionals remain solely responsible for all diagnostic and therapeutic decisions.',
-  },
-  {
     id: 'faq-health-memory',
     category: 'Context Architecture',
     question: 'How does Health Memory work?',
@@ -39,7 +25,7 @@ const FAQ_ITEMS: FAQItem[] = [
     category: 'Clinical Workflow',
     question: 'What is the 30-Second Doctor Brief?',
     answer:
-      'The 30-Second Doctor Brief is a high-yield clinical orientation document synthesized from the patient’s Health Memory. It distills scattered reports, chief concerns, symptom timelines, and current medicines into structured clinical sections, enabling clinicians to grasp essential background within 30 seconds and dedicate the visit to clinical care.',
+      'The 30-Second Doctor Brief is a high-yield clinical orientation document synthesized from the patient\'s Health Memory. It distills scattered reports, chief concerns, symptom timelines, and current medicines into structured clinical sections, enabling clinicians to grasp essential background within 30 seconds and dedicate the visit to clinical care.',
   },
   {
     id: 'faq-reach-care',
@@ -67,54 +53,122 @@ const FAQ_ITEMS: FAQItem[] = [
 export const FAQSection: React.FC = () => {
   const [selectedFaqId, setSelectedFaqId] = useState<string>(FAQ_ITEMS[0].id);
 
-  const activeFaq =
-    FAQ_ITEMS.find((item) => item.id === selectedFaqId) || FAQ_ITEMS[0];
+  const pillRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const answerPanelRef = useRef<HTMLDivElement | null>(null);
+
+  const activeIndex = Math.max(
+    0,
+    FAQ_ITEMS.findIndex((item) => item.id === selectedFaqId),
+  );
+  const activeFaq = FAQ_ITEMS[activeIndex];
+
+  // Roving-tabindex arrow navigation: Up/Left -> previous, Down/Right -> next,
+  // Home/End -> first/last. Selection follows focus (tabs with instant activation).
+  const handleListKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const count = FAQ_ITEMS.length;
+    let nextIndex: number | null = null;
+
+    switch (event.key) {
+      case 'ArrowDown':
+      case 'ArrowRight':
+        nextIndex = (activeIndex + 1) % count;
+        break;
+      case 'ArrowUp':
+      case 'ArrowLeft':
+        nextIndex = (activeIndex - 1 + count) % count;
+        break;
+      case 'Home':
+        nextIndex = 0;
+        break;
+      case 'End':
+        nextIndex = count - 1;
+        break;
+      default:
+        return;
+    }
+
+    event.preventDefault();
+    setSelectedFaqId(FAQ_ITEMS[nextIndex].id);
+
+    const pill = pillRefs.current[nextIndex];
+    if (pill) {
+      pill.focus();
+      // block:'nearest' keeps the auto-scroll minimal so it never fights the user.
+      pill.scrollIntoView({ block: 'nearest' });
+    }
+  };
+
+  // Mobile: when a pill is tapped the answer panel may sit below the fold;
+  // nudge it (block:'nearest' = minimal movement) so the switch animation is seen.
+  const handlePillClick = (id: string) => {
+    setSelectedFaqId(id);
+    const isMobileLayout = window.matchMedia('(max-width: 899px)').matches;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isMobileLayout && answerPanelRef.current) {
+      answerPanelRef.current.scrollIntoView({
+        block: 'nearest',
+        behavior: reducedMotion ? 'auto' : 'smooth',
+      });
+    }
+  };
 
   return (
     <section id="faq" className="medvidhi-faq-section" aria-label="Frequently Asked Questions">
       <Container size="default" className="faq-container">
         {/* Section Header */}
-        <div className="faq-header">
-          <Badge variant="neutral" size="md" icon={<HelpCircle size={13} />}>
-            Inquiries &amp; Architecture
-          </Badge>
+        <div className="faq-header" data-reveal>
+          <div data-reveal="fade" style={{ '--si': 0 } as React.CSSProperties}>
+            <Badge variant="neutral" size="md" icon={<HelpCircle size={13} />}>
+              Inquiries &amp; Architecture
+            </Badge>
+          </div>
 
-          <h2 className="faq-headline">
-            <span className="editorial-serif">Good questions.</span>
+          <h2 className="faq-headline" data-reveal style={{ '--si': 1 } as React.CSSProperties}>
+            <span className="editorial-serif">Good questions deserve clear answers.</span>
           </h2>
 
-          <p className="faq-lead">
-            Clear answers about our technology, clinical boundaries, and the future of connected care.
+          <p className="faq-lead" data-reveal style={{ '--si': 2 } as React.CSSProperties}>
+            Clear perspectives on our technology, clinical boundaries, and the future of connected care.
           </p>
         </div>
 
         {/* Softly Rounded Outer Composition containing Two Connected Panels */}
-        <div className="faq-outer-composition">
+        <div className="faq-outer-composition" data-reveal style={{ '--si': 3 } as React.CSSProperties}>
           {/* Left Panel: Black Question-List Surface with White Text */}
-          <div className="faq-left-black-panel" role="tablist" aria-label="FAQ Question Directory">
+          <div className="faq-left-black-panel" role="tablist" aria-label="FAQ Question Directory" aria-orientation="vertical">
             <div className="black-panel-header">
               <span className="black-panel-title">Inquiries</span>
-              <span className="black-panel-count">07 Topics</span>
+              <span className="black-panel-count">05 Topics</span>
             </div>
 
-            <div className="black-questions-list">
+            <div className="black-questions-list" onKeyDown={handleListKeyDown}>
               {FAQ_ITEMS.map((item, idx) => {
                 const isSelected = item.id === selectedFaqId;
                 return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    role="tab"
-                    id={`faq-tab-${item.id}`}
-                    aria-controls={`faq-panel-${item.id}`}
-                    aria-selected={isSelected}
-                    className={`faq-pill-btn ${isSelected ? 'is-active-pill' : 'is-inactive-question'}`}
-                    onClick={() => setSelectedFaqId(item.id)}
+                  <div
+                    key={`${item.id}-reveal`}
+                    className="faq-pill-reveal-wrap"
+                    data-reveal
+                    style={{ '--si': idx } as React.CSSProperties}
                   >
-                    <span className="pill-index">0{idx + 1}</span>
-                    <span className="pill-question-text">{item.question}</span>
-                    <ChevronRight size={15} className="pill-arrow" aria-hidden="true" />
-                  </button>
+                    <button
+                      type="button"
+                      role="tab"
+                      id={`faq-tab-${item.id}`}
+                      aria-controls={`faq-panel-${item.id}`}
+                      aria-selected={isSelected}
+                      tabIndex={isSelected ? 0 : -1}
+                      ref={(el) => {
+                        pillRefs.current[idx] = el;
+                      }}
+                      className={`faq-pill-btn ${isSelected ? 'is-active-pill' : 'is-inactive-question'}`}
+                      onClick={() => handlePillClick(item.id)}
+                    >
+                      <span className="pill-index">0{idx + 1}</span>
+                      <span className="pill-question-text">{item.question}</span>
+                      <ChevronRight size={15} className="pill-arrow" aria-hidden="true" />
+                    </button>
+                  </div>
                 );
               })}
             </div>
@@ -123,11 +177,13 @@ export const FAQSection: React.FC = () => {
           {/* Right Panel: White / Frosted-White Answer Surface with Black Text */}
           <div
             className="faq-right-white-panel"
+            ref={answerPanelRef}
             role="tabpanel"
             id={`faq-panel-${activeFaq.id}`}
             aria-labelledby={`faq-tab-${activeFaq.id}`}
           >
-            <div className="answer-panel-content">
+            {/* Keyed on the selected question: remounts so the CSS enter animation replays. */}
+            <div className="answer-panel-content" key={activeFaq.id}>
               {/* Top Answer Bar with Genuine Supplied Brand Mark */}
               <div className="answer-top-bar">
                 <div className="answer-category-badge">

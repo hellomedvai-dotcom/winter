@@ -51,13 +51,15 @@
   width: 480px;
   height: 680px;
   background-color: #000000;
-  border-radius: 0 340px 340px 0; /* Pure geometric semicircle on the right */
+  border-radius: 0 340px 340px 0;
+  /* Pure geometric semicircle on the right */
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
   z-index: 5;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 40px 60px 40px 140px; /* Offset for left clipping */
+  padding: 40px 60px 40px 140px;
+  /* Offset for left clipping */
   overflow: hidden;
   border-right: 1.5px solid rgba(255, 255, 255, 0.15);
 }
@@ -91,17 +93,17 @@
 
 /* Refined non-bold editorial serif typography */
 .hub-editorial-heading {
-  font-family: var(--font-family-serif, "Newsreader", "Playfair Display", Georgia, serif);
+  font-family: var(--font-family-serif, Georgia, serif);
   font-size: clamp(2.8rem, 4.2vw, 3.8rem);
-  font-weight: 350;
+  font-weight: var(--font-weight-regular);
   line-height: 1.04;
-  letter-spacing: -0.025em;
+  letter-spacing: var(--letter-spacing-tight);
   color: #FFFFFF;
   margin: 0 0 1rem 0;
 }
 
 .hub-editorial-subtitle {
-  font-size: 0.88rem;
+  font-size: var(--font-size-sm);
   line-height: 1.6;
   color: #A1A1AA;
   margin: 0 0 2rem 0;
@@ -126,20 +128,20 @@
 
 .dial-counter {
   font-family: var(--font-family-mono, monospace);
-  font-size: 1.15rem;
-  font-weight: 800;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-extrabold);
   color: #FFFFFF;
 }
 
 .dial-total {
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm);
   color: #71717A;
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
 }
 
 .dial-phase-name {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   color: #E4E4E7;
   letter-spacing: 0.02em;
 }
@@ -171,6 +173,16 @@
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 }
 
+/* Small touch feedback for the step / tab controls */
+.dial-tick:active,
+.dial-nav-btn:active,
+.dial-play-btn:active,
+.source-chip-btn:active,
+.mobile-stage-tab:active {
+  transform: scale(0.97);
+  transition-duration: var(--motion-duration-fast);
+}
+
 /* Dial Navigation Controls */
 .dial-nav-controls {
   display: flex;
@@ -199,8 +211,27 @@
   color: #000000;
 }
 
+.dial-play-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dial-play-btn:hover {
+  background: #FFFFFF;
+  color: #000000;
+}
+
 .dial-hint-text {
-  font-size: 0.72rem;
+  font-size: var(--font-size-xs);
   font-family: var(--font-family-mono, monospace);
   color: #71717A;
   letter-spacing: 0.04em;
@@ -222,6 +253,20 @@
 
 .fan-ray-group {
   pointer-events: auto;
+  /* Draw-in: rays scale out from the hub and fade as the section reveals */
+  transform-box: fill-box;
+  transform-origin: left center;
+  transform: scaleX(0);
+  opacity: 0;
+  transition:
+    transform var(--motion-duration-slow) var(--motion-ease-out),
+    opacity var(--motion-duration-slow) var(--motion-ease-out);
+  transition-delay: calc(var(--si, 0) * 90ms);
+}
+
+.fan-stage-composition.is-revealed .fan-ray-group {
+  transform: scaleX(1);
+  opacity: 1;
 }
 
 .fan-ray-group .ray-path {
@@ -242,7 +287,8 @@
 /* Radial Fan Arrangement with Broad Right-Facing Arc                         */
 /* -------------------------------------------------------------------------- */
 .fan-panels-column {
-  margin-left: 360px; /* Offset past semicircle hub */
+  margin-left: 360px;
+  /* Offset past semicircle hub */
   width: calc(100% - 360px);
   display: flex;
   flex-direction: column;
@@ -254,10 +300,12 @@
 
 /* Stage Panel Item */
 .fan-stage-panel-item {
-  background: #FFFFFF;
-  border: 1px solid #E4E4E7;
+  background: var(--glass-surface-milky, rgba(255, 255, 255, 0.88));
+  border: 1px solid var(--glass-border-light, rgba(0, 0, 0, 0.08));
   border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--glass-shadow-soft, 0 4px 16px -2px rgba(0, 0, 0, 0.05)), var(--glass-highlight-light, inset 0 1px 0 rgba(255, 255, 255, 0.9));
+  backdrop-filter: var(--glass-blur-sm, blur(12px));
+  -webkit-backdrop-filter: var(--glass-blur-sm, blur(12px));
   cursor: pointer;
   outline: none;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -266,13 +314,34 @@
 }
 
 /* Radial curvature offsets: top and bottom panels pull inwards to mimic the fan arc */
-.stage-pos-0 { margin-left: 50px; }
-.stage-pos-1 { margin-left: 25px; }
-.stage-pos-2 { margin-left: 8px; }
-.stage-pos-3 { margin-left: 0px; } /* Center apex */
-.stage-pos-4 { margin-left: 8px; }
-.stage-pos-5 { margin-left: 25px; }
-.stage-pos-6 { margin-left: 50px; }
+.stage-pos-0 {
+  margin-left: 50px;
+}
+
+.stage-pos-1 {
+  margin-left: 25px;
+}
+
+.stage-pos-2 {
+  margin-left: 8px;
+}
+
+.stage-pos-3 {
+  margin-left: 0px;
+}
+
+/* Center apex */
+.stage-pos-4 {
+  margin-left: 8px;
+}
+
+.stage-pos-5 {
+  margin-left: 25px;
+}
+
+.stage-pos-6 {
+  margin-left: 50px;
+}
 
 /* Inactive Compact State */
 .fan-stage-panel-item.is-compact-item {
@@ -308,8 +377,8 @@
 
 .panel-index-pill {
   font-family: var(--font-family-mono, monospace);
-  font-size: 0.8rem;
-  font-weight: 800;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-extrabold);
   color: #000000;
   background: #F4F4F5;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -325,10 +394,10 @@
 }
 
 .panel-title-text {
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
   color: #000000;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--letter-spacing-normal);
 }
 
 .panel-icon-wrap {
@@ -347,26 +416,17 @@
   margin-top: 14px;
   padding-top: 14px;
   border-top: 1px solid #F4F4F5;
-  animation: panelFadeSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes panelFadeSlide {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
 }
 
 .panel-description-text {
-  font-size: 1.02rem;
-  line-height: 1.65;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
   color: #27272A;
   margin: 0 0 1rem 0;
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -382,8 +442,8 @@
 
 .sources-label-tag {
   font-family: var(--font-family-mono, monospace);
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
   color: #71717A;
   letter-spacing: 0.06em;
@@ -516,6 +576,7 @@
 /* Responsive Layout: Tablet and Mobile (< 960px)                             */
 /* -------------------------------------------------------------------------- */
 @media (max-width: 959px) {
+
   /* Hide Desktop Fan Layout */
   .fan-stage-composition {
     display: none;
@@ -563,6 +624,17 @@
   }
 
   /* Mobile Horizontal Stage Selector Strip */
+  .mobile-stages-strip-wrap {
+    position: relative;
+  }
+
+  .mobile-stages-hint-row {
+    display: flex;
+    justify-content: flex-end;
+    min-height: 18px;
+    padding: 2px 2px 0;
+  }
+
   .mobile-stages-selector-strip {
     display: flex;
     gap: 8px;
@@ -571,10 +643,23 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    scroll-padding-inline: 2px;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
+  }
+
+  .mobile-stage-tab:active {
+    transform: scale(0.97);
+    transition-duration: 110ms;
   }
 
   .mobile-stages-selector-strip::-webkit-scrollbar {
     display: none;
+  }
+
+  .mobile-stage-tab-reveal {
+    display: inline-flex;
+    flex-shrink: 0;
   }
 
   .mobile-stage-tab {
@@ -592,7 +677,12 @@
     cursor: pointer;
     scroll-snap-align: start;
     white-space: nowrap;
-    transition: all 0.18s ease;
+    transition:
+      background-color 0.18s ease,
+      border-color 0.18s ease,
+      color 0.18s ease,
+      box-shadow 0.18s ease,
+      transform 0.18s ease;
   }
 
   .mobile-stage-tab.is-active-tab {
@@ -720,12 +810,23 @@
 /* Accessibility: Reduced Motion Support                                      */
 /* -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
+
   .fan-stage-panel-item,
   .panel-expanded-body,
   .dial-tick,
   .ray-path,
   .source-chip-btn {
-    animation: none !important;
     transition: none !important;
+  }
+
+  .fan-ray-group {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Reveal elements must remain visible even without the observer transition */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

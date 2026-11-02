@@ -245,6 +245,7 @@ export const HealthMemoryVisualizer: React.FC = () => {
               <Layers size={13} className="pill-icon" />
               Longitudinal Context Engine
             </span>
+            <span className="dark-editorial-quote">&ldquo;Your health story should not have to start from zero.&rdquo;</span>
             <span className="dark-anchor-tag">#feature-health-memory</span>
             <span className="dark-illustrative-tag">Illustrative Sample Concept</span>
           </div>

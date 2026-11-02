@@ -1,27 +1,86 @@
-import React from 'react';
-import { Play } from 'lucide-react';
+import React, { useState, useRef, useCallback } from 'react';
+import { Play, Pause, RotateCcw } from 'lucide-react';
 import './ExplainerVideoFrame.css';
 
 export interface ExplainerVideoFrameProps {
   videoUrl?: string;
   posterUrl?: string;
   title?: string;
-  caption?: string;
   className?: string;
 }
 
 export const ExplainerVideoFrame: React.FC<ExplainerVideoFrameProps> = ({
-  videoUrl,
-  posterUrl,
-  title = 'MEDVIDHI — Product Story',
-  caption = 'Video coming soon',
+  videoUrl = '/videos/medvidhi-web.mp4',
+  posterUrl = '/videos/medvidhi-poster.png',
+  title = 'MEDVIDHI Explainer Video',
   className = '',
 }) => {
-  const isVideoConfigured = Boolean(videoUrl && videoUrl.trim() !== '');
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  // Play / Pause toggle
+  const togglePlay = useCallback(() => {
+    if (!videoRef.current) return;
+
+    if (videoRef.current.paused || videoRef.current.ended) {
+      videoRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+          setIsCompleted(false);
+          setHasError(false);
+        })
+        .catch((err) => {
+          console.warn('Playback error / interrupted:', err);
+        });
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, []);
+
+  // Media event handlers
+  const handlePlay = () => {
+    setIsPlaying(true);
+    setIsCompleted(false);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+  };
+
+  const handleEnded = () => {
+    setIsPlaying(false);
+    setIsCompleted(true);
+  };
+
+  const handleError = () => {
+    setHasError(true);
+    setIsPlaying(false);
+  };
+
+  // Keyboard accessibility
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === ' ' || e.key === 'k') {
+      e.preventDefault();
+      togglePlay();
+    }
+  };
 
   return (
-    <div className={`explainer-video-frame-wrapper ${className}`}>
-      {/* Four crisp black corner-bracket details OUTSIDE the frame */}
+    <div
+      ref={containerRef}
+      className={`explainer-video-frame-wrapper ${className}`}
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      role="region"
+      aria-label={`${title} Player`}
+    >
+      {/* Four crisp black corner brackets OUTSIDE the frame */}
       <div className="retro-corner-bracket bracket-top-left" aria-hidden="true">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
           <path d="M 0 16 L 0 0 L 16 0" stroke="#000000" strokeWidth="2.2" strokeLinecap="square" />
@@ -44,58 +103,72 @@ export const ExplainerVideoFrame: React.FC<ExplainerVideoFrameProps> = ({
       </div>
 
       {/* Main landscape-oriented media container with softly rounded boundary */}
-      <div className="explainer-media-boundary">
-        {isVideoConfigured ? (
-          <video
-            controls
-            src={videoUrl}
-            poster={posterUrl}
-            className="explainer-native-video"
-            aria-label={title}
-          />
-        ) : (
-          /* Elegant monochrome visual placeholder */
-          <div
-            className="explainer-poster-placeholder"
-            role="region"
-            aria-label={`${title} (${caption})`}
+      <div
+        className="explainer-media-boundary"
+        onClick={togglePlay}
+      >
+        {/* Actual Video Element with the MEDVIDHI poster */}
+        <video
+          ref={videoRef}
+          src={videoUrl}
+          poster={posterUrl}
+          preload="metadata"
+          playsInline
+          className="explainer-native-video"
+          aria-label={title}
+          onPlay={handlePlay}
+          onPause={handlePause}
+          onEnded={handleEnded}
+          onError={handleError}
+        />
+
+        {/* Ambient subtle scrim overlay when paused to give the glass button crisp contrast */}
+        <div
+          className={`explainer-video-scrim ${!isPlaying ? 'scrim--visible' : 'scrim--hidden'}`}
+          aria-hidden="true"
+        />
+
+        {/* Exactly one prominent Centered Liquid Glass Play/Pause Button */}
+        <div
+          className={`explainer-center-control-layer ${
+            !isPlaying ? 'control-layer--visible' : 'control-layer--hidden'
+          }`}
+        >
+          <button
+            type="button"
+            className="explainer-liquid-glass-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              togglePlay();
+            }}
+            aria-label={isCompleted ? 'Replay video' : isPlaying ? 'Pause video' : 'Play video'}
+            title={isCompleted ? 'Replay' : isPlaying ? 'Pause' : 'Play'}
           >
-            {/* Subtle monochrome geometric contour background */}
-            <div className="poster-monochrome-pattern" aria-hidden="true">
-              <svg width="100%" height="100%" viewBox="0 0 800 450" preserveAspectRatio="none" fill="none">
-                <defs>
-                  <linearGradient id="posterLineGrad" x1="0" y1="0" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.08" />
-                    <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0.03" />
-                    <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.08" />
-                  </linearGradient>
-                </defs>
-                <circle cx="400" cy="225" r="320" stroke="url(#posterLineGrad)" strokeWidth="1" strokeDasharray="4 4" />
-                <circle cx="400" cy="225" r="210" stroke="url(#posterLineGrad)" strokeWidth="1" />
-                <circle cx="400" cy="225" r="120" stroke="url(#posterLineGrad)" strokeWidth="1" strokeDasharray="2 3" />
-                <line x1="100" y1="225" x2="700" y2="225" stroke="url(#posterLineGrad)" strokeWidth="0.8" strokeDasharray="3 3" />
-                <line x1="400" y1="40" x2="400" y2="410" stroke="url(#posterLineGrad)" strokeWidth="0.8" strokeDasharray="3 3" />
-              </svg>
-            </div>
+            {isCompleted ? (
+              <RotateCcw size={32} className="glass-btn-icon" />
+            ) : isPlaying ? (
+              <Pause size={32} className="glass-btn-icon" />
+            ) : (
+              <Play size={32} className="glass-btn-icon glass-btn-icon--play" />
+            )}
+          </button>
+        </div>
 
-            {/* Poster Topline Brand Tag */}
-            <div className="poster-topline">
-              <span className="poster-brand-dot" aria-hidden="true" />
-              <span className="poster-title-label">{title}</span>
-            </div>
-
-            {/* Clearly Positioned Circular Play Control (Non-fake, authentic placeholder state) */}
-            <div className="poster-center-control" aria-hidden="true">
-              <div className="poster-play-circle" title="Video coming soon">
-                <Play size={24} className="poster-play-icon" />
-              </div>
-            </div>
-
-            {/* Restrained Caption & Technical Specs Footer */}
-            <div className="poster-footer">
-              <span className="poster-caption-tag">{caption}</span>
-              <span className="poster-specs-mono">16:9 • 4K CONTEXT ENGINE ARCHITECTURE</span>
-            </div>
+        {/* Error Fallback */}
+        {hasError && (
+          <div className="explainer-error-overlay" role="alert">
+            <p>Unable to load video stream.</p>
+            <button
+              type="button"
+              className="glass-error-retry"
+              onClick={(e) => {
+                e.stopPropagation();
+                setHasError(false);
+                videoRef.current?.load();
+              }}
+            >
+              Retry
+            </button>
           </div>
         )}
       </div>

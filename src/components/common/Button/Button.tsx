@@ -28,7 +28,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   if (asAnchor && href) {
     return (
-      <a href={href} className={classNames} aria-disabled={disabled}>
+      <a href={href} className={classNames} aria-disabled={disabled} {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
         {leftIcon && <span className="btn-icon left">{leftIcon}</span>}
         <span className="btn-text">{children}</span>
         {rightIcon && <span className="btn-icon right">{rightIcon}</span>}

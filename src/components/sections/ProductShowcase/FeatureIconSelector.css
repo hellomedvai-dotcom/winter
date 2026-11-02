@@ -1,359 +1,389 @@
 /* ==========================================================================
-   Feature Icon Selector - Polished Monochrome Horizontal Selector
-   Balanced monochrome icon family on predominantly white canvas
+   Feature Explorer - Compact Floating Liquid Glass Dock
+   Monochrome Apple-Inspired Dock with Precision Optical Glass Physics
+   Strictly Monochrome: Black, White, Grays & Alpha Transparencies Only
    ========================================================================== */
 
-.feature-icon-selector-container {
+.feature-explorer-wrapper {
   margin: var(--space-8) auto 0;
   width: 100%;
-  max-width: 1100px;
-}
-
-/* Softly curved rectangular capsule-like selector frame */
-.feature-icon-selector-frame {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-  padding: 14px 16px 16px;
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Subtle Topline Header */
-.feature-selector-topline {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  flex-wrap: wrap;
-  gap: var(--space-2);
+  position: relative;
+  overflow: visible;
+  padding: 0 var(--space-2);
+  box-sizing: border-box;
 }
 
-.selector-brand-heading {
+/* -------------------------------------------------------------------------- */
+/* 1. External Section Header & Instructions (Outside the Dock)               */
+/* -------------------------------------------------------------------------- */
+.feature-explorer-header {
+  text-align: center;
+  margin-bottom: clamp(18px, 2.8vw, 28px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.feature-explorer-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 8px;
 }
 
-.selector-pulse-indicator {
+.feature-explorer-pulse {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #000000;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
-  animation: selectorDotPulse 2.4s infinite ease-in-out;
+  background-color: #09090B;
+  opacity: 0.85;
+  animation: dockDotPulse 2.4s infinite ease-in-out;
 }
 
-@keyframes selectorDotPulse {
-  0%, 100% { transform: scale(0.9); opacity: 0.6; }
-  50% { transform: scale(1.2); opacity: 1; }
+@keyframes dockDotPulse {
+  0%, 100% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
 }
 
-.selector-brand-label {
+.feature-explorer-eyebrow-text {
   font-family: var(--font-family-mono);
-  font-size: 0.7rem;
-  font-weight: var(--font-weight-bold);
-  color: #000000;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #09090B;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
-.selector-meta-hint {
-  font-size: 0.68rem;
+.feature-explorer-instruction {
+  font-size: 0.84rem;
   color: #71717A;
+  letter-spacing: -0.01em;
+  margin: 0;
+  max-width: 500px;
+  line-height: 1.45;
 }
 
-/* ==========================================================================
-   Horizontal Responsive Grid
-   ========================================================================== */
-
-.feature-icons-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  align-items: stretch;
-}
-
-@media (min-width: 580px) {
-  .feature-icons-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-  }
-}
-
-@media (min-width: 980px) {
-  .feature-icons-grid {
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-  }
-}
-
-/* ==========================================================================
-   Monochrome Icon Button Tile
-   ========================================================================== */
-
-.feature-icon-tile {
-  background: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 14px;
-  padding: 12px 6px 10px;
+/* -------------------------------------------------------------------------- */
+/* 2. Floating Liquid Glass Dock Container                                    */
+/* -------------------------------------------------------------------------- */
+.liquid-glass-dock-nav {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  text-align: center;
-  gap: 8px;
-  cursor: pointer;
+  width: 100%;
+  overflow: visible;
+  z-index: 20;
+}
+
+.liquid-glass-dock {
   position: relative;
-  transition: 
-    transform var(--motion-duration-fast) var(--motion-ease-out),
-    background-color var(--motion-duration-fast) ease,
-    border-color var(--motion-duration-fast) ease,
-    box-shadow var(--motion-duration-fast) var(--motion-ease-out),
-    color var(--motion-duration-fast) ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  outline: none;
-  text-decoration: none;
-  min-height: 108px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.84) 0%, rgba(248, 249, 252, 0.68) 100%);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  box-shadow:
+    0 22px 48px -10px rgba(0, 0, 0, 0.08),
+    0 8px 20px -6px rgba(0, 0, 0, 0.04),
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 1),
+    inset 0 -1.5px 1.5px 0 rgba(0, 0, 0, 0.035);
+  max-width: 100%;
+  overflow: visible;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-.feature-icon-tile:hover {
-  background: #F4F4F5;
-  border-color: rgba(0, 0, 0, 0.2);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px -2px rgba(0, 0, 0, 0.08);
+.liquid-glass-dock:hover {
+  box-shadow:
+    0 26px 54px -10px rgba(0, 0, 0, 0.1),
+    0 10px 24px -4px rgba(0, 0, 0, 0.05),
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 1),
+    inset 0 -1.5px 1.5px 0 rgba(0, 0, 0, 0.04);
 }
 
-.feature-icon-tile:active {
-  transform: translateY(0);
-}
-
-.feature-icon-tile:focus-visible {
-  outline: 2px solid #000000;
-  outline-offset: 2px;
-}
-
-.feature-icon-tile.is-active-tile:focus-visible {
-  outline: 2px solid #000000;
-  outline-offset: 3px;
-  box-shadow: 
-    0 10px 24px -4px rgba(0, 0, 0, 0.4),
-    0 0 0 2px #FFFFFF;
-}
-
-/* ACTIVE STATE: High-contrast pure black tile matching floating panel below */
-.feature-icon-tile.is-active-tile {
-  background: #000000;
-  color: #FFFFFF;
-  border-color: #000000;
-  transform: translateY(-2px);
-  box-shadow: 
-    0 10px 24px -4px rgba(0, 0, 0, 0.35),
-    0 0 0 1px #000000;
-}
-
-/* ==========================================================================
-   Icon Glass Capsule Wrapper
-   ========================================================================== */
-
-.icon-glass-capsule {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: #09090B;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+/* -------------------------------------------------------------------------- */
+/* 3. Dock Inset Glass Icon Tile & Magnification                              */
+/* -------------------------------------------------------------------------- */
+.dock-item-wrapper {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--motion-duration-fast) ease;
-  position: relative;
   flex-shrink: 0;
+  overflow: visible;
 }
 
-.feature-icon-tile:hover .icon-glass-capsule {
-  transform: scale(1.05);
-}
-
-.feature-icon-tile.is-active-tile .icon-glass-capsule {
-  background: #18181B;
-  border-color: rgba(255, 255, 255, 0.4);
-  box-shadow: 
-    0 0 12px rgba(255, 255, 255, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  transform: scale(1.04);
-}
-
-/* ==========================================================================
-   Label & Navigation Metadata
-   ========================================================================== */
-
-.feature-tile-text-col {
+.dock-icon-btn {
+  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.9) 0%, rgba(244, 245, 248, 0.6) 100%);
+  border-radius: 18px;
+  cursor: pointer;
+  outline: none;
+  transform-origin: bottom center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 4px 12px -2px rgba(0, 0, 0, 0.04),
+    0 1px 3px rgba(0, 0, 0, 0.02),
+    inset 0 1.5px 1px 0 #FFFFFF,
+    inset 0 -1.5px 1px 0 rgba(0, 0, 0, 0.035);
+  transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dock-icon-btn:hover {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 249, 252, 0.75) 100%);
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow:
+    0 12px 24px -4px rgba(0, 0, 0, 0.09),
+    0 4px 8px -2px rgba(0, 0, 0, 0.04),
+    inset 0 2px 1.5px 0 #FFFFFF,
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.03);
+}
+
+/* Hover Magnification: gently lifts and enlarges the icon */
+.dock-icon-btn.is-hover-magnified {
+  transform: translateY(-6px) scale(1.14);
+  z-index: 30;
+}
+
+/* Adjacent Magnification: subtle proportional response */
+.dock-icon-btn.is-adjacent-magnified {
+  transform: translateY(-3px) scale(1.06);
+  z-index: 25;
+}
+
+.dock-icon-btn:focus-visible {
+  outline: 2px solid #09090B;
+  outline-offset: 3px;
+}
+
+/* Active State: Pristine illuminated white-glass tile with crisp refined definition */
+.dock-icon-btn.is-active-item {
+  background: linear-gradient(160deg, #FFFFFF 0%, rgba(246, 247, 251, 0.94) 100%);
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow:
+    0 6px 18px -2px rgba(0, 0, 0, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.03),
+    inset 0 2px 1.5px 0 #FFFFFF,
+    inset 0 0 0 1.5px rgba(9, 9, 11, 0.14);
+}
+
+.dock-icon-btn.is-active-item:hover {
+  background: #FFFFFF;
+  box-shadow:
+    0 10px 22px -3px rgba(0, 0, 0, 0.1),
+    0 3px 8px rgba(0, 0, 0, 0.04),
+    inset 0 2px 1.5px 0 #FFFFFF,
+    inset 0 0 0 1.5px rgba(9, 9, 11, 0.2);
+}
+
+.dock-icon-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  height: 100%;
 }
 
-.feature-tile-name {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #18181B;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  transition: color 0.2s ease;
+.dock-svg-icon {
+  display: block;
+  width: 26px;
+  height: 26px;
+  transition: transform 0.2s ease;
 }
 
-.feature-icon-tile.is-active-tile .feature-tile-name {
-  color: #FFFFFF;
-  font-weight: 800;
-}
-
-.feature-tile-index {
-  font-family: var(--font-family-mono);
-  font-size: 0.58rem;
-  color: #71717A;
-  letter-spacing: 0.05em;
-  margin-top: 1px;
-  transition: color 0.2s ease;
-}
-
-.feature-icon-tile.is-active-tile .feature-tile-index {
-  color: #A1A1AA;
-}
-
-/* ==========================================================================
-   Right Doctor Distinguished Treatment
-   ========================================================================== */
-
-.feature-icon-tile.is-distinguished {
-  border-color: rgba(0, 0, 0, 0.16);
-}
-
-.feature-icon-tile.is-distinguished.is-active-tile {
-  border-color: #000000;
-}
-
-.distinguished-badge-pill {
+/* Subtle Active Dot under the icon */
+.dock-active-dot {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 5px;
-  height: 5px;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
-  background-color: #000000;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s ease;
+  background: #09090B;
+  pointer-events: none;
 }
 
-.feature-icon-tile.is-active-tile .distinguished-badge-pill {
-  background-color: #FFFFFF;
-  box-shadow: 0 0 6px #FFFFFF;
+/* -------------------------------------------------------------------------- */
+/* 4. Floating Tooltip Pill (Directly above active icon, unclipped)            */
+/* -------------------------------------------------------------------------- */
+.liquid-dock-tooltip {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 10px 24px -4px rgba(0, 0, 0, 0.09),
+    0 2px 6px rgba(0, 0, 0, 0.04),
+    inset 0 1px 1px 0 #FFFFFF;
+  border-radius: 9999px;
+  padding: 5px 12px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0.18s;
+  white-space: nowrap;
+  z-index: 100;
 }
 
-/* ==========================================================================
-   Restrained Micro-Animations (Pure Monochrome CSS)
-   ========================================================================== */
-
-/* 1. Body Map Radar Pulse */
-.body-pin-radar {
-  animation: radarPulse 3s infinite ease-out;
-  transform-origin: 20px 18px;
+.liquid-dock-tooltip.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }
 
-@keyframes radarPulse {
-  0% { transform: scale(0.9); opacity: 0.8; }
-  50% { transform: scale(1.25); opacity: 0.2; }
-  100% { transform: scale(0.9); opacity: 0.8; }
+.liquid-dock-tooltip-label {
+  font-family: var(--font-family-sans);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #09090B;
+  letter-spacing: -0.01em;
 }
 
-/* 2. Voice Restrained Listening Waveform */
-.feature-icon-tile:hover .wave-bar,
-.wave-bar {
-  transform-origin: center;
-  animation: waveBarPulse 2s infinite ease-in-out;
+.liquid-dock-tooltip-arrow {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid rgba(255, 255, 255, 0.95);
 }
 
-.wave-1 { animation-delay: 0s; }
-.wave-2 { animation-delay: 0.3s; }
-.wave-3 { animation-delay: 0.6s; }
-.wave-4 { animation-delay: 0.9s; }
-
-@keyframes waveBarPulse {
-  0%, 100% { transform: scaleY(0.7); opacity: 0.5; }
-  50% { transform: scaleY(1.3); opacity: 1; }
+/* -------------------------------------------------------------------------- */
+/* 5. Mobile & Touch Screen Adaptations                                       */
+/* -------------------------------------------------------------------------- */
+.dock-mobile-active-strip {
+  display: none;
+  margin-top: 14px;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  font-size: 0.76rem;
 }
 
-/* 3. Doctor Brief Scanning Beam */
-.doc-scan-beam {
-  animation: docBeamScan 3.2s infinite ease-in-out;
+.mobile-active-label {
+  font-family: var(--font-family-mono);
+  color: #71717A;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  font-weight: 600;
 }
 
-@keyframes docBeamScan {
-  0%, 100% { transform: translateY(-4px); opacity: 0.2; }
-  50% { transform: translateY(7px); opacity: 0.9; }
+.mobile-active-name {
+  font-weight: 600;
+  color: #09090B;
 }
 
-/* 4. Health Memory Core Pulse */
-.memory-core-pulse {
-  animation: memoryNucleusPulse 2.8s infinite ease-in-out;
-  transform-origin: 20px 20px;
+.dock-swipe-hint-wrap {
+  display: none;
+  margin-top: 8px;
 }
 
-@keyframes memoryNucleusPulse {
-  0%, 100% { transform: scale(0.92); opacity: 0.75; }
-  50% { transform: scale(1.18); opacity: 1; }
+@media (hover: none) and (pointer: coarse) {
+  .dock-mobile-active-strip {
+    display: inline-flex;
+  }
 }
 
-/* ==========================================================================
-   Accessibility & Mobile Responsiveness
-   ========================================================================== */
-
-@media (max-width: 579px) {
-  .feature-icon-selector-frame {
-    padding: 12px;
-    border-radius: 16px;
+@media (max-width: 640px) {
+  .dock-mobile-active-strip {
+    display: inline-flex;
   }
 
-  .feature-icon-tile {
-    min-height: 94px;
-    padding: 10px 6px 8px;
-    border-radius: 12px;
+  .liquid-glass-dock {
+    padding: 8px 10px;
+    gap: 6px;
   }
 
-  .feature-icon-tile.is-distinguished {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    min-height: 52px;
-    padding: 8px 14px;
-    gap: 12px;
-    justify-content: flex-start;
+  .dock-icon-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
   }
 
-  .feature-icon-tile.is-distinguished .feature-tile-text-col {
-    align-items: flex-start;
-    text-align: left;
+  .dock-svg-icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@media (max-width: 380px) {
+  .liquid-glass-dock {
+    padding: 6px 8px;
+    gap: 4px;
   }
 
-  .icon-glass-capsule {
+  .dock-icon-btn {
     width: 38px;
     height: 38px;
-    border-radius: 10px;
+    border-radius: 11px;
   }
 
-  .feature-tile-name {
-    font-size: 0.68rem;
+  .dock-svg-icon {
+    width: 19px;
+    height: 19px;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 6. Accessibility & Reduced Motion                                          */
+/* -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .dock-icon-btn {
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .dock-icon-btn.is-hover-magnified,
+  .dock-icon-btn.is-adjacent-magnified {
+    transform: none !important;
+  }
+
+  .feature-explorer-pulse {
+    animation: none;
   }
 }

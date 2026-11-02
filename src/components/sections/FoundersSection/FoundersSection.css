@@ -1,0 +1,631 @@
+/**
+ * Founder & Co-Founder Sections
+ *
+ * Founder: a single thin outlined quotation frame with curved corner
+ * indentations, serif identity, Kalam statement, authentic signature and
+ * a compact LinkedIn action. Desktop and mobile use separate SVG frame
+ * geometry so the outline stays deliberate at every size.
+ *
+ * Co-Founder: the existing three-column reference composition, preserved.
+ */
+
+/* ============================================
+   FOUNDER SECTION — outlined quotation frame
+   ============================================ */
+
+.founder-section {
+  position: relative;
+  width: 100%;
+  background-color: #ffffff;
+  padding: clamp(3rem, 6vw, 5.5rem) 0 clamp(4rem, 8vw, 7rem);
+  overflow: hidden;
+}
+
+.founder-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.founders-section-eyebrow {
+  display: inline-block;
+  font-family: var(--font-family-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #71717A;
+  margin-bottom: 0.5rem;
+}
+
+/* Shared heading for the whole founders area */
+.founders-area-heading {
+  font-family: var(--font-family-serif);
+  font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  color: #141414;
+  margin: 0 0 clamp(2rem, 4vw, 3.25rem);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.founder-section.is-visible .founders-area-heading {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.founders-editorial-sub {
+  font-family: var(--font-family-serif);
+  font-style: italic;
+  font-size: 1.12rem;
+  color: #71717A;
+  margin: -1.5rem 0 clamp(2rem, 4vw, 3.25rem);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s ease-out 0.1s, transform 0.6s ease-out 0.1s;
+}
+
+.founder-section.is-visible .founders-editorial-sub {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* The frame + content share one positioning context */
+.founder-note {
+  position: relative;
+  width: 100%;
+  max-width: 1240px;
+  min-height: 570px;
+  margin: clamp(1.75rem, 3vw, 2.5rem) auto 0;
+  padding: clamp(3rem, 4vw, 4rem) clamp(3rem, 9vw, 11rem) clamp(4rem, 5vw, 5rem);
+  container-type: inline-size;
+  color: #000000;
+  isolation: isolate;
+}
+
+.founder-note-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: #000000;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.founder-frame-mobile {
+  display: none;
+}
+
+.founder-frame-stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+/* Oversized opening / closing marks sit inside the curved cut-outs */
+.founder-note-mark {
+  position: absolute;
+  display: block;
+  z-index: 0;
+  font-family: var(--font-family-serif);
+  font-size: clamp(10rem, 20cqw, 15rem);
+  font-weight: 600;
+  line-height: 0.55;
+  letter-spacing: -0.05em;
+  color: #000000;
+  pointer-events: none;
+  user-select: none;
+}
+
+.founder-mark-open {
+  top: 0.2rem;
+  left: 0;
+}
+
+.founder-mark-close {
+  right: 0;
+  bottom: 0.2rem;
+}
+
+/* Compact authentic LinkedIn action */
+.founder-note-linkedin {
+  position: absolute;
+  top: 2.5rem;
+  right: 2.5rem;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: #000000;
+  border-radius: 8px;
+  transition: transform 180ms var(--motion-ease-out);
+}
+
+.founder-note-linkedin svg {
+  display: block;
+  width: 25px;
+  height: 25px;
+}
+
+.founder-note-linkedin:hover {
+  transform: translateY(-1px);
+}
+
+.founder-note-linkedin:active {
+  transform: scale(0.96);
+}
+
+.founder-note-linkedin:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 4px;
+}
+
+.founder-note-identity {
+  position: relative;
+  z-index: 2;
+  max-width: 46rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.founder-note-name {
+  margin: 0;
+  font-family: var(--font-family-serif);
+  font-size: clamp(3rem, 5.2cqw, 4.15rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: #000000;
+}
+
+.founder-note-role {
+  margin: 0.6rem 0 0;
+  font-family: var(--font-family-sans);
+  font-size: clamp(0.72rem, 0.95cqw, 0.84rem);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: #111111;
+}
+
+.founder-note-message {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 53rem);
+  margin: clamp(1.5rem, 2.5cqw, 2rem) auto 0;
+  font-family: var(--font-family-handwritten);
+  font-size: clamp(1.16rem, 1.75cqw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: #000000;
+  text-align: left;
+}
+
+.founder-note-signature-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  width: min(100%, 53rem);
+  margin: clamp(0.4rem, 1.2cqw, 0.8rem) 0 0;
+  padding-right: clamp(0rem, 5cqw, 3rem);
+}
+
+.founder-note-signature {
+  display: block;
+  width: clamp(58px, 6.2cqw, 82px);
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Coordinated entrance — content is visible by default, so a failed
+   observer/animation leaves the note fully readable. */
+@keyframes founder-frame-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes founder-note-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes founder-note-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.founder-section.is-visible .founder-frame-stroke {
+  animation: founder-frame-draw 900ms cubic-bezier(0.22, 0.61, 0.36, 1) 80ms backwards;
+}
+
+.founder-section.is-visible .founder-mark-open {
+  animation: founder-note-fade 520ms ease-out 480ms backwards;
+}
+
+.founder-section.is-visible .founder-mark-close {
+  animation: founder-note-fade 520ms ease-out 640ms backwards;
+}
+
+.founder-section.is-visible .founder-note-linkedin {
+  animation: founder-note-fade 460ms ease-out 740ms backwards;
+}
+
+.founder-section.is-visible .founder-note-identity {
+  animation: founder-note-rise 600ms cubic-bezier(0.22, 0.61, 0.36, 1) 260ms backwards;
+}
+
+.founder-section.is-visible .founder-note-message {
+  animation: founder-note-rise 640ms cubic-bezier(0.22, 0.61, 0.36, 1) 400ms backwards;
+}
+
+.founder-section.is-visible .founder-note-signature-row {
+  animation: founder-note-fade 520ms ease-out 800ms backwards;
+}
+
+/* ============================================
+   CO-FOUNDER SECTION — open editorial layout
+   ============================================ */
+
+.co-founder-section {
+  position: relative;
+  width: 100%;
+  background-color: #ffffff;
+  padding: clamp(1rem, 3vw, 3rem) 0 clamp(3.5rem, 7vw, 6.5rem);
+  overflow: hidden;
+}
+
+.co-founder-container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+}
+
+/* Open composition — no card surface, border, shadow, or hover lift */
+.co-founder-composition {
+  position: relative;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.co-founder-section.is-visible .co-founder-composition {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cofounder-heading {
+  font-family: var(--font-family-handwritten);
+  font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+  font-weight: 400;
+  color: #141414;
+  margin: 0 0 clamp(1.75rem, 3vw, 2.5rem);
+  margin-left: clamp(0rem, 12%, 7rem);
+  line-height: 1.25;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.55s ease-out 150ms, transform 0.55s ease-out 150ms;
+}
+
+.co-founder-section.is-visible .cofounder-heading {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reference three-column composition: quotation artwork | statement | portrait */
+.cofounder-grid {
+  display: grid;
+  grid-template-columns: minmax(190px, 320px) minmax(0, 1fr) minmax(210px, 310px);
+  gap: clamp(1.75rem, 3.5vw, 3rem);
+  align-items: start;
+}
+
+.cofounder-quote-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 330px;
+  container-type: inline-size;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease-out 550ms, transform 0.6s ease-out 550ms;
+}
+
+.co-founder-section.is-visible .cofounder-quote-wrap {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cofounder-quote {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Transparent hit area over the baked-in LinkedIn icon */
+.cofounder-linkedin-hit {
+  position: absolute;
+  left: 83.8%;
+  top: 29.5%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.5s ease-out 700ms;
+}
+
+.co-founder-section.is-visible .cofounder-linkedin-hit {
+  opacity: 1;
+}
+
+.cofounder-linkedin-hit:focus-visible {
+  outline: 2px solid #141414;
+  outline-offset: 3px;
+}
+
+.cofounder-body {
+  margin: 0;
+}
+
+.cofounder-text {
+  font-family: var(--font-family-handwritten);
+  font-size: clamp(1.05rem, 1.45vw, 1.22rem);
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  color: #151515;
+  margin: 0 0 1.35rem;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+  transition-delay: calc(300ms + var(--si) * 140ms);
+}
+
+.cofounder-text:last-child {
+  margin-bottom: 0;
+}
+
+.co-founder-section.is-visible .cofounder-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cofounder-portrait-wrap {
+  width: 100%;
+  max-width: 300px;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease-out 700ms, transform 0.6s ease-out 700ms;
+}
+
+.co-founder-section.is-visible .cofounder-portrait-wrap {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cofounder-portrait {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.cofounder-caption {
+  display: block;
+  margin-top: 0.9rem;
+}
+
+.cofounder-name {
+  display: block;
+  font-family: var(--font-family-sans);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #141414;
+  line-height: 1.3;
+}
+
+.cofounder-role {
+  display: block;
+  font-family: var(--font-family-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: #6e6a60;
+  margin-top: 0.2rem;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Founder phone/compact: taller frame geometry, quote marks scaled down,
+   the full statement in normal flow. */
+@media (max-width: 768px) {
+  .founder-note {
+    min-height: 640px;
+    padding: 7rem clamp(1.5rem, 6.5vw, 2.5rem) 7rem;
+  }
+
+  .founder-frame-desktop {
+    display: none;
+  }
+
+  .founder-frame-mobile {
+    display: block;
+  }
+
+  .founder-note-mark {
+    font-size: clamp(6.5rem, 30vw, 8.5rem);
+    line-height: 0.55;
+    letter-spacing: -0.06em;
+  }
+
+  .founder-mark-open {
+    top: 0.75rem;
+    left: 0.5rem;
+  }
+
+  .founder-mark-close {
+    right: 0.5rem;
+    bottom: 0.75rem;
+  }
+
+  .founder-note-linkedin {
+    top: 2rem;
+    right: 2rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  .founder-note-linkedin svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .founder-note-name {
+    font-size: clamp(2.35rem, 10.5vw, 2.8rem);
+  }
+
+  .founder-note-role {
+    margin-top: 0.55rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+  }
+
+  .founder-note-message {
+    width: 100%;
+    margin-top: 1.4rem;
+    font-size: clamp(1.02rem, 4.35vw, 1.1rem);
+    line-height: 1.62;
+  }
+
+  .founder-note-signature-row {
+    width: 100%;
+    margin-top: 0.7rem;
+    padding-right: 1rem;
+    justify-content: flex-end;
+  }
+
+  .founder-note-signature {
+    width: clamp(52px, 15vw, 64px);
+  }
+
+  .founders-area-heading {
+    margin-bottom: 1.75rem;
+  }
+
+  .cofounder-heading {
+    margin-left: 0;
+    font-size: clamp(1.7rem, 6.5vw, 2.1rem);
+  }
+}
+
+/* Co-Founder tablet/mobile: statement first, then quotation artwork and
+   portrait side by side, identity directly beneath the portrait */
+@media (max-width: 860px) {
+  .cofounder-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem 2rem;
+    align-items: end;
+  }
+
+  .cofounder-body {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .cofounder-quote-wrap {
+    grid-row: 2;
+    max-width: 240px;
+    justify-self: start;
+  }
+
+  .cofounder-portrait-wrap {
+    grid-row: 2;
+    max-width: 250px;
+    justify-self: end;
+  }
+}
+
+@media (max-width: 430px) {
+  .cofounder-quote-wrap {
+    max-width: 200px;
+  }
+
+  .cofounder-portrait-wrap {
+    max-width: 210px;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .founders-area-heading,
+  .founder-note-mark,
+  .founder-note-linkedin,
+  .founder-note-identity,
+  .founder-note-message,
+  .founder-note-signature-row,
+  .co-founder-composition,
+  .cofounder-heading,
+  .cofounder-text,
+  .cofounder-quote-wrap,
+  .cofounder-linkedin-hit,
+  .cofounder-portrait-wrap {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .founder-section.is-visible .founder-frame-stroke,
+  .founder-section.is-visible .founder-mark-open,
+  .founder-section.is-visible .founder-mark-close,
+  .founder-section.is-visible .founder-note-linkedin,
+  .founder-section.is-visible .founder-note-identity,
+  .founder-section.is-visible .founder-note-message,
+  .founder-section.is-visible .founder-note-signature-row {
+    animation: none;
+  }
+
+  .founder-frame-stroke {
+    stroke-dashoffset: 0;
+  }
+}

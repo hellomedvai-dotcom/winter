@@ -54,11 +54,13 @@
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
-  background: #000000;
-  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: var(--glass-surface-dark-elevated, rgba(16, 16, 18, 0.9));
+  border: 1px solid var(--glass-border-dark, rgba(255, 255, 255, 0.12));
   border-radius: 28px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 2px 10px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--glass-shadow-dark, 0 20px 60px rgba(0, 0, 0, 0.25)), var(--glass-highlight-dark, inset 0 1px 0 rgba(255, 255, 255, 0.14));
+  backdrop-filter: var(--glass-blur-md, blur(20px));
+  -webkit-backdrop-filter: var(--glass-blur-md, blur(20px));
   min-height: 520px;
 }
 
@@ -119,6 +121,16 @@
   max-height: 520px;
   overflow-y: auto;
   padding-right: 4px;
+  /* Smooth native + programmatic scrolling (scrollIntoView from arrow-key nav) */
+  scroll-behavior: smooth;
+  scroll-padding: 8px 0;
+  overscroll-behavior: contain;
+}
+
+/* Reveal wrapper: keeps the flex-row layout of each pill intact inside the
+   [data-reveal] staggered entrance driven by the global motion scanner. */
+.faq-pill-reveal-wrap {
+  display: flex;
 }
 
 /* Custom scrollbar for black panel */
@@ -145,11 +157,59 @@
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: inherit;
   color: rgba(255, 255, 255, 0.72);
+  position: relative;
+}
+
+/* Current-position indicator: a slim bar at the pill's leading edge.
+   Hidden on inactive rows, nudges in on pointer hover, fully grown on the
+   active pill (black on the white capsule = high contrast, works on touch too). */
+.faq-pill-btn::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  width: 3px;
+  height: 55%;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.45);
+  transform: translateY(-50%) scaleY(0);
+  opacity: 0;
+  transition:
+    transform var(--motion-duration-normal) var(--motion-ease-out),
+    opacity var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .faq-pill-btn:not(.is-active-pill):hover::before {
+    transform: translateY(-50%) scaleY(0.55);
+    opacity: 1;
+  }
+}
+
+.faq-pill-btn.is-active-pill::before {
+  background: #000000;
+  transform: translateY(-50%) scaleY(1);
+  opacity: 1;
 }
 
 .faq-pill-btn:hover {
   background: rgba(255, 255, 255, 0.08);
   color: #FFFFFF;
+}
+
+/* Press feedback (touch + mouse) */
+.faq-pill-btn:active {
+  transform: scale(0.975);
+  transition-duration: 90ms;
+}
+
+.faq-pill-btn.is-active-pill:active {
+  transform: scale(0.985);
+}
+
+/* Keep the focus ring visible on the black question surface */
+.black-questions-list .faq-pill-btn:focus-visible {
+  outline-color: #FFFFFF;
 }
 
 .faq-pill-btn.is-active-pill {
@@ -210,11 +270,36 @@
   position: relative;
 }
 
+/* Answer switch feedback: .answer-panel-content is keyed to the selected
+   question in React, so every switch remounts it and replays this enter
+   animation (opacity + small rise, 180ms). On mobile this is the visible
+   confirmation that the answer changed. */
+@keyframes faq-answer-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes faq-hairline-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 .answer-panel-content {
   display: flex;
   flex-direction: column;
   gap: 20px;
   max-width: 620px;
+  animation: faq-answer-enter var(--motion-duration-fast) var(--motion-ease-out) both;
 }
 
 .answer-top-bar {
@@ -272,6 +357,9 @@
   height: 2px;
   background: #000000;
   border-radius: 1px;
+  transform-origin: left center;
+  /* Grows in just after the block fades, finishing ~260ms after switch */
+  animation: faq-hairline-grow 200ms var(--motion-ease-out) 60ms both;
 }
 
 .answer-narrative {

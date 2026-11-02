@@ -33,6 +33,20 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
-# Diagnostic and temp folders
+# Diagnostic, testing and temp artifacts
 tmp/
 temp/
+backups/
+scripts/
+*.mjs
+*.py
+*.js
+!vite.config.ts
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.html
+!index.html
+!public/**/*
+esr-styles.css

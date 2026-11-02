@@ -1,4 +1,5 @@
 import React from 'react';
+import { useReveal } from '@/lib/motion/useReveal';
 import './DoctorBriefConvergenceVisual.css';
 
 interface DoctorBriefConvergenceVisualProps {
@@ -107,8 +108,15 @@ export const DoctorBriefConvergenceVisual: React.FC<DoctorBriefConvergenceVisual
       ? fragmentIndexMap[highlightedFragmentId]
       : null;
 
+  // Gate the self-playing halo animation so the demo only runs once in view.
+  const { ref: wrapperRef, isVisible } = useReveal<HTMLDivElement>();
+
   return (
-    <div className="doctor-brief-convergence-wrapper" aria-hidden="true">
+    <div
+      ref={wrapperRef}
+      className={`doctor-brief-convergence-wrapper ${isVisible ? 'is-visible' : ''}`}
+      aria-hidden="true"
+    >
       {/* Precision SVG Vector Routing Canvas */}
       <svg
         viewBox="0 0 160 480"

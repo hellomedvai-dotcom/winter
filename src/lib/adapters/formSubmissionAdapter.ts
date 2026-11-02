@@ -9,14 +9,15 @@
 
 import { WaitlistFormData, SubmissionResponse } from '@/types/forms';
 import { validateWaitlistForm } from '@/lib/validation/formValidation';
+import { getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase';
 
 export interface FormSubmissionAdapter {
   submitWaitlist(data: WaitlistFormData): Promise<SubmissionResponse>;
 }
 
 /**
- * Local development adapter for initial phase.
- * Simulates async delivery and validation without invoking external networks.
+ * Pluggable form submission adapter that uses Supabase when configured,
+ * or simulates async delivery safely when environment variables are not set.
  */
 export class LocalDevelopmentAdapter implements FormSubmissionAdapter {
   private readonly delayMs: number;
@@ -31,8 +32,27 @@ export class LocalDevelopmentAdapter implements FormSubmissionAdapter {
       throw new Error(validation.errors.email || 'Invalid form submission data.');
     }
 
-    // Simulate realistic async roundtrip
-    await new Promise((resolve) => setTimeout(resolve, this.delayMs));
+    if (isSupabaseConfigured()) {
+      try {
+        const supabase = getSupabaseClient();
+        const email = data.email.trim().toLowerCase();
+        const payload = {
+          email,
+          full_name: 'Waitlist Member',
+          interest: 'General Early Access',
+        };
+        const { error } = await supabase.from('waitlist_signups').insert([payload]);
+        if (error && error.code !== '23505') {
+          throw new Error(error.message || 'Unable to submit waitlist registration.');
+        }
+      } catch (err: unknown) {
+        if (err instanceof Error) throw err;
+        throw new Error('Database connection failed.');
+      }
+    } else {
+      // Simulate realistic async roundtrip when unconfigured
+      await new Promise((resolve) => setTimeout(resolve, this.delayMs));
+    }
 
     const referenceId = `MEDV-${Date.now().toString(36).toUpperCase()}`;
 

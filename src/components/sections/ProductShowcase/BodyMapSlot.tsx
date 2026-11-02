@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Crosshair,
   Shield,
@@ -47,9 +47,22 @@ export const BodyMapSlot: React.FC = () => {
     primaryIssue: 'pain',
   });
 
+  // Automated Introductory Feature Animation (Locate -> Track -> Share)
+  const [introStep, setIntroStep] = useState<number>(1);
+  const [hasUserInteracted, setHasUserInteracted] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (selectedRegion || hasUserInteracted) return;
+    const interval = setInterval(() => {
+      setIntroStep((prev) => (prev % 3) + 1);
+    }, 3200);
+    return () => clearInterval(interval);
+  }, [selectedRegion, hasUserInteracted]);
+
   // Handler for region selection
   const handleSelectRegion = (region: BodyRegionDefinition) => {
     setSelectedRegion(region);
+    setHasUserInteracted(true);
 
     // If region belongs specifically to a different view, switch view cleanly
     if (region.view === 'back' && bodyView !== 'back') {
@@ -61,6 +74,13 @@ export const BodyMapSlot: React.FC = () => {
     // Reset subregion if moving away from hands
     if (region.parentArea !== 'hands' && !region.id.includes('hand') && !region.id.includes('finger')) {
       setSelectedSubregion(null);
+    }
+  };
+
+  const handleHoverRegion = (region: BodyRegionDefinition | null) => {
+    setHoveredRegion(region);
+    if (region) {
+      setHasUserInteracted(true);
     }
   };
 
@@ -99,10 +119,46 @@ export const BodyMapSlot: React.FC = () => {
       )
     : null;
 
+  // Window resize tracking for responsive positioning recalculation
+  const [windowWidth, setWindowWidth] = useState<number>(() =>
+    typeof window !== 'undefined' ? window.innerWidth : 1200
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Calculate anchored placement coordinates for floating frosted-glass panel
   const pin = selectedRegion?.pinCoordinates || { x: 384, y: 512 };
-  const isLeftHalf = pin.x <= 384;
-  const floatTopPercent = Math.min(Math.max((pin.y / 1024) * 85 - 8, 4), 48);
+
+  // For head/face (y < 170), dock toward the side of the feature so connector never crosses face.
+  // For torso/limbs, dock on opposite side where space is greatest.
+  const isHeadOrFace = pin.y < 170;
+  const isDockRight = isHeadOrFace ? pin.x >= 384 : pin.x <= 384;
+
+  // Determine vertical anchor mode:
+  // For upper body (pin.y < 360), anchor from top beside region
+  // For lower body (pin.y >= 360: lower abdomen, pelvis, hips, thighs, knees, ankles, feet),
+  // anchor from bottom so the panel & sticky footer NEVER get pushed below the visible stage or viewport!
+  const isAnchorBottom = pin.y >= 360;
+
+  const isMobile = windowWidth <= 860;
+  const topPx = Math.max(20, Math.round((pin.y / 1024) * 600 - 36));
+  const panelPositionStyle: React.CSSProperties = isMobile
+    ? {}
+    : isAnchorBottom
+    ? {
+        bottom: '20px',
+        top: 'auto',
+        maxHeight: 'calc(100% - 40px)',
+      }
+    : {
+        top: `${topPx}px`,
+        bottom: 'auto',
+        maxHeight: `calc(100% - ${topPx + 20}px)`,
+      };
 
   return (
     <section
@@ -119,7 +175,6 @@ export const BodyMapSlot: React.FC = () => {
               <Crosshair size={13} className="pill-icon" />
               Realistic Anatomical Digital Twin
             </span>
-            <span className="dark-anchor-tag">#feature-body-map</span>
           </div>
 
           <h3 className="dark-feature-headline">
@@ -139,7 +194,7 @@ export const BodyMapSlot: React.FC = () => {
             <div className="slot-boundary-badge">
               <span className="boundary-pulse-dot" />
               <span className="boundary-label">
-                INTERACTIVE BODY MAP • VOLATILE MEMORY
+                Interactive Body Map
               </span>
             </div>
 
@@ -181,20 +236,75 @@ export const BodyMapSlot: React.FC = () => {
 
               <div className="slot-security-tag" title="Sensitive medical data stays in volatile browser memory">
                 <Shield size={13} className="security-icon" />
-                <span>Session-only in this prototype</span>
+                <span>Session-only</span>
               </div>
             </div>
           </div>
 
           {/* Unified Black Stage: Centered Realistic Model + Anchored Floating Glass UI */}
           <div className="body-map-unified-stage">
-            {/* State A: Guidance banner when no region is selected */}
+            {/* State A: Guidance group positioned BESIDE the body (never over the face, no outer card) */}
             {!selectedRegion && (
-              <div className="bodymap-state-a-banner" aria-live="polite">
-                <div className="state-a-glass-pill">
-                  <span className="state-a-pill-tag">Map what you feel</span>
+              <div className="bodymap-state-a-panel is-docked-beside" aria-live="polite">
+                <div className="bodymap-intro-text-group">
+                  <h3 className="state-a-pill-tag">Map what you feel</h3>
                   <p className="state-a-instruction">
-                    Select a body area and tell us what you've noticed. Your body map helps you track changes and give your doctor a clearer picture of your symptoms.
+                    Your body can tell a story over time. Track where something feels different, what has changed and when it started, so you can share a clearer picture of your health with your doctor.
+                  </p>
+
+                  {/* Three short visual steps */}
+                  <div className="bodymap-intro-steps-list" role="list" aria-label="Body map 3-step workflow">
+                    <div
+                      className={`intro-step-item ${introStep === 1 && !hasUserInteracted ? 'is-active-step' : ''}`}
+                      onClick={() => {
+                        setIntroStep(1);
+                        setHasUserInteracted(true);
+                      }}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      <div className="step-num-badge">01</div>
+                      <div className="step-copy-wrap">
+                        <span className="step-title">Locate</span>
+                        <span className="step-desc">Choose the body area you're concerned about.</span>
+                      </div>
+                    </div>
+
+                    <div
+                      className={`intro-step-item ${introStep === 2 && !hasUserInteracted ? 'is-active-step' : ''}`}
+                      onClick={() => {
+                        setIntroStep(2);
+                        setHasUserInteracted(true);
+                      }}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      <div className="step-num-badge">02</div>
+                      <div className="step-copy-wrap">
+                        <span className="step-title">Track</span>
+                        <span className="step-desc">Record symptoms, timing and changes over time.</span>
+                      </div>
+                    </div>
+
+                    <div
+                      className={`intro-step-item ${introStep === 3 && !hasUserInteracted ? 'is-active-step' : ''}`}
+                      onClick={() => {
+                        setIntroStep(3);
+                        setHasUserInteracted(true);
+                      }}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      <div className="step-num-badge">03</div>
+                      <div className="step-copy-wrap">
+                        <span className="step-title">Share</span>
+                        <span className="step-desc">Give your doctor a clearer, location-specific summary.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="bodymap-intro-supporting-line">
+                    A clearer history starts with knowing where, when and how something changed.
                   </p>
                 </div>
               </div>
@@ -210,18 +320,33 @@ export const BodyMapSlot: React.FC = () => {
                 activeCondition={draftCondition}
                 selectedSubregion={selectedSubregion}
                 onSelectRegion={handleSelectRegion}
-                onHoverRegion={setHoveredRegion}
+                onHoverRegion={handleHoverRegion}
                 onSelectSubregion={setSelectedSubregion}
+                introSequenceStep={!selectedRegion && !hasUserInteracted ? introStep : undefined}
+                isDockRight={isDockRight}
+                isAnchorBottom={isAnchorBottom}
               />
             </div>
 
-            {/* State B, C, D: Anchored Floating Frosted-Glass Panel beside Selected Region */}
+            {/* Mobile backdrop for outside dismiss */}
+            {selectedRegion && isMobile && (
+              <div
+                className="bodymap-mobile-backdrop"
+                onClick={() => {
+                  setSelectedRegion(null);
+                  setSelectedSubregion(null);
+                }}
+                aria-hidden="true"
+              />
+            )}
+
+            {/* State B, C, D: Compact UI Group beside Selected Region (No oversized outer card) */}
             {selectedRegion && (
               <div
-                className={`body-map-floating-glass-pane ${isLeftHalf ? 'is-anchored-right' : 'is-anchored-left'}`}
-                style={{
-                  top: `clamp(20px, ${floatTopPercent}%, 46%)`,
-                }}
+                className={`bodymap-compact-glass-container ${
+                  isDockRight ? 'is-anchored-right' : 'is-anchored-left'
+                } ${isAnchorBottom ? 'is-anchored-bottom' : 'is-anchored-top'}`}
+                style={panelPositionStyle}
               >
                 <ContextualSymptomPanel
                   selectedRegion={selectedRegion}

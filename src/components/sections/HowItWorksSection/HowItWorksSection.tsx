@@ -1,6 +1,9 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Container } from '@/components/layout/Container/Container';
 import { Badge } from '@/components/common/Badge/Badge';
+import { SwipeHint } from '@/components/common/SwipeHint/SwipeHint';
+import { useReveal } from '@/lib/motion/useReveal';
+import { useSwipeHint } from '@/lib/motion/useSwipeHint';
 import {
   Sparkles,
   ChevronLeft,
@@ -155,27 +158,69 @@ const STAGE_RAY_GEOMETRY = [
 export const HowItWorksSection: React.FC = () => {
   const [activeStageIndex, setActiveStageIndex] = useState<number>(0);
   const [activeSourceId, setActiveSourceId] = useState<string>('chat');
+  const [isAutoplayPaused, setIsAutoplayPaused] = useState<boolean>(false);
 
   // Drag state
-  const dragContainerRef = useRef<HTMLDivElement>(null);
+  const dragContainerRef = useRef<HTMLDivElement | null>(null);
   const isDraggingRef = useRef<boolean>(false);
   const dragStartYRef = useRef<number>(0);
   const dragStartXRef = useRef<number>(0);
   const [isDragActive, setIsDragActive] = useState<boolean>(false);
 
+  // Shared reveal system: boolean gate for the connector-ray draw-in
+  const { ref: revealRef, isVisible } = useReveal<HTMLDivElement>({ threshold: 0.2 });
+
+  // Autoplay: advance stages every 5.5 seconds when not paused
+  useEffect(() => {
+    if (isAutoplayPaused || !isVisible) return;
+
+    const interval = setInterval(() => {
+      setActiveStageIndex((prev) => (prev < FAN_STAGES.length - 1 ? prev + 1 : 0));
+    }, 5500);
+
+    return () => clearInterval(interval);
+  }, [isAutoplayPaused, isVisible]);
+
+  // Pause autoplay on user interaction
+  const handleUserInteraction = useCallback(() => {
+    setIsAutoplayPaused(true);
+  }, []);
+
+  // Mobile stage strip: swipe discoverability + keep the active step in view
+  const stageStripSwipe = useSwipeHint<HTMLDivElement>();
+  const mobileTabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const lastCenteredStageRef = useRef<number>(activeStageIndex);
+
+  useEffect(() => {
+    if (lastCenteredStageRef.current === activeStageIndex) return;
+    lastCenteredStageRef.current = activeStageIndex;
+    const tab = mobileTabRefs.current[activeStageIndex];
+    if (!tab) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    tab.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest', inline: 'center' });
+  }, [activeStageIndex]);
+
+  const attachContainerRef = useCallback((node: HTMLDivElement | null) => {
+    dragContainerRef.current = node;
+    revealRef.current = node;
+  }, [revealRef]);
+
   // Direct stage navigation
   const goToStage = useCallback((index: number) => {
     const clamped = Math.max(0, Math.min(FAN_STAGES.length - 1, index));
     setActiveStageIndex(clamped);
-  }, []);
+    handleUserInteraction();
+  }, [handleUserInteraction]);
 
   const nextStage = useCallback(() => {
     setActiveStageIndex((prev) => (prev < FAN_STAGES.length - 1 ? prev + 1 : 0));
-  }, []);
+    handleUserInteraction();
+  }, [handleUserInteraction]);
 
   const prevStage = useCallback(() => {
     setActiveStageIndex((prev) => (prev > 0 ? prev - 1 : FAN_STAGES.length - 1));
-  }, []);
+    handleUserInteraction();
+  }, [handleUserInteraction]);
 
   // Keyboard navigation
   const handleKeyDown = useCallback(
@@ -203,7 +248,8 @@ export const HowItWorksSection: React.FC = () => {
     dragStartYRef.current = e.clientY;
     dragStartXRef.current = e.clientX;
     setIsDragActive(true);
-  }, []);
+    handleUserInteraction();
+  }, [handleUserInteraction]);
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent) => {
@@ -258,11 +304,12 @@ export const HowItWorksSection: React.FC = () => {
         {/* DIRECTIONAL FAN STAGE INTERFACE                                    */}
         {/* ================================================================== */}
         <div
-          ref={dragContainerRef}
-          className={`fan-stage-composition ${isDragActive ? 'is-dragging' : ''}`}
+          ref={attachContainerRef}
+          className={`fan-stage-composition ${isDragActive ? 'is-dragging' : ''} ${isVisible ? 'is-revealed' : ''}`}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
+          data-cursor="drag"
           role="region"
           aria-roledescription="Interactive 7-Stage Directional Fan"
           aria-label="Interactive health progression. Drag or click to change stage."
@@ -282,7 +329,7 @@ export const HowItWorksSection: React.FC = () => {
               </h2>
 
               <p className="hub-editorial-subtitle">
-                A connected progression from initial symptom report into structured context and continuous clinical care.
+                From scattered details to a clearer next step.
               </p>
 
               {/* Active Stage Dial & Control Pill */}
@@ -325,7 +372,27 @@ export const HowItWorksSection: React.FC = () => {
                   >
                     <ChevronLeft size={16} />
                   </button>
-                  <span className="dial-hint-text">Drag or click to navigate</span>
+                  <button
+                    type="button"
+                    className="dial-play-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsAutoplayPaused((prev) => !prev);
+                    }}
+                    aria-label={isAutoplayPaused ? "Resume autoplay" : "Pause autoplay"}
+                    title={isAutoplayPaused ? "Resume autoplay" : "Pause autoplay"}
+                  >
+                    {isAutoplayPaused ? (
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    ) : (
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <rect x="6" y="4" width="4" height="16" />
+                        <rect x="14" y="4" width="4" height="16" />
+                      </svg>
+                    )}
+                  </button>
                   <button
                     type="button"
                     className="dial-nav-btn next-btn"
@@ -379,7 +446,7 @@ export const HowItWorksSection: React.FC = () => {
                   }}
                 >
                   {/* Compact Header Pill: Always Visible for All 7 Stages */}
-                  <div className="panel-header-strip">
+                  <div className="panel-header-strip" data-reveal style={{ '--si': idx } as React.CSSProperties}>
                     <span className="panel-index-pill">{st.stepNumber}</span>
                     <span className="panel-title-text">{st.phase}</span>
                     <span className="panel-icon-wrap" aria-hidden="true">
@@ -459,31 +526,54 @@ export const HowItWorksSection: React.FC = () => {
         {/* ================================================================== */}
         <div className="fan-mobile-view-container">
           {/* Mobile Dark Header Hub Card */}
-          <div className="mobile-hub-card">
+          <div className="mobile-hub-card" data-reveal="fade">
             <Badge variant="neutral" size="sm" icon={<Sparkles size={11} />} className="mobile-hub-badge">
               THE 7-STAGE PROGRESSION
             </Badge>
             <h2 className="mobile-hub-heading">How it works</h2>
             <p className="mobile-hub-sub">
-              From symptom report to structured context and continuous clinical care.
+              From scattered details to a clearer next step.
             </p>
           </div>
 
           {/* Mobile Horizontal Stage Selector Strip */}
-          <div className="mobile-stages-selector-strip" role="tablist" aria-label="Stages selector">
-            {FAN_STAGES.map((st, i) => (
-              <button
-                key={`mobile-tab-${st.stepNumber}`}
-                type="button"
-                role="tab"
-                aria-selected={i === activeStageIndex}
-                className={`mobile-stage-tab ${i === activeStageIndex ? 'is-active-tab' : ''}`}
-                onClick={() => goToStage(i)}
-              >
-                <span className="mobile-tab-num">{st.stepNumber}</span>
-                <span className="mobile-tab-title">{st.phase}</span>
-              </button>
-            ))}
+          <div className="mobile-stages-strip-wrap">
+            <div
+              className="mobile-stages-selector-strip h-scroll-row"
+              role="tablist"
+              aria-label="Stages selector"
+              ref={stageStripSwipe.rowRef}
+              onScroll={stageStripSwipe.onRowScroll}
+            >
+              {FAN_STAGES.map((st, i) => (
+                <span
+                  key={`mobile-tab-${st.stepNumber}`}
+                  className="mobile-stage-tab-reveal"
+                  data-reveal
+                  style={{ '--si': i } as React.CSSProperties}
+                >
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={i === activeStageIndex}
+                    className={`mobile-stage-tab ${i === activeStageIndex ? 'is-active-tab' : ''}`}
+                    ref={(el) => {
+                      mobileTabRefs.current[i] = el;
+                    }}
+                    onClick={() => {
+                      goToStage(i);
+                      stageStripSwipe.notify();
+                    }}
+                  >
+                    <span className="mobile-tab-num">{st.stepNumber}</span>
+                    <span className="mobile-tab-title">{st.phase}</span>
+                  </button>
+                </span>
+              ))}
+            </div>
+            <div className="mobile-stages-hint-row">
+              <SwipeHint active={stageStripSwipe.active} label="Swipe stages" />
+            </div>
           </div>
 
           {/* Mobile Active Stage Card */}
@@ -515,7 +605,10 @@ export const HowItWorksSection: React.FC = () => {
               <button
                 type="button"
                 className="mobile-nav-arrow"
-                onClick={prevStage}
+                onClick={() => {
+                  prevStage();
+                  stageStripSwipe.notify();
+                }}
                 aria-label="Previous stage"
               >
                 <ChevronLeft size={16} /> Prev
@@ -526,7 +619,10 @@ export const HowItWorksSection: React.FC = () => {
               <button
                 type="button"
                 className="mobile-nav-arrow"
-                onClick={nextStage}
+                onClick={() => {
+                  nextStage();
+                  stageStripSwipe.notify();
+                }}
                 aria-label="Next stage"
               >
                 Next <ChevronRight size={16} />
