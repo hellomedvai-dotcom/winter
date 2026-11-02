@@ -39,11 +39,7 @@ export const HealthContextBridgeSection: React.FC = () => {
 
         {/* Clear Secondary Focal Point: The Explainer Video Frame with Liquid Glass Controls */}
         <div className="bridge-video-zone" data-reveal style={{ '--si': 3 } as React.CSSProperties}>
-          <ExplainerVideoFrame
-            videoUrl="/videos/medvidhi-web.mp4"
-            posterUrl="/videos/medvidhi-poster.png"
-            title="MEDVIDHI Explainer Video"
-          />
+          <ExplainerVideoFrame />
         </div>
       </Container>
     </section>

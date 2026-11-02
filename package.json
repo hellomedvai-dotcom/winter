@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@mux/mux-player-react": "^3.14.1",
     "@supabase/supabase-js": "^2.118.0",
     "framer-motion": "^12.4.7",
     "lucide-react": "^1.16.0",

@@ -74,13 +74,17 @@
   }
 }
 
-/* Video Element */
+/* Mux Video Player & Video Element */
+.explainer-mux-player,
 .explainer-native-video {
   width: 100%;
   height: 100%;
   object-fit: contain; /* Displays the 16:9 poster and video crisply without clipping */
   background-color: #FFFFFF;
   display: block;
+  --controls: none;
+  --media-object-fit: contain;
+  --media-background-color: #FFFFFF;
 }
 
 /* Ambient Subtle Scrim when paused to maintain button contrast */

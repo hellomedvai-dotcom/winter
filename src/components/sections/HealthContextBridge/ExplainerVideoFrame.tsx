@@ -1,22 +1,24 @@
 import React, { useState, useRef, useCallback } from 'react';
+import MuxPlayer, { MuxPlayerRefAttributes } from '@mux/mux-player-react';
 import { Play, Pause, RotateCcw } from 'lucide-react';
+import { MEDIA_CONFIG } from '@/config/media';
 import './ExplainerVideoFrame.css';
 
 export interface ExplainerVideoFrameProps {
-  videoUrl?: string;
+  playbackId?: string;
   posterUrl?: string;
   title?: string;
   className?: string;
 }
 
 export const ExplainerVideoFrame: React.FC<ExplainerVideoFrameProps> = ({
-  videoUrl = '/videos/medvidhi-web.mp4',
-  posterUrl = '/videos/medvidhi-poster.png',
-  title = 'MEDVIDHI Explainer Video',
+  playbackId = MEDIA_CONFIG.explainerVideo.playbackId,
+  posterUrl = MEDIA_CONFIG.explainerVideo.posterUrl,
+  title = MEDIA_CONFIG.explainerVideo.title,
   className = '',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const playerRef = useRef<MuxPlayerRefAttributes | null>(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -24,10 +26,10 @@ export const ExplainerVideoFrame: React.FC<ExplainerVideoFrameProps> = ({
 
   // Play / Pause toggle
   const togglePlay = useCallback(() => {
-    if (!videoRef.current) return;
+    if (!playerRef.current) return;
 
-    if (videoRef.current.paused || videoRef.current.ended) {
-      videoRef.current
+    if (playerRef.current.paused || playerRef.current.ended) {
+      playerRef.current
         .play()
         .then(() => {
           setIsPlaying(true);
@@ -38,7 +40,7 @@ export const ExplainerVideoFrame: React.FC<ExplainerVideoFrameProps> = ({
           console.warn('Playback error / interrupted:', err);
         });
     } else {
-      videoRef.current.pause();
+      playerRef.current.pause();
       setIsPlaying(false);
     }
   }, []);
@@ -107,15 +109,16 @@ export const ExplainerVideoFrame: React.FC<ExplainerVideoFrameProps> = ({
         className="explainer-media-boundary"
         onClick={togglePlay}
       >
-        {/* Actual Video Element with the MEDVIDHI poster */}
-        <video
-          ref={videoRef}
-          src={videoUrl}
+        {/* Mux Video Player without default controls or branding */}
+        <MuxPlayer
+          ref={playerRef}
+          playbackId={playbackId}
           poster={posterUrl}
           preload="metadata"
           playsInline
-          className="explainer-native-video"
-          aria-label={title}
+          className="explainer-mux-player"
+          title={title}
+          nohotkeys
           onPlay={handlePlay}
           onPause={handlePause}
           onEnded={handleEnded}
@@ -164,7 +167,6 @@ export const ExplainerVideoFrame: React.FC<ExplainerVideoFrameProps> = ({
               onClick={(e) => {
                 e.stopPropagation();
                 setHasError(false);
-                videoRef.current?.load();
               }}
             >
               Retry
