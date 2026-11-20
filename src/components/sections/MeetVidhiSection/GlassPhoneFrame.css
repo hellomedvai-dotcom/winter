@@ -1,0 +1,253 @@
+/* ==========================================================================
+   Wabi-Inspired Premium Transparent Glass Smartphone Frame
+   Polished clear-glass outer shell, translucent silver/chrome rim,
+   frosted-glass edge refraction, Dynamic Island, diffuse ambient shadow
+   INNER SCREEN: Deep black & premium (#090A0B)
+   ========================================================================== */
+
+.medvidhi-glass-device-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 365px;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .medvidhi-glass-device-wrapper {
+    max-width: 385px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .medvidhi-glass-device-wrapper {
+    max-width: 405px;
+  }
+}
+
+/* Diffuse, soft floating drop shadow under the device */
+.glass-device-ambient-shadow {
+  position: absolute;
+  bottom: -32px;
+  left: 6%;
+  width: 88%;
+  height: 52px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(15, 23, 42, 0.2) 0%,
+    rgba(15, 23, 42, 0.06) 50%,
+    transparent 75%
+  );
+  filter: blur(16px);
+  pointer-events: none;
+  z-index: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+/* Polished Transparent Glass & Silver Chrome Chassis */
+.glass-device-chassis {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 18.6;
+  /* Translucent frosted glass rim with chrome light reflections */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(241, 245, 249, 0.45) 30%,
+    rgba(226, 232, 240, 0.55) 60%,
+    rgba(255, 255, 255, 0.85) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 52px;
+  padding: 4px;
+  box-sizing: border-box;
+  box-shadow:
+    /* Outer delicate white specular edge */
+    0 0 0 1px rgba(255, 255, 255, 0.95),
+    0 0 0 2px rgba(203, 213, 225, 0.65),
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    /* Soft ambient elevation shadows */
+    0 30px 70px -15px rgba(15, 23, 42, 0.16),
+    0 14px 30px -8px rgba(15, 23, 42, 0.09),
+    /* Inner metallic/glass refraction bevels */
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.95),
+    inset 0 -1.5px 2px rgba(148, 163, 184, 0.35);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Subtle floating device animation */
+@keyframes glassDeviceFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+.glass-device-chassis.is-floating {
+  animation: glassDeviceFloat 6.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-device-chassis.is-floating {
+    animation: none;
+  }
+}
+
+/* Glass Side Buttons / Edge accents */
+.glass-side-notch {
+  position: absolute;
+  background: linear-gradient(to right, rgba(203, 213, 225, 0.8), rgba(241, 245, 249, 0.9));
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.notch-left {
+  left: -2.5px;
+  top: 130px;
+  width: 2.5px;
+  height: 50px;
+}
+
+.notch-right {
+  right: -2.5px;
+  top: 150px;
+  width: 2.5px;
+  height: 60px;
+}
+
+/* Inner Frosted-Glass Display Rim */
+.glass-screen-bezel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  border-radius: 48px;
+  padding: 3px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.9),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+/* Dynamic Island Area */
+.glass-island-slot {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.glass-island-pill {
+  width: 82px;
+  height: 22px;
+  background-color: #000000;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.15);
+}
+
+.island-lens-optical {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 9px;
+  height: 9px;
+}
+
+.island-lens-core {
+  width: 7.5px;
+  height: 7.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #1E293B 0%, #0A0F1D 60%, #000000 100%);
+  box-shadow: inset 0 0.5px 1px rgba(56, 189, 248, 0.4);
+}
+
+.island-sensor-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #0F172A;
+}
+
+/* Screen Viewport: Deep Near-Black Premium Screen (#090A0B) */
+.glass-screen-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #090A0B;
+  border-radius: 45px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 38px 16px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  color: #F7F7F5;
+  font-family: var(--font-family-sans, 'Plus Jakarta Sans', sans-serif);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  z-index: 10;
+}
+
+.glass-screen-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+/* Home Indicator Bar */
+.glass-home-indicator-slot {
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.glass-home-indicator-bar {
+  width: 108px;
+  height: 4px;
+  background-color: #FFFFFF;
+  opacity: 0.28;
+  border-radius: 9999px;
+}
+
+/* Realistic Slow Reflective Glass Sheen */
+.glass-reflective-sheen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.04) 30%,
+    transparent 55%
+  );
+  border-top-left-radius: 46px;
+  border-top-right-radius: 46px;
+  pointer-events: none;
+  z-index: 25;
+}

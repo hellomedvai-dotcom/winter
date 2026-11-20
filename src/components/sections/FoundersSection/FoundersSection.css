@@ -219,14 +219,16 @@
   display: flex;
   justify-content: flex-end;
   width: min(100%, 53rem);
-  margin: clamp(0.4rem, 1.2cqw, 0.8rem) 0 0;
-  padding-right: clamp(0rem, 5cqw, 3rem);
+  margin: clamp(0.75rem, 1.8cqw, 1.4rem) 0 0;
+  padding-right: clamp(1rem, 5cqw, 3rem);
 }
 
 .founder-note-signature {
   display: block;
-  width: clamp(58px, 6.2cqw, 82px);
+  width: clamp(170px, 18cqw, 215px);
   height: auto;
+  aspect-ratio: 856 / 279;
+  object-fit: contain;
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -535,14 +537,21 @@
   }
 
   .founder-note-signature-row {
+    display: flex;
+    justify-content: flex-start;
     width: 100%;
-    margin-top: 0.7rem;
-    padding-right: 1rem;
-    justify-content: flex-end;
+    margin-top: clamp(0.45rem, 1.5vw, 0.75rem);
+    padding: 0;
+    padding-left: clamp(1.8rem, 17%, 3.2rem);
   }
 
   .founder-note-signature {
-    width: clamp(52px, 15vw, 64px);
+    display: block;
+    width: clamp(110px, 31vw, 125px);
+    height: auto;
+    aspect-ratio: 856 / 279;
+    object-fit: contain;
+    margin: 0;
   }
 
   .founders-area-heading {

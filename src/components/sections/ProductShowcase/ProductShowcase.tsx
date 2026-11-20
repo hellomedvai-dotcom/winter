@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Container } from '@/components/layout/Container/Container';
 import { FeatureIconSelector } from './FeatureIconSelector';
 import { ActiveFeatureFloatingPanel } from './ActiveFeatureFloatingPanel';
-import { RightDoctorSection } from './RightDoctorSection';
 import './ProductShowcase.css';
 
 export const ProductShowcase: React.FC = () => {
@@ -86,9 +85,6 @@ export const ProductShowcase: React.FC = () => {
           </div>
         </Container>
       </section>
-
-      {/* Independent Dedicated Right Doctor Section (#feature-right-doctor) */}
-      <RightDoctorSection />
     </div>
   );
 };

@@ -1,0 +1,469 @@
+/* ==========================================================================
+   Care Consultant Workspace Panel Styles
+   Frosted glass web desktop panel for assisted doctor navigation
+   ========================================================================== */
+
+.consultant-workspace-panel {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 24px;
+  box-shadow:
+    0 24px 60px -12px rgba(15, 23, 42, 0.14),
+    0 8px 24px -4px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: #09090B;
+  font-family: var(--font-family-sans, 'Plus Jakarta Sans', sans-serif);
+}
+
+/* Browser Window Header */
+.workspace-browser-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background-color: #F4F4F5;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  gap: 12px;
+}
+
+.browser-traffic-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.browser-traffic-dots .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.dot.red {
+  background-color: #EF4444;
+}
+.dot.yellow {
+  background-color: #F59E0B;
+}
+.dot.green {
+  background-color: #10B981;
+}
+
+.browser-address-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 9999px;
+  padding: 3px 12px;
+  font-size: 0.72rem;
+  color: #52525B;
+  flex: 1;
+  max-width: 320px;
+}
+
+.ws-teal-icon {
+  color: #0D9488;
+}
+
+.consultant-role-badge {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #0D9488;
+  background: rgba(13, 148, 136, 0.1);
+  padding: 3px 8px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Inner Content Area */
+.workspace-inner-content {
+  padding: 18px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Case Banner */
+.case-banner-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.case-id-tag {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #71717A;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.case-heading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #09090B;
+  margin: 0;
+}
+
+.scope-boundary-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: #0F766E;
+  background-color: rgba(15, 118, 110, 0.08);
+  border: 1px solid rgba(15, 118, 110, 0.2);
+  padding: 4px 9px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+/* Incoming Request Card */
+.incoming-request-card {
+  background-color: #FAFAFA;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.incoming-request-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.patient-avatar-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #09090B, #27272A);
+}
+
+.patient-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.patient-alias {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #09090B;
+}
+
+.request-time {
+  font-size: 0.68rem;
+  color: #71717A;
+}
+
+.request-note {
+  font-size: 0.82rem;
+  color: #3F3F46;
+  line-height: 1.45;
+  margin: 0;
+  background: #FFFFFF;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.request-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-ws-primary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #000000;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.78rem;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-ws-primary:hover {
+  background-color: #18181B;
+}
+
+.btn-ws-secondary {
+  background: transparent;
+  color: #71717A;
+  font-weight: 600;
+  font-size: 0.78rem;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+/* Matching Funnel Card */
+.matching-funnel-card {
+  background-color: #FAFAFA;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.funnel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.funnel-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #09090B;
+}
+
+.funnel-step-badge {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #0D9488;
+}
+
+.funnel-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.funnel-step-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  opacity: 0.45;
+}
+
+.funnel-step-row.is-current {
+  opacity: 1;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(13, 148, 136, 0.3);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.funnel-step-row.is-done {
+  opacity: 0.9;
+}
+
+.step-icon-col {
+  width: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check-done {
+  color: #0D9488;
+}
+
+.step-number {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #71717A;
+}
+
+.step-text-col {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.72rem;
+}
+
+.step-name {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #09090B;
+}
+
+.step-desc {
+  color: #71717A;
+  font-size: 0.68rem;
+}
+
+/* Verified Shortlist */
+.verified-shortlist-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.shortlist-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.shortlist-kicker {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #0D9488;
+}
+
+.verified-count-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #52525B;
+}
+
+.doctor-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .doctor-cards-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.ws-doctor-card {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.doc-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.doc-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #09090B;
+  margin: 0;
+}
+
+.doc-cred {
+  font-size: 0.64rem;
+  color: #71717A;
+  display: block;
+}
+
+.verified-stamp {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #0F766E;
+  background: rgba(13, 148, 136, 0.1);
+  padding: 2px 6px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.doc-clinic-line {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.65rem;
+  color: #52525B;
+  margin: 0;
+}
+
+.doc-rationale-box {
+  background-color: #F4F4F5;
+  border-radius: 6px;
+  padding: 5px 7px;
+  font-size: 0.64rem;
+}
+
+.rationale-tag {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.54rem;
+  font-weight: 700;
+  color: #0D9488;
+  display: block;
+  margin-bottom: 1px;
+}
+
+.doc-rationale-box p {
+  margin: 0;
+  color: #27272A;
+  line-height: 1.3;
+}
+
+.doc-verified-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.6rem;
+  color: #71717A;
+}
+
+.consultant-confirmation-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #F0FDFA;
+  border: 1px solid rgba(13, 148, 136, 0.25);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+
+.confirmation-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #0F766E;
+}
+
+.consultant-signoff-badge {
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: #0D9488;
+}

@@ -1,0 +1,253 @@
+/* ==========================================================================
+   Doctor Workspace Portal Styles
+   Professional web clinician panel receiving authorized patient brief
+   ========================================================================== */
+
+.doctor-workspace-panel {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 24px;
+  box-shadow:
+    0 24px 60px -12px rgba(15, 23, 42, 0.14),
+    0 8px 24px -4px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: #09090B;
+  font-family: var(--font-family-sans, 'Plus Jakarta Sans', sans-serif);
+}
+
+.doctor-role-badge {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #0D9488;
+  background: rgba(13, 148, 136, 0.1);
+  padding: 3px 8px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.doctor-portal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.doctor-badge-cluster {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.doctor-avatar-initials {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #000000;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.doctor-identity-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.doctor-name {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #09090B;
+}
+
+.doctor-reg {
+  font-size: 0.65rem;
+  color: #71717A;
+}
+
+.patient-auth-stamp {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: #0F766E;
+  background-color: rgba(15, 118, 110, 0.08);
+  border: 1px solid rgba(15, 118, 110, 0.2);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.doctor-received-brief-card {
+  background-color: #FAFAFA;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.brief-card-kicker-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.brief-kicker-tag {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #0D9488;
+}
+
+.brief-sync-time {
+  font-size: 0.62rem;
+  color: #71717A;
+}
+
+.clinical-observations-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .clinical-observations-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.obs-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.obs-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #71717A;
+  letter-spacing: 0.04em;
+}
+
+.obs-val {
+  font-size: 0.72rem;
+  color: #18181B;
+  margin: 0;
+  line-height: 1.35;
+}
+
+/* Post-Consultation Attributed Card */
+.doctor-post-consult-card {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(13, 148, 136, 0.35);
+  box-shadow: 0 4px 16px rgba(13, 148, 136, 0.06);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.post-consult-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed rgba(13, 148, 136, 0.2);
+}
+
+.consult-tag-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.consult-head-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #09090B;
+}
+
+.provenance-tag {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #0D9488;
+}
+
+.consult-note-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.note-text {
+  font-size: 0.78rem;
+  color: #1F2937;
+  line-height: 1.45;
+  margin: 0;
+  background-color: #F8FAFC;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border-left: 3px solid #0D9488;
+}
+
+.note-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  color: #71717A;
+}
+
+.note-timestamp {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.note-synced-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #0F766E;
+  font-weight: 600;
+}
+
+.portal-memory-continuity-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-family-serif, 'Cormorant Garamond', Georgia, serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #0D9488;
+  padding-top: 6px;
+}

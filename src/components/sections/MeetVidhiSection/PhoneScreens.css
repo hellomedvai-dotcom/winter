@@ -1,809 +1,1165 @@
 /* ==========================================================================
-   Meet Vidhi: Phone Screen UI System
-   Strict MEDVIDHI Brand Tokens: Pure Black (#000000), Pure White (#FFFFFF),
-   High-contrast Grayscale & Subtle Teal/Mint Accents (#0D9488 / #0F766E)
+   Phone Screen UI System — Premium Dark Application Theme
+   Palette:
+   - Screen background: #090A0B
+   - Primary surfaces: #111315
+   - Secondary surfaces: #191C1F
+   - Glass surface: rgba(255, 255, 255, 0.055)
+   - Glass border: rgba(255, 255, 255, 0.13)
+   - Primary text: #F7F7F5
+   - Secondary text: #A7AAAD
+   - Teal accent: #0D9488
    ========================================================================== */
 
-.ps-container {
+.ps-screen.dark-theme {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  height: 100%;
   width: 100%;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   line-height: 1.45;
-  color: #18181B;
+  color: #F7F7F5;
+  position: relative;
+  box-sizing: border-box;
 }
 
-/* App Header */
-.ps-app-header {
+/* Common Header Bar */
+.ps-brand-topbar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 8px;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.ps-brand-logo-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.ps-brand-badge-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.ps-chat-header-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
-.ps-header-left {
+.ps-chat-header-left {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: #F7F7F5;
 }
 
-.ps-status-pill {
+.ps-screen-header-title {
+  letter-spacing: -0.01em;
+}
+
+.ps-teal-icon {
+  color: #0D9488;
+}
+
+.ps-active-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #0D9488;
+  box-shadow: 0 0 8px rgba(13, 148, 136, 0.8);
+}
+
+.ps-assistant-status-badge {
   font-family: var(--font-family-mono, monospace);
   font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #0F766E;
-  background-color: rgba(15, 118, 110, 0.08);
-  border: 1px solid rgba(15, 118, 110, 0.2);
+  letter-spacing: 0.06em;
+  color: #5EEAD4;
+  background-color: rgba(13, 148, 136, 0.15);
+  border: 1px solid rgba(13, 148, 136, 0.35);
   padding: 3px 8px;
   border-radius: 9999px;
-  text-transform: uppercase;
-}
-
-.ps-live-indicator {
-  font-family: var(--font-family-mono, monospace);
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #0D9488;
-  background: rgba(13, 148, 136, 0.12);
-  border-radius: 9999px;
-  padding: 2px 7px;
-}
-
-.ps-chat-title {
-  font-family: var(--font-family-sans);
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #09090B;
-}
-
-.ps-accent-icon {
-  color: #0D9488;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Screen 1: Welcome                                                          */
-/* -------------------------------------------------------------------------- */
-.ps-hero-card {
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
-  text-align: center;
-  padding: 10px 4px 6px;
-  gap: 6px;
-}
-
-.ps-avatar-cluster {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 4px;
-}
-
-.ps-vidhi-avatar {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #09090B 0%, #27272A 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #FFFFFF;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-  border: 2px solid #FFFFFF;
+  gap: 5px;
+  white-space: nowrap;
 }
 
 .ps-online-dot {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 11px;
-  height: 11px;
-  background-color: #0D9488;
-  border: 2px solid #FFFFFF;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
+  background-color: #0D9488;
 }
 
-.ps-greeting-title {
-  font-family: var(--font-family-serif, 'Cormorant Garamond', Georgia, serif);
-  font-size: 1.45rem;
-  font-weight: 600;
-  color: #09090B;
-  line-height: 1.15;
-  margin: 0;
+.ps-source-tag {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #A7AAAD;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2.5px 7px;
+  border-radius: 9999px;
 }
 
-.ps-greeting-lead {
-  font-size: 0.82rem;
-  color: #52525B;
-  margin: 0;
-  line-height: 1.4;
+/* -------------------------------------------------------------------------- */
+/* SCENE 01 — MEET VIDHI (Dark Theme)                                         */
+/* -------------------------------------------------------------------------- */
+.ps-screen-1 {
+  justify-content: space-between;
 }
 
-.ps-intro-block {
-  background-color: #F4F4F5;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 16px;
-  padding: 11px 13px;
+.ps-character-hero-stage {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px 0;
 }
 
-.ps-intro-header {
+.ps-face-cluster {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.ps-face-ambient-aura {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.22) 0%, transparent 70%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.ps-greeting-content {
+  margin-bottom: 14px;
+}
+
+.ps-vidhi-name-title {
+  font-family: var(--font-family-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: 1.95rem;
+  font-weight: 500;
+  color: #F7F7F5;
+  margin: 0 0 6px;
+  line-height: 1.15;
+}
+
+.ps-vidhi-lead-text {
+  font-size: 0.88rem;
+  color: #A7AAAD;
+  line-height: 1.45;
+  max-width: 250px;
+  margin: 0 auto;
+}
+
+.ps-starters-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  max-width: 270px;
+}
+
+.ps-starter-chip {
+  font-size: 0.72rem;
+  color: #E2E8F0;
+  background: rgba(255, 255, 255, 0.065);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.ps-starter-chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #0D9488;
+  color: #5EEAD4;
+}
+
+.ps-composer-container {
+  margin-top: auto;
+  padding-top: 6px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.ps-composer-capsule {
   display: flex;
   align-items: center;
-  gap: 6px;
-}
-
-.ps-intro-heading {
-  font-size: 0.76rem;
-  font-weight: 700;
-  color: #18181B;
-}
-
-.ps-intro-body {
-  font-size: 0.74rem;
-  color: #52525B;
-  margin: 0;
-  line-height: 1.38;
-}
-
-.ps-action-tray {
-  margin-top: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.ps-tray-label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: #71717A;
-  text-align: center;
-}
-
-.ps-primary-cta {
-  background-color: #000000;
-  color: #FFFFFF;
-  border: none;
+  background: rgba(255, 255, 255, 0.065);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 9999px;
-  padding: 10px 16px;
-  font-size: 0.78rem;
-  font-weight: 600;
+  padding: 5px 10px;
+  gap: 7px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.ps-composer-btn {
+  background: none;
+  border: none;
+  color: #A7AAAD;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  padding: 4px;
 }
 
-.ps-primary-cta:hover {
-  background-color: #18181B;
-  transform: translateY(-1px);
+.ps-composer-input-placeholder {
+  flex: 1;
+  font-size: 0.76rem;
+  color: #71717A;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.ps-footer-privacy {
+.ps-composer-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ps-voice-mic-btn {
+  background: rgba(13, 148, 136, 0.2);
+  border: 1px solid rgba(13, 148, 136, 0.4);
+  color: #5EEAD4;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.ps-send-action-btn {
+  background: #FFFFFF;
+  border: none;
+  color: #090A0B;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.ps-privacy-anchor {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 5px;
   font-size: 0.65rem;
-  color: #71717A;
-  margin-top: 4px;
-}
-
-.ps-shield-icon {
-  color: #0D9488;
+  color: #A7AAAD;
+  margin-top: 7px;
 }
 
 /* -------------------------------------------------------------------------- */
-/* Screen 2: Chat & Voice                                                     */
+/* SCENE 02 — SHARE A CONCERN (Dark Theme)                                    */
 /* -------------------------------------------------------------------------- */
-.ps-chat-stream {
+.ps-chat-scroll-stream {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 9px;
-  flex: 1;
+  gap: 10px;
+  overflow-y: auto;
+  padding: 4px 0;
 }
 
-.ps-chat-bubble {
-  padding: 10px 12px;
-  border-radius: 16px;
-  max-width: 90%;
-  font-size: 0.76rem;
-  line-height: 1.38;
-}
-
-.ps-bubble-patient {
+.ps-chat-bubble-user {
   align-self: flex-end;
-  background-color: #000000;
-  color: #FFFFFF;
-  border-bottom-right-radius: 4px;
+  background-color: #191C1F;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #F7F7F5;
+  border-radius: 18px 18px 4px 18px;
+  padding: 10px 14px;
+  max-width: 84%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
-.ps-bubble-time {
+.ps-bubble-text {
+  font-size: 0.82rem;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.ps-bubble-meta {
   display: block;
   font-size: 0.6rem;
-  color: #A1A1AA;
-  margin-top: 4px;
+  color: #A7AAAD;
   text-align: right;
+  margin-top: 4px;
 }
 
-.ps-voice-note-card {
-  align-self: flex-end;
-  background: #F4F4F5;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 14px;
+.ps-typing-box {
+  align-self: flex-start;
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
   padding: 8px 12px;
-  width: 82%;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.ps-voice-head {
+.typing-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #0D9488;
+  animation: typingBounce 1.2s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typingBounce {
+  0%, 80%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  40% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+.ps-chat-bubble-assistant {
+  align-self: flex-start;
+  background-color: #111315;
+  color: #F7F7F5;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 18px 18px 18px 4px;
+  padding: 10px 14px;
+  max-width: 90%;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.ps-bubble-assistant-head {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 0.68rem;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+
+.ps-avatar-pill {
+  font-size: 0.62rem;
   font-weight: 700;
-  color: #0F766E;
+  letter-spacing: 0.06em;
+  color: #5EEAD4;
+}
+
+.ps-context-pill {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.54rem;
+  font-weight: 700;
+  color: #A7AAAD;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 1px 6px;
+  border-radius: 9999px;
+}
+
+.ps-bubble-second {
+  margin-top: 4px;
+}
+
+/* Voice Recording & Transcript Box */
+.ps-voice-recording-card {
+  background-color: #111315;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 14px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ps-voice-waveform-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .ps-waveform-bars {
   display: flex;
   align-items: center;
   gap: 3px;
-  height: 18px;
 }
 
-.wbar {
-  width: 3px;
+.w-bar {
+  width: 2.5px;
+  height: 8px;
   background-color: #0D9488;
   border-radius: 2px;
-  animation: pulseBar 1.2s ease-in-out infinite alternate;
+  animation: wavePulse 0.8s ease-in-out infinite;
 }
 
-.bar-a { height: 6px; animation-delay: 0.1s; }
-.bar-b { height: 14px; animation-delay: 0.3s; }
-.bar-c { height: 18px; animation-delay: 0.2s; }
-.bar-d { height: 10px; animation-delay: 0.5s; }
-.bar-e { height: 16px; animation-delay: 0.15s; }
-.bar-f { height: 8px; animation-delay: 0.4s; }
-.bar-g { height: 14px; animation-delay: 0.25s; }
-.bar-h { height: 18px; animation-delay: 0.35s; }
-.bar-i { height: 7px; animation-delay: 0.1s; }
-
-@keyframes pulseBar {
-  0% { transform: scaleY(0.5); }
-  100% { transform: scaleY(1); }
+.bar-2, .bar-6 {
+  height: 14px;
+  animation-delay: 0.15s;
+}
+.bar-3, .bar-5 {
+  height: 18px;
+  animation-delay: 0.3s;
+}
+.bar-4 {
+  height: 22px;
+  animation-delay: 0.45s;
 }
 
-.ps-voice-quote {
-  font-style: italic;
-  font-size: 0.7rem;
-  color: #52525B;
+@keyframes wavePulse {
+  0%, 100% {
+    transform: scaleY(0.5);
+  }
+  50% {
+    transform: scaleY(1.15);
+  }
+}
+
+.ps-voice-rec-status {
+  font-size: 0.65rem;
+  color: #5EEAD4;
+  font-weight: 600;
+}
+
+.ps-transcript-edit-box {
+  background: #191C1F;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ps-transcript-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #A7AAAD;
+  text-transform: uppercase;
+}
+
+.ps-transcript-text {
+  font-size: 0.76rem;
+  color: #F7F7F5;
   margin: 0;
+  line-height: 1.35;
 }
 
-.ps-bubble-vidhi {
+.ps-confirm-transcript-btn {
   align-self: flex-start;
-  background-color: #F4F4F5;
-  color: #09090B;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-bottom-left-radius: 4px;
-}
-
-.ps-vidhi-tag-row {
   display: flex;
   align-items: center;
-  gap: 5px;
-  margin-bottom: 4px;
-}
-
-.ps-vidhi-name {
-  font-family: var(--font-family-mono, monospace);
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  color: #09090B;
-}
-
-.ps-tag-dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background-color: #0D9488;
-}
-
-.ps-tag-type {
-  font-size: 0.62rem;
-  color: #71717A;
-  font-weight: 600;
-}
-
-.ps-followup-box {
-  margin-top: 7px;
+  gap: 4px;
   background-color: #FFFFFF;
-  border: 1px dashed rgba(13, 148, 136, 0.45);
-  border-radius: 10px;
-  padding: 6px 9px;
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-}
-
-.ps-help-icon {
-  color: #0D9488;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-.ps-followup-text {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: #0F766E;
-  margin: 0;
-}
-
-.ps-input-dock {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding-top: 6px;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.ps-input-fake-field {
-  flex: 1;
-  background: #F4F4F5;
-  border-radius: 9999px;
-  padding: 8px 12px;
-  font-size: 0.7rem;
-  color: #A1A1AA;
-}
-
-.ps-mic-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: #000000;
-  color: #FFFFFF;
+  color: #090A0B;
   border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 9999px;
+  padding: 5px 12px;
+  font-size: 0.66rem;
+  font-weight: 600;
   cursor: pointer;
-  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.ps-confirm-transcript-btn.is-confirmed {
+  background-color: #0D9488;
+  color: #FFFFFF;
+}
+
+.ps-composer-compact {
+  margin-top: auto;
 }
 
 /* -------------------------------------------------------------------------- */
-/* Screen 3: Health Memory                                                    */
+/* SCENE 03 — ADD HEALTH RECORDS (Dark Theme)                                 */
 /* -------------------------------------------------------------------------- */
-.ps-bodymap-widget {
-  background: #F4F4F5;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 16px;
+.ps-records-stream {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+
+.ps-record-entry-card {
+  background-color: #111315;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 14px;
   padding: 10px 12px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.ps-bodymap-head {
+.ps-record-entry-head {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
 }
 
-.ps-crosshair-icon {
-  color: #0D9488;
+.ps-record-type-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background-color: rgba(13, 148, 136, 0.2);
+  color: #5EEAD4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.ps-bodymap-title {
-  font-size: 0.74rem;
+.icon-prescription {
+  background-color: rgba(99, 102, 241, 0.2);
+  color: #818CF8;
+}
+
+.icon-med {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #FBBF24;
+}
+
+.ps-record-entry-titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.ps-entry-filename {
+  display: block;
+  font-size: 0.78rem;
   font-weight: 700;
-  color: #09090B;
+  color: #F7F7F5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.ps-bodymap-visual {
-  background-color: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 12px;
-  padding: 9px 12px;
+.ps-entry-meta {
+  display: block;
+  font-size: 0.65rem;
+  color: #A7AAAD;
+}
+
+.ps-status-pill-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #F7F7F5;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+}
+
+.ps-status-pill-badge.is-complete {
+  background-color: rgba(13, 148, 136, 0.2);
+  border-color: rgba(13, 148, 136, 0.4);
+  color: #5EEAD4;
+}
+
+.ps-status-pill-badge.is-neutral {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #A7AAAD;
+}
+
+.ps-upload-bar-track {
+  width: 100%;
+  height: 3.5px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.ps-upload-bar-fill {
+  height: 100%;
+  background-color: #0D9488;
+  border-radius: 9999px;
+  transition: width 0.25s linear;
+}
+
+.ps-extraction-review-box {
+  background-color: #191C1F;
+  border: 1px solid rgba(13, 148, 136, 0.35);
+  border-radius: 8px;
+  padding: 8px 10px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
 }
 
-.ps-knee-pin-badge {
-  display: inline-flex;
+.ps-extraction-status-row {
+  display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
 }
 
-.ps-pin-pulse {
+.ps-tag-needs-review {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #5EEAD4;
+}
+
+.ps-btn-confirm-extraction {
+  background-color: #FFFFFF;
+  color: #090A0B;
+  border: none;
+  font-size: 0.62rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+
+.ps-extracted-finding {
+  font-size: 0.7rem;
+  color: #CBD5E1;
+  margin: 0;
+  line-height: 1.35;
+  white-space: pre-line;
+}
+
+.ps-record-snippet-block {
+  font-size: 0.7rem;
+  color: #CBD5E1;
+  background-color: #191C1F;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 5px 8px;
+  border-radius: 6px;
+}
+
+.ps-add-document-action-btn {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px;
+  background-color: rgba(255, 255, 255, 0.055);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #F7F7F5;
+  cursor: pointer;
+}
+
+/* -------------------------------------------------------------------------- */
+/* SCENE 04 — CONTINUOUS AI HEALTH MEMORY (Dark Theme)                        */
+/* -------------------------------------------------------------------------- */
+.ps-memory-kicker {
+  font-size: 0.72rem;
+  color: #A7AAAD;
+  margin: 0 0 10px;
+  line-height: 1.35;
+}
+
+.ps-timeline-stream {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 18px;
+  overflow-y: auto;
+}
+
+.ps-timeline-stem-line {
+  position: absolute;
+  left: 6px;
+  top: 10px;
+  bottom: 20px;
+  width: 2px;
+  background: linear-gradient(to bottom, #0D9488 0%, rgba(255, 255, 255, 0.2) 75%);
+}
+
+.ps-timeline-node-card {
+  position: relative;
+  background-color: #111315;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 12px;
+  padding: 9px 11px;
+}
+
+.ps-timeline-node-card.is-current {
+  background-color: #191C1F;
+  border-color: rgba(13, 148, 136, 0.5);
+  box-shadow: 0 4px 16px rgba(13, 148, 136, 0.15);
+}
+
+.ps-timeline-node-dot {
+  position: absolute;
+  left: -18px;
+  top: 11px;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background-color: #0D9488;
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.25);
+  border: 2px solid #090A0B;
 }
 
-.ps-pin-text {
+.ps-timeline-node-dot.active-dot {
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.4);
+}
+
+.ps-node-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+
+.ps-node-date {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #A7AAAD;
+}
+
+.ps-provenance-badge {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.58rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.badge-patient-confirmed {
+  background-color: rgba(13, 148, 136, 0.2);
+  border: 1px solid rgba(13, 148, 136, 0.4);
+  color: #5EEAD4;
+}
+
+.badge-doc-extracted {
+  background-color: rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  color: #A5B4FC;
+}
+
+.badge-patient-reported {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #CBD5E1;
+}
+
+.ps-node-title {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #09090B;
+  color: #F7F7F5;
+  margin: 0 0 2px;
 }
 
-.ps-pin-detail {
-  font-size: 0.68rem;
-  color: #71717A;
-}
-
-.ps-memory-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.ps-timeline-head {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #71717A;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.ps-timeline-card {
-  background-color: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 14px;
-  padding: 8px 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-}
-
-.ps-tl-row {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 5px 0;
-}
-
-.ps-tl-label {
-  font-family: var(--font-family-mono, monospace);
-  font-size: 0.62rem;
-  font-weight: 700;
-  color: #71717A;
-  text-transform: uppercase;
-}
-
-.ps-tl-val {
-  font-size: 0.74rem;
-  font-weight: 600;
-  color: #09090B;
-}
-
-.ps-tl-divider {
-  height: 1px;
-  background-color: rgba(0, 0, 0, 0.06);
-}
-
-/* -------------------------------------------------------------------------- */
-/* Screen 4: Medical Explainer                                                */
-/* -------------------------------------------------------------------------- */
-.ps-term-focus-card {
-  background-color: #09090B;
-  color: #FFFFFF;
-  border-radius: 16px;
-  padding: 12px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.ps-term-found-label {
-  font-family: var(--font-family-mono, monospace);
-  font-size: 0.62rem;
-  color: #A1A1AA;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.ps-term-word {
-  font-family: var(--font-family-serif, 'Cormorant Garamond', Georgia, serif);
-  font-size: 1.45rem;
-  font-weight: 600;
-  color: #FFFFFF;
-  margin: 0;
-}
-
-.ps-term-phonetic {
-  font-family: var(--font-family-mono, monospace);
-  font-size: 0.68rem;
-  color: #0D9488;
-}
-
-.ps-explainer-card {
-  background-color: #F4F4F5;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 14px;
-  padding: 9px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.ps-exp-head {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.ps-check-icon {
-  color: #0D9488;
-}
-
-.ps-exp-title {
-  font-size: 0.74rem;
-  font-weight: 700;
-  color: #09090B;
-}
-
-.ps-exp-body {
-  font-size: 0.72rem;
-  color: #52525B;
-  margin: 0;
-  line-height: 1.38;
-}
-
-.ps-doc-question-pill {
-  background-color: rgba(13, 148, 136, 0.06);
-  border: 1px dashed rgba(13, 148, 136, 0.4);
-  border-radius: 12px;
-  padding: 8px 11px;
-}
-
-.ps-q-tag {
-  font-size: 0.66rem;
-  font-weight: 700;
-  color: #0F766E;
-  display: block;
-  margin-bottom: 2px;
-}
-
-.ps-q-text {
-  font-size: 0.72rem;
-  font-style: italic;
-  color: #09090B;
-  margin: 0;
-  line-height: 1.35;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Screen 5: Care Navigation                                                  */
-/* -------------------------------------------------------------------------- */
-.ps-context-notice {
-  font-size: 0.68rem;
-  color: #71717A;
-  background: #F4F4F5;
-  padding: 5px 10px;
-  border-radius: 8px;
-}
-
-.ps-specialty-card {
-  background-color: #FFFFFF;
-  border: 1.5px solid #000000;
-  border-radius: 16px;
-  padding: 12px 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-}
-
-.ps-specialty-eyebrow {
-  font-family: var(--font-family-mono, monospace);
-  font-size: 0.62rem;
-  font-weight: 700;
-  color: #0F766E;
-  text-transform: uppercase;
-  display: block;
-}
-
-.ps-specialty-name {
-  font-family: var(--font-family-serif, 'Cormorant Garamond', Georgia, serif);
-  font-size: 1.18rem;
-  font-weight: 600;
-  color: #09090B;
-  margin: 2px 0 4px;
-}
-
-.ps-specialty-scope {
-  font-size: 0.72rem;
-  color: #52525B;
-  margin: 0;
-  line-height: 1.35;
-}
-
-.ps-rationale-box {
-  background-color: #F4F4F5;
-  border-radius: 12px;
-  padding: 8px 11px;
-}
-
-.ps-rationale-title {
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: #09090B;
-  display: block;
-  margin-bottom: 2px;
-}
-
-.ps-rationale-body {
+.ps-node-body {
   font-size: 0.7rem;
-  color: #52525B;
+  color: #A7AAAD;
   margin: 0;
   line-height: 1.35;
 }
 
-.ps-assessment-box {
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-  padding: 8px 11px;
+/* -------------------------------------------------------------------------- */
+/* SCENE 05 — COMPLETE MEDICAL HANDOVER (Doctor Brief)                        */
+/* Clean Crisp Light Card Element inside Dark App Canvas                      */
+/* -------------------------------------------------------------------------- */
+.ps-brief-body-scroll {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
 }
 
-.ps-assessment-title {
-  font-size: 0.68rem;
+.ps-workflow-step-pills {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.65rem;
   font-weight: 700;
-  color: #71717A;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: 4px;
 }
 
-.ps-points-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.wf-pill {
+  padding: 3px 8px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #A7AAAD;
 }
 
-.ps-points-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 5px;
-  font-size: 0.68rem;
-  color: #18181B;
-  line-height: 1.3;
+.wf-pill.done {
+  background: rgba(255, 255, 255, 0.16);
+  color: #F7F7F5;
 }
 
-.ps-list-chevron {
-  color: #0D9488;
-  flex-shrink: 0;
-  margin-top: 2px;
+.wf-pill.active {
+  background: #0D9488;
+  color: #FFFFFF;
 }
 
-.ps-safety-footnote {
-  display: flex;
-  align-items: flex-start;
-  gap: 5px;
-  font-size: 0.62rem;
-  color: #71717A;
-  line-height: 1.3;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Screen 6: 30-Second Doctor Brief                                           */
-/* -------------------------------------------------------------------------- */
-.ps-brief-subhead {
-  font-size: 0.72rem;
+.wf-pill-arrow {
   color: #71717A;
 }
 
-.ps-brief-card {
+/* Contrast Light Brief Box on Dark Phone Canvas */
+.ps-doctor-brief-box {
   background-color: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 14px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  gap: 6px;
+  color: #090A0B;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .ps-brief-section {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
-.ps-brief-tag {
-  font-family: var(--font-family-mono, monospace);
+.ps-brief-label {
   font-size: 0.62rem;
   font-weight: 700;
-  color: #0F766E;
   text-transform: uppercase;
+  color: #71717A;
+  letter-spacing: 0.04em;
 }
 
-.ps-brief-body {
-  font-size: 0.72rem;
+.ps-brief-value {
+  font-size: 0.74rem;
   color: #18181B;
   margin: 0;
   line-height: 1.35;
+  font-weight: 500;
 }
 
 .ps-brief-divider {
   height: 1px;
-  background-color: rgba(0, 0, 0, 0.06);
+  background-color: rgba(0, 0, 0, 0.08);
 }
 
-.ps-brief-list {
-  list-style: none;
-  padding: 0;
+.ps-brief-approval-action {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: auto;
+}
+
+.ps-btn-approve-brief {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  padding: 10px;
+  background-color: #FFFFFF;
+  color: #090A0B;
+  border: none;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.ps-btn-approve-brief.is-approved {
+  background-color: #0D9488;
+  color: #FFFFFF;
+}
+
+.ps-brief-disclaimer-note {
+  font-size: 0.6rem;
+  color: #A7AAAD;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* -------------------------------------------------------------------------- */
+/* SCENE 06 — RIGHT DOCTOR NAVIGATION (Dark Theme)                            */
+/* -------------------------------------------------------------------------- */
+.ps-routes-switcher {
+  display: flex;
+  background: #111315;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  padding: 3px;
+  margin-bottom: 8px;
+}
+
+.ps-route-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #A7AAAD;
+  padding: 5px 8px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ps-route-tab.is-active {
+  background: #191C1F;
+  color: #F7F7F5;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.ps-routes-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.ps-context-rationale-box {
+  background: rgba(13, 148, 136, 0.12);
+  border: 1px solid rgba(13, 148, 136, 0.3);
+  border-radius: 10px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+
+.ps-rationale-kicker {
+  font-family: var(--font-family-mono, monospace);
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #5EEAD4;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.ps-context-rationale-box p {
+  font-size: 0.68rem;
+  color: #E2E8F0;
   margin: 0;
+  line-height: 1.3;
+}
+
+.ps-doctor-shortlist-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ps-shortlist-item {
+  background: #111315;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 11px;
+  padding: 9px 10px;
   display: flex;
   flex-direction: column;
   gap: 3px;
 }
 
-.ps-brief-list li {
+.ps-item-top {
   display: flex;
-  align-items: flex-start;
-  gap: 5px;
-  font-size: 0.68rem;
-  color: #18181B;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ps-doc-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #F7F7F5;
+}
+
+.ps-verified-pill {
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: #5EEAD4;
+  background: rgba(13, 148, 136, 0.2);
+  border: 1px solid rgba(13, 148, 136, 0.35);
+  padding: 1.5px 6px;
+  border-radius: 9999px;
+}
+
+.ps-doc-desc {
+  font-size: 0.66rem;
+  color: #A7AAAD;
+  margin: 0;
   line-height: 1.3;
 }
 
-.ps-orientation-note {
-  font-size: 0.66rem;
-  color: #71717A;
-  font-style: italic;
-  margin: 0;
+.ps-match-why {
+  font-size: 0.62rem;
+  color: #5EEAD4;
+  font-weight: 600;
+  padding-top: 3px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
 }
 
-.ps-brief-actions {
+.ps-consultant-active-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #111315;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.ps-notice-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #F7F7F5;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.ps-notice-text p {
+  font-size: 0.68rem;
+  color: #A7AAAD;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.ps-consultant-preview-status {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-top: 2px;
+  padding: 6px;
 }
 
-.ps-brief-primary-btn {
-  background-color: #000000;
-  color: #FFFFFF;
-  border: none;
-  border-radius: 9999px;
-  padding: 8px 14px;
+.ps-status-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  color: #E2E8F0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* SCENE 07 — PATIENT-CONTROLLED HANDOVER (Dark Theme)                        */
+/* -------------------------------------------------------------------------- */
+.ps-handover-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.ps-handover-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ps-handover-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #A7AAAD;
+  letter-spacing: 0.04em;
+}
+
+.ps-target-doc-card {
+  background: #111315;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.doc-bold {
+  font-weight: 700;
+  font-size: 0.76rem;
+  color: #F7F7F5;
+}
+
+.doc-sub {
+  font-size: 0.64rem;
+  color: #A7AAAD;
+}
+
+.ps-scope-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.scope-chip {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #5EEAD4;
+  background: rgba(13, 148, 136, 0.15);
+  border: 1px solid rgba(13, 148, 136, 0.3);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.scope-chip.restricted {
+  color: #A7AAAD;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ps-handover-pass-status {
+  background: #111315;
+  border: 1px solid rgba(13, 148, 136, 0.4);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 4px 16px rgba(13, 148, 136, 0.15);
+}
+
+.pass-status-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.74rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
+  font-weight: 700;
+  color: #5EEAD4;
+  margin-bottom: 2px;
 }
 
-.ps-brief-secondary-btn {
-  background-color: #F4F4F5;
-  color: #09090B;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 9999px;
-  padding: 7px 14px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
+.pass-status-desc {
+  font-size: 0.66rem;
+  color: #A7AAAD;
+  margin: 0;
+  line-height: 1.35;
 }
 
+.ps-continuity-reminder {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.66rem;
+  color: #5EEAD4;
+  font-weight: 600;
+  margin-top: auto;
+}

@@ -1,0 +1,54 @@
+/* ==========================================================================
+   Vidhi Animated Face Character Styles
+   Minimal vector line-art with smooth natural physics and right-eye wink
+   ========================================================================== */
+
+.vidhi-animated-face-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: default;
+}
+
+.vidhi-face-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.04));
+}
+
+.vidhi-hair-path {
+  transition: stroke 0.2s ease;
+}
+
+.vidhi-eye-unit {
+  transform-origin: 0 0;
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.vidhi-eye-pill {
+  will-change: transform, x, y;
+  transition: x 0.08s ease-out, y 0.08s ease-out;
+}
+
+.vidhi-wink-arc {
+  animation: winkPulse 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes winkPulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.vidhi-mouth-path {
+  transition: d 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}

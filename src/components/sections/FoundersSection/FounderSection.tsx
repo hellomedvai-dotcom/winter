@@ -91,8 +91,8 @@ export const FounderSection: React.FC = () => {
           <div className="founder-note-signature-row">
             <img
               className="founder-note-signature"
-              src="/assets/founders/founder-signature.png"
-              alt="Vishwa S.'s signature"
+              src="/assets/founder/vishwa-solanke-signature.png"
+              alt="Vishwa S.'s handwritten signature"
               draggable="false"
             />
           </div>
