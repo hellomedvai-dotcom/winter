@@ -96,6 +96,7 @@ export const ProblemSharingSection: React.FC = () => {
   const [problemDescription, setProblemDescription] = useState<string>('');
   const [solutionSuggestion, setSolutionSuggestion] = useState<string>('');
   const [isOptionalExpanded, setIsOptionalExpanded] = useState<boolean>(false);
+  const [isMobileExpanded, setIsMobileExpanded] = useState<boolean>(false);
 
   // Validation & Submission State
   const [roleError, setRoleError] = useState<string>('');
@@ -159,6 +160,7 @@ export const ProblemSharingSection: React.FC = () => {
   // Handle role selection: changes suggestions smoothly without clearing typed text
   const handleSelectRole = (roleId: string) => {
     setSelectedRole(roleId);
+    setIsMobileExpanded(true);
     if (roleError) setRoleError('');
     if (submissionResult?.isPreviewNotice) setSubmissionResult(null);
 
@@ -268,7 +270,7 @@ export const ProblemSharingSection: React.FC = () => {
     <section
       ref={sectionRef}
       id="share-problem"
-      className={`problem-sharing-section ${isSectionVisible ? 'is-visible' : ''}`}
+      className={`problem-sharing-section ${isSectionVisible ? 'is-visible' : ''} ${isMobileExpanded ? 'is-mobile-expanded' : ''}`}
       aria-labelledby="problem-sharing-heading"
     >
       <Container size="default" className="problem-sharing-container">
@@ -282,10 +284,26 @@ export const ProblemSharingSection: React.FC = () => {
             Healthcare experiences can reveal problems that deserve better solutions. Share what you
             faced so we can understand recurring challenges and explore what could improve them.
           </p>
+
+          {/* Mobile-Only Collapsible Toggle Pill */}
+          <div className="problem-mobile-toggle-wrap">
+            <button
+              type="button"
+              className={`problem-mobile-toggle-btn ${isMobileExpanded ? 'is-open' : ''}`}
+              onClick={() => setIsMobileExpanded((prev) => !prev)}
+              aria-expanded={isMobileExpanded}
+              aria-controls="problem-collapsible-content"
+            >
+              <span>{isMobileExpanded ? 'Close challenge form' : 'Tap to share a challenge'}</span>
+              <ChevronDown size={15} className={`problem-toggle-chevron ${isMobileExpanded ? 'is-open' : ''}`} />
+            </button>
+          </div>
         </header>
 
-        {/* Perspective Prompt & Role Selector (Always shown first) */}
-        <div className="problem-perspective-block">
+        {/* Collapsible Content Wrapper (Desktop: always visible; Mobile: toggled) */}
+        <div id="problem-collapsible-content" className="problem-collapsible-content">
+          {/* Perspective Prompt & Role Selector (Always shown first) */}
+          <div className="problem-perspective-block">
           <h3 className="perspective-headline">Every side of healthcare sees something different.</h3>
           <p className="perspective-subquestion">Which side are you speaking from?</p>
 
@@ -409,10 +427,14 @@ export const ProblemSharingSection: React.FC = () => {
                             setProblemDescription(e.target.value);
                             if (problemError) setProblemError('');
                             if (submissionResult?.isPreviewNotice) setSubmissionResult(null);
+                            if (problemInputRef.current) {
+                              problemInputRef.current.style.height = 'auto';
+                              problemInputRef.current.style.height = `${Math.min(problemInputRef.current.scrollHeight, 240)}px`;
+                            }
                           }}
                           placeholder="Describe the healthcare problem or challenge you experienced..."
                           className="glass-textarea"
-                          rows={4}
+                          rows={2}
                           aria-required="true"
                           aria-invalid={!!problemError}
                           aria-describedby={problemError ? 'problem-field-error' : undefined}
@@ -543,6 +565,7 @@ export const ProblemSharingSection: React.FC = () => {
             </>
           )}
         </div>
+      </div>
 
         {/* Compact Closing Manifesto & 3-Stage Process Visual */}
         <div

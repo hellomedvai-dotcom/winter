@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Container } from '@/components/layout/Container/Container';
 import { Badge } from '@/components/common/Badge/Badge';
-import { HelpCircle, ChevronRight } from 'lucide-react';
+import { HelpCircle, ChevronRight, ChevronDown } from 'lucide-react';
 import { MedvidhiLogo } from '@/components/brand/MedvidhiLogo';
 import './FAQSection.css';
 
@@ -52,6 +52,7 @@ const FAQ_ITEMS: FAQItem[] = [
 
 export const FAQSection: React.FC = () => {
   const [selectedFaqId, setSelectedFaqId] = useState<string>(FAQ_ITEMS[0].id);
+  const [mobileOpenFaqId, setMobileOpenFaqId] = useState<string | null>(null);
 
   const pillRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const answerPanelRef = useRef<HTMLDivElement | null>(null);
@@ -132,8 +133,8 @@ export const FAQSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Softly Rounded Outer Composition containing Two Connected Panels */}
-        <div className="faq-outer-composition" data-reveal style={{ '--si': 3 } as React.CSSProperties}>
+        {/* Desktop Two-Panel Composition */}
+        <div className="faq-outer-composition faq-desktop-composition" data-reveal style={{ '--si': 3 } as React.CSSProperties}>
           {/* Left Panel: Black Question-List Surface with White Text */}
           <div className="faq-left-black-panel" role="tablist" aria-label="FAQ Question Directory" aria-orientation="vertical">
             <div className="black-panel-header">
@@ -213,6 +214,50 @@ export const FAQSection: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Mobile Compact Accordion (Mobile-Only) */}
+        <div className="faq-mobile-accordion" role="region" aria-label="Frequently Asked Questions Accordion">
+          {FAQ_ITEMS.map((item, idx) => {
+            const isOpen = mobileOpenFaqId === item.id;
+            return (
+              <div
+                key={`mob-${item.id}`}
+                className={`faq-accordion-item ${isOpen ? 'is-open' : ''}`}
+              >
+                <button
+                  type="button"
+                  className="faq-accordion-trigger"
+                  onClick={() => setMobileOpenFaqId(isOpen ? null : item.id)}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${item.id}`}
+                  id={`faq-header-${item.id}`}
+                >
+                  <span className="faq-accordion-index">0{idx + 1}</span>
+                  <span className="faq-accordion-question">{item.question}</span>
+                  <span className={`faq-accordion-icon ${isOpen ? 'is-open' : ''}`} aria-hidden="true">
+                    <ChevronDown size={15} />
+                  </span>
+                </button>
+
+                <div
+                  id={`faq-answer-${item.id}`}
+                  role="region"
+                  aria-labelledby={`faq-header-${item.id}`}
+                  className={`faq-accordion-collapse ${isOpen ? 'is-expanded' : ''}`}
+                >
+                  <div className="faq-accordion-body">
+                    <div className="faq-accordion-meta">
+                      <span className="faq-meta-dot" />
+                      <span className="faq-meta-category">{item.category}</span>
+                    </div>
+
+                    <p className="faq-accordion-answer">{item.answer}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </Container>
     </section>
